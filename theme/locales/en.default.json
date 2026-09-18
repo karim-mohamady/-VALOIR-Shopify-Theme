@@ -1,0 +1,255 @@
+{
+  "general": {
+    "home": "Home",
+    "continue_shopping": "Continue Shopping",
+    "search": {
+      "search": "Search eyewear, collections, or frame shapes...",
+      "no_results": "No eyewear matches found for \"{{ terms }}\"",
+      "results_with_count": {
+        "one": "{{ count }} result found",
+        "other": "{{ count }} results found"
+      },
+      "title": "Search Eyewear",
+      "popular_shapes": "Popular Shapes: Aviator, Geometric Titanium, Rounded Acetate"
+    },
+    "newsletter": {
+      "heading": "The Valoir Atelier Journal",
+      "subtext": "Receive private invitations to limited bespoke optical drops and private eyewear previews.",
+      "email_placeholder": "Enter your email address",
+      "button_label": "Subscribe",
+      "submit": "Notify Me",
+      "success": "Welcome to the Valoir Maison. You have been added to our private register."
+    }
+  },
+  "accessibility": {
+    "skip_to_text": "Skip to content",
+    "close": "Close",
+    "open_menu": "Open navigation menu",
+    "close_menu": "Close navigation menu",
+    "star_rating": "{{ rating }} out of 5 stars",
+    "view_cart": "View shopping cart, {{ count }} item(s)",
+    "previous_slide": "Previous slide",
+    "next_slide": "Next slide",
+    "rotate_model": "Drag to inspect 3D eyewear model in 360 degrees",
+    "enter_ar": "View this eyewear frame in Augmented Reality in your space",
+    "color_swatch": "Select frame finish {{ color }}"
+  },
+  "onboarding": {
+    "product_title": "Maison Eyewear Silhouette"
+  },
+  "sections": {
+    "announcement_bar": {
+      "text": "Complimentary Worldwide Express Courier & Precision Prescription Service on orders over $250",
+      "link_text": "Discover Collection"
+    },
+    "featured_blog": {
+      "onboarding_title": "Atelier Metallurgy & Architectural Optics"
+    },
+    "header": {
+      "optical": "Optical Glasses",
+      "sunglasses": "Luxury Sunglasses",
+      "atelier": "Bespoke Atelier",
+      "lookbook": "Editorial Lookbook",
+      "innovation": "3D & Lens Science",
+      "account": "Client Account",
+      "cart": "Bag",
+      "search_toggle": "Search"
+    },
+    "cart": {
+      "title": "Your Shopping Bag",
+      "empty": "Your bag is currently empty.",
+      "continue_shopping": "Explore New Arrivals",
+      "checkout": "Proceed to Secure Checkout",
+      "free_shipping_reached": "You qualify for complimentary insured courier delivery.",
+      "free_shipping_remaining": "Add {{ remaining }} more to receive complimentary insured shipping.",
+      "subtotal": "Subtotal",
+      "taxes_included_but_shipping_at_checkout": "Tax included. Shipping calculated at checkout.",
+      "taxes_and_shipping_at_checkout": "Taxes and shipping calculated at checkout.",
+      "taxes_included_and_shipping_policy_html": "Tax included. <a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
+      "taxes_and_shipping_policy_html": "Taxes and <a href=\"{{ link }}\">shipping</a> calculated at checkout.",
+      "prescription_note": "Prescription details or optical notes",
+      "prescription_placeholder": "Enter pupillary distance (PD) or special hinge fitting notes...",
+      "remove": "Remove",
+      "update": "Update Bag",
+      "discounts": "Discounts",
+      "item_added": "Item successfully added to shopping bag",
+      "cart_error": "An error occurred while updating your bag. Please try again."
+    },
+    "eyewear_explorer": {
+      "view_3d": "360° View",
+      "instructions": "Interactive 360° View • Drag to rotate • Scroll or buttons to zoom",
+      "reset": "Reset",
+      "pause": "Pause",
+      "play": "Rotate",
+      "zoom_in": "Zoom In",
+      "zoom_out": "Zoom Out",
+      "finish_label": "Atelier Frame Finish",
+      "ar_device_notice": "Augmented reality requires a compatible mobile device (iOS Safari or Android Chrome).",
+      "ar_ios_notice": "Augmented reality on iOS requires a USDZ model file."
+    },
+    "footer": {
+      "brand_story": "Valoir merges artisanal Japanese titanium forging with handcrafted Italian cellulose acetate to engineer timeless optical architecture.",
+      "quick_links": "Maison",
+      "customer_care": "Client Concierge",
+      "eyewear_care": "Eyewear Care & Calipers",
+      "bespoke_delivery": "Bespoke Delivery",
+      "private_consultations": "Private Consultations",
+      "faq": "FAQ",
+      "copyright": "© 2026 Valoir Atelier Inc. All rights reserved.",
+      "powered_by": "Engineered for Shopify Online Store 2.0"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Bag",
+      "adding": "Adding...",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity",
+      "regular_price": "Regular price",
+      "sale_price": "Sale price",
+      "unit_price": "Unit price",
+      "include_taxes": "Tax included.",
+      "shipping_policy_html": "<a href=\"{{ link }}\">Shipping</a> calculated at checkout.",
+      "pickup_available_at_html": "Pickup available at <span class=\"pickup-location\">{{ location_name }}</span>",
+      "pickup_unavailable_at_html": "Pickup currently unavailable at <span class=\"pickup-location\">{{ location_name }}</span>",
+      "check_other_stores": "Check availability at other atelier boutiques",
+      "sku": "SKU",
+      "vendor": "Maison",
+      "view_in_3d": "Interactive 3D Showroom",
+      "view_in_ar": "View in Your Space (AR)",
+      "frame_measurements": "Frame Calipers & Fit",
+      "optical_specs": "Technical Specifications",
+      "frame_width": "Total Frame Width",
+      "bridge_width": "Bridge Width",
+      "temple_length": "Temple Arm Length",
+      "lens_height": "Lens Height",
+      "material": "Frame Material",
+      "lens_protection": "UV & Polarization Rating",
+      "weight": "Frame Weight",
+      "origin": "Artisanal Origin",
+      "size_guide": "Size & Caliper Guide",
+      "complementary": "Pair with Handcrafted Leather Eyewear Cases",
+      "view": "View"
+    },
+    "facets": {
+      "filters": "Filter Eyewear",
+      "sort_by": "Sort by",
+      "clear_all": "Clear all filters",
+      "frame_shape": "Frame Shape",
+      "frame_material": "Material",
+      "lens_type": "Lens Technology",
+      "price": "Price Range",
+      "availability": "Availability",
+      "in_stock": "In Stock Only"
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "My Account",
+      "welcome": "Maison Valoir Atelier Client",
+      "details": "Client Details & Delivery Address",
+      "view_addresses": "View Registered Addresses",
+      "return": "Return to Account Overview",
+      "log_out": "Sign Out"
+    },
+    "orders": {
+      "title": "Bespoke Order History",
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment Status",
+      "fulfillment_status": "Fulfillment Status",
+      "total": "Total",
+      "none": "You have not placed any atelier commissions or orders yet."
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "date": "Placed on {{ date }}",
+      "cancelled": "Order Cancelled",
+      "product": "Eyewear / Item",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping & Handling",
+      "tax": "Taxes",
+      "billing_address": "Billing Address",
+      "shipping_address": "Shipping Destination"
+    },
+    "login_page": {
+      "title": "Client Sign In",
+      "subtext": "Access your bespoke eyewear portfolio and atelier orders",
+      "email": "Email Address",
+      "password": "Password",
+      "sign_in": "Sign In to Atelier",
+      "forgot_password": "Forgot Password?",
+      "create_account": "Register Atelier Account",
+      "new_client": "New to Valoir Atelier?",
+      "guest_title": "Continue as a guest",
+      "guest_continue": "Continue to Checkout"
+    },
+    "recover_password": {
+      "title": "Reset Your Password",
+      "subtext": "We will send you an email to reset your atelier password.",
+      "submit": "Send Reset Link",
+      "cancel": "Cancel",
+      "success": "We have sent an email with a link to update your password."
+    },
+    "register": {
+      "title": "Create Atelier Profile",
+      "subtext": "Register your optical specifications and bespoke order profile",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email": "Email Address",
+      "password": "Password",
+      "submit": "Create Account",
+      "already_client": "Already registered?"
+    },
+    "addresses": {
+      "title": "Registered Addresses",
+      "subtext": "Manage your bespoke shipping destinations and optical delivery addresses",
+      "add_new": "Add New Address",
+      "default": "Default Shipping Address",
+      "delete": "Delete Address",
+      "delete_confirm": "Are you sure you wish to delete this address?",
+      "no_addresses": "No registered shipping addresses found.",
+      "company": "Company / Suite",
+      "address1": "Address Line 1",
+      "address2": "Apartment, suite, etc.",
+      "city": "City",
+      "zip": "Postal / ZIP Code",
+      "phone": "Telephone",
+      "set_default": "Set as default address",
+      "add": "Save Address"
+    },
+    "reset_password": {
+      "title": "Reset Account Password",
+      "subtext": "Enter a new secure password for your atelier account.",
+      "password": "New Password",
+      "password_confirm": "Confirm New Password",
+      "submit": "Update Password"
+    },
+    "activate_account": {
+      "title": "Activate Atelier Account",
+      "subtext": "Create your password to activate your Valoir client profile.",
+      "password": "Create Password",
+      "password_confirm": "Confirm Password",
+      "submit": "Activate Account",
+      "cancel": "Decline Invitation"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "subtext": "Valoir Atelier Bespoke Gift Card",
+      "gift_card_code": "Gift Card Code",
+      "copy_code": "Copy Code",
+      "copy_code_success": "Code copied to clipboard",
+      "expired": "This gift card has expired",
+      "disabled": "This gift card is currently inactive",
+      "print_gift_card": "Print Gift Card",
+      "shop_link": "Visit Valoir Atelier",
+      "add_to_apple_wallet": "Add to Apple Wallet"
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{% comment %}
+  Renders an eyewear product card
+  Usage: {% render 'product-card', product: product %}
+{% endcomment %}
+{%- liquid
+  assign has_3d = false
+  for media in product.media
+    if media.media_type == 'model'
+      assign has_3d = true
+      break
+    endif
+  endfor
+
+  # Check if real 3D model exists
+  if product.metafields.eyewear.model_3d_url != blank
+    assign has_3d = true
+  endif
+
+  assign frame_shape = product.metafields.eyewear.frame_shape | default: product.type
+-%}
+
+<article class="product-card" data-product-id="{{ product.id }}">
+  <div class="product-card-media">
+    <div class="product-card-badges">
+      {%- if product.compare_at_price > product.price -%}
+        {% render 'badge', type: 'sale' %}
+      {%- endif -%}
+      {%- if has_3d and settings.show_3d_badge -%}
+        {% render 'badge', type: '3d' %}
+      {%- endif -%}
+      {%- if frame_shape != blank and settings.show_frame_shape_tag -%}
+        {% render 'badge', type: 'shape', shape: frame_shape %}
+      {%- endif -%}
+    </div>
+
+    <a href="{{ product.url }}" class="product-card-image-link" aria-label="{{ product.title | escape }}">
+      {%- if product.featured_media != blank -%}
+        {%- assign focal_1 = product.featured_media.presentation.focal_point -%}
+        <img
+          src="{{ product.featured_media | image_url: width: 600 }}"
+          alt="{{ product.featured_media.alt | default: product.title | escape }}"
+          class="product-card-image product-card-image-primary"
+          loading="lazy"
+          width="600"
+          height="750"
+          {% if focal_1 %}style="object-position: {{ focal_1 }};"{% endif %}
+        >
+        {%- if product.media[1] != blank and settings.show_secondary_image -%}
+          {%- assign focal_2 = product.media[1].presentation.focal_point -%}
+          <img
+            src="{{ product.media[1] | image_url: width: 600 }}"
+            alt="{{ product.media[1].alt | default: product.title | escape }}"
+            class="product-card-image product-card-image-secondary"
+            loading="lazy"
+            width="600"
+            height="750"
+            {% if focal_2 %}style="object-position: {{ focal_2 }};"{% endif %}
+          >
+        {%- endif -%}
+      {%- else -%}
+        <div style="padding: 2rem; color: var(--color-text-muted); font-size: 0.8125rem;">
+          {{ 'products.product.vendor' | t }}
+        </div>
+      {%- endif -%}
+    </a>
+  </div>
+
+  <div class="product-card-info">
+    {%- if frame_shape != blank -%}
+      <span class="product-card-shape">{{ frame_shape }}</span>
+    {%- endif -%}
+    <h3 class="product-card-title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    {% render 'price', product: product %}
+
+    {%- if settings.show_color_swatches and product.options_by_name['Color'] != blank -%}
+      <div class="product-card-swatches" aria-label="Available frame colors">
+        {%- for color in product.options_by_name['Color'].values -%}
+          <span class="swatch-dot" title="{{ color }}" style="background-color: {% if color contains 'Black' %}#1A1A1A{% elsif color contains 'Gold' %}#C29B38{% elsif color contains 'Tortoise' %}#5C3A21{% elsif color contains 'Silver' %}#B8B8B8{% else %}#3E424B{% endif %};"></span>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</article>

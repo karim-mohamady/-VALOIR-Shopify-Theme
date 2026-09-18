@@ -1,0 +1,137 @@
+{{ 'component-customer.css' | asset_url | stylesheet_tag }}
+
+<div class="customer-section">
+  <div class="customer-container">
+    <div class="customer-header">
+      <a href="{{ routes.account_url }}" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); font-weight: 600; text-decoration: none; display: inline-block; margin-bottom: 0.75rem;">
+        &larr; {{ 'customer.account.return' | t }}
+      </a>
+      <h1>{{ 'customer.addresses.title' | t }}</h1>
+      <p>{{ 'customer.addresses.subtext' | t | default: 'Manage your bespoke shipping destinations and optical delivery addresses' }}</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 2.5rem;">
+      <button type="button" class="btn-primary" id="AddAddressButton">
+        {{ 'customer.addresses.add_new' | t }}
+      </button>
+    </div>
+
+    <!-- Add New Address Form -->
+    <div id="AddAddressForm" class="customer-box" style="display: none; margin-bottom: 3rem;">
+      <h2 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 300; margin-bottom: 1.5rem; text-align: center;">
+        {{ 'customer.addresses.add_new' | t }}
+      </h2>
+
+      {%- form 'customer_address', customer.new_address, aria-labelledBy: 'AddressNewHeading' -%}
+        <div class="customer-form-group">
+          <label for="AddressFirstNameNew">{{ 'customer.register.first_name' | t }}</label>
+          <input type="text" id="AddressFirstNameNew" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name">
+        </div>
+
+        <div class="customer-form-group">
+          <label for="AddressLastNameNew">{{ 'customer.register.last_name' | t }}</label>
+          <input type="text" id="AddressLastNameNew" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name">
+        </div>
+
+        <div class="customer-form-group">
+          <label for="AddressCompanyNew">{{ 'customer.addresses.company' | t | default: 'Company / Suite' }}</label>
+          <input type="text" id="AddressCompanyNew" name="address[company]" value="{{ form.company }}" autocomplete="organization">
+        </div>
+
+        <div class="customer-form-group">
+          <label for="AddressAddress1New">{{ 'customer.addresses.address1' | t | default: 'Address Line 1' }}</label>
+          <input type="text" id="AddressAddress1New" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" required>
+        </div>
+
+        <div class="customer-form-group">
+          <label for="AddressAddress2New">{{ 'customer.addresses.address2' | t | default: 'Apartment, suite, etc.' }}</label>
+          <input type="text" id="AddressAddress2New" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2">
+        </div>
+
+        <div class="customer-form-group">
+          <label for="AddressCityNew">{{ 'customer.addresses.city' | t | default: 'City' }}</label>
+          <input type="text" id="AddressCityNew" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" required>
+        </div>
+
+        <div class="customer-form-group">
+          <label for="AddressZipNew">{{ 'customer.addresses.zip' | t | default: 'Postal / ZIP Code' }}</label>
+          <input type="text" id="AddressZipNew" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" autocomplete="postal-code">
+        </div>
+
+        <div class="customer-form-group">
+          <label for="AddressPhoneNew">{{ 'customer.addresses.phone' | t | default: 'Phone' }}</label>
+          <input type="tel" id="AddressPhoneNew" name="address[phone]" value="{{ form.phone }}" autocomplete="tel">
+        </div>
+
+        <div class="customer-form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+          {{ form.set_as_default_checkbox }}
+          <label for="address_default_address_new" style="margin-bottom: 0; font-weight: normal; cursor: pointer;">
+            {{ 'customer.addresses.set_default' | t | default: 'Set as default address' }}
+          </label>
+        </div>
+
+        <div class="customer-form-actions">
+          <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem;">
+            {{ 'customer.addresses.add' | t | default: 'Save Address' }}
+          </button>
+          <button type="button" class="btn-secondary" id="CancelAddAddress" style="width: 100%; padding: 0.875rem;">
+            {{ 'customer.recover_password.cancel' | t }}
+          </button>
+        </div>
+      {%- endform -%}
+    </div>
+
+    <!-- Existing Addresses -->
+    {%- paginate customer.addresses by 10 -%}
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+        {%- for address in customer.addresses -%}
+          <div class="customer-address-card">
+            {%- if address == customer.default_address -%}
+              <span class="customer-badge" style="margin-bottom: 1rem;">{{ 'customer.addresses.default' | t }}</span>
+            {%- endif -%}
+
+            <div style="font-size: 0.875rem; line-height: 1.6; color: var(--color-text-muted); margin-bottom: 1.5rem;">
+              {{ address | format_address }}
+            </div>
+
+            <div style="display: flex; gap: 0.75rem;">
+              <form
+                method="post"
+                action="{{ routes.account_addresses_url }}/{{ address.id }}"
+                onsubmit="return confirm('{{ 'customer.addresses.delete_confirm' | t | default: 'Are you sure you wish to delete this address?' }}');"
+              >
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit" class="btn-secondary" style="font-size: 0.75rem; padding: 0.5rem 0.75rem; color: #c53030;">
+                  {{ 'customer.addresses.delete' | t }}
+                </button>
+              </form>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}
+        <div style="margin-top: 2rem; text-align: center;">
+          {{ paginate | default_pagination }}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+<script>
+  (function() {
+    const addBtn = document.getElementById('AddAddressButton');
+    const cancelBtn = document.getElementById('CancelAddAddress');
+    const form = document.getElementById('AddAddressForm');
+    if (addBtn && cancelBtn && form) {
+      addBtn.addEventListener('click', () => {
+        form.style.display = 'block';
+        addBtn.style.display = 'none';
+      });
+      cancelBtn.addEventListener('click', () => {
+        form.style.display = 'none';
+        addBtn.style.display = 'inline-block';
+      });
+    }
+  })();
+</script>

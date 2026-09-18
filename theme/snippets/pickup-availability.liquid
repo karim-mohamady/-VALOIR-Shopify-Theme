@@ -1,0 +1,37 @@
+{% comment %}
+  Renders local pickup availability for product variant
+  Usage: {% render 'pickup-availability', product: product %}
+{% endcomment %}
+
+{%- assign pick_up_availabilities = product.selected_or_first_available_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+
+{%- if pick_up_availabilities.size > 0 -%}
+  <div class="pickup-availability-container" style="margin-top: 1.25rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.8125rem; background: var(--color-surface);">
+    {%- assign closest_location = pick_up_availabilities.first -%}
+    <div style="display: flex; gap: 0.75rem; align-items: flex-start;">
+      {%- if closest_location.available -%}
+        <span style="color: #2E7D32; font-size: 1.125rem; line-height: 1;">&#10003;</span>
+        <div>
+          <p style="margin-bottom: 0.25rem; font-weight: 500;">
+            {{ 'products.product.pickup_available_at_html' | t: location_name: closest_location.location.name }}
+          </p>
+          <p style="color: var(--color-text-muted); font-size: 0.75rem;">
+            {{ closest_location.pick_up_time }}
+          </p>
+        </div>
+      {%- else -%}
+        <span style="color: #C62828; font-size: 1.125rem; line-height: 1;">&#10005;</span>
+        <div>
+          <p style="margin-bottom: 0.25rem; font-weight: 500;">
+            {{ 'products.product.pickup_unavailable_at_html' | t: location_name: closest_location.location.name }}
+          </p>
+          {%- if pick_up_availabilities.size > 1 -%}
+            <p style="color: var(--color-accent); font-size: 0.75rem; text-decoration: underline; cursor: pointer;">
+              {{ 'products.product.check_other_stores' | t }}
+            </p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

@@ -1,0 +1,23 @@
+{% comment %}
+  Renders product price with compare-at price and currency formatting
+  Usage: {% render 'price', product: product, use_variant: true %}
+{% endcomment %}
+{%- liquid
+  if use_variant
+    assign target = product.selected_or_first_available_variant
+  else
+    assign target = product
+  endif
+
+  assign compare_at_price = target.compare_at_price
+  assign price = target.price
+-%}
+
+{%- if price != blank -%}
+  <div class="product-price-box">
+    <span class="product-price-regular">{{ price | money }}</span>
+    {%- if compare_at_price > price -%}
+      <span class="product-card-price-compare">{{ compare_at_price | money }}</span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

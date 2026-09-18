@@ -1,0 +1,175 @@
+<section class="valoir-cart-page" style="padding: clamp(2.5rem, 5vw, 4rem) 0 6rem 0;">
+  <div class="valoir-container" style="max-width: 900px;">
+    <h1 style="font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 300; margin-bottom: 2rem; text-align: center;">
+      {{ 'sections.cart.title' | t }}
+    </h1>
+
+    {%- if cart.item_count == 0 -%}
+      <div style="text-align: center; padding: 4rem 1rem;">
+        <p style="color: var(--color-text-muted); font-size: 1.125rem; margin-bottom: 2rem;">
+          {{ 'sections.cart.empty' | t }}
+        </p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn-primary">
+          {{ 'sections.cart.continue_shopping' | t }}
+        </a>
+      </div>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" id="cart-form">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem;">
+          {%- for item in cart.items -%}
+            <div class="valoir-cart-item-row">
+              <a href="{{ item.url }}" style="flex-shrink: 0;">
+                <img
+                  src="{{ item.image | image_url: width: 200 }}"
+                  alt="{{ item.title | escape }}"
+                  width="100"
+                  height="100"
+                  loading="lazy"
+                  class="valoir-cart-item-img"
+                  style="width: 100px; height: 100px; object-fit: contain; background: #F4F1EC; border-radius: var(--radius-sm); padding: 0.5rem;"
+                >
+              </a>
+              <div>
+                <h2 style="font-family: var(--font-serif); font-size: 1.25rem;">
+                  <a href="{{ item.url }}" style="color: inherit; text-decoration: none;">{{ item.product.title }}</a>
+                </h2>
+                {%- if item.variant.title != 'Default Title' -%}
+                  <p style="font-size: 0.8125rem; color: var(--color-text-muted);">{{ item.variant.title }}</p>
+                {%- endif -%}
+                {%- if item.original_price != item.final_price -%}
+                  <div style="font-size: 0.9375rem; font-weight: 500; margin-top: 0.25rem;">
+                    <span style="color: var(--color-sale);">{{ item.final_price | money }}</span>
+                    <s style="color: var(--color-text-muted); font-size: 0.8125rem; margin-inline-start: 0.5rem;">{{ item.original_price | money }}</s>
+                  </div>
+                {%- else -%}
+                  <div style="font-size: 0.9375rem; font-weight: 500; margin-top: 0.25rem;">{{ item.final_price | money }}</div>
+                {%- endif -%}
+                {%- for discount_allocation in item.line_level_discount_allocations -%}
+                  <div style="font-size: 0.75rem; color: var(--color-sale); margin-top: 0.25rem;">
+                    🏷️ {{ discount_allocation.discount_application.title }}: -{{ discount_allocation.amount | money }}
+                  </div>
+                {%- endfor -%}
+              </div>
+              <div class="valoir-cart-item-actions">
+                <input
+                  type="number"
+                  name="updates[]"
+                  value="{{ item.quantity }}"
+                  min="0"
+                  style="width: 60px; padding: 0.4rem; text-align: center; border: 1px solid var(--color-border); border-radius: var(--radius-sm);"
+                >
+                <a href="{{ item.url_to_remove }}" style="font-size: 0.75rem; color: var(--color-text-muted); text-decoration: underline;">{{ 'sections.cart.remove' | t }}</a>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem;">
+          {%- if settings.enable_cart_notes -%}
+            <div style="flex: 1; min-width: 280px; width: 100%;">
+              <label for="CartNote" style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem;">
+                {{ 'sections.cart.prescription_note' | t }}
+              </label>
+              <textarea
+                name="note"
+                id="CartNote"
+                rows="4"
+                placeholder="{{ 'sections.cart.prescription_placeholder' | t }}"
+                style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.875rem;"
+              >{{ cart.note }}</textarea>
+            </div>
+          {%- endif -%}
+
+          <div class="valoir-cart-summary">
+            {%- if cart.cart_level_discount_applications.size > 0 -%}
+              <div style="margin-bottom: 0.75rem;">
+                {%- for discount in cart.cart_level_discount_applications -%}
+                  <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: var(--color-sale); margin-bottom: 0.25rem;">
+                    <span>🏷️ {{ discount.title }}</span>
+                    <span>-{{ discount.total_allocated_amount | money }}</span>
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            <div style="font-size: 1.25rem; margin-bottom: 0.5rem;">
+              <span>{{ 'sections.cart.subtotal' | t }}:</span>
+              <strong style="margin-inline-start: 0.75rem;">{{ cart.total_price | money_with_currency }}</strong>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--color-text-muted); margin-bottom: 1.5rem;">
+              {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
+                {{ 'sections.cart.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+              {%- elsif cart.taxes_included -%}
+                {{ 'sections.cart.taxes_included_but_shipping_at_checkout' | t }}
+              {%- elsif shop.shipping_policy.body != blank -%}
+                {{ 'sections.cart.taxes_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+              {%- else -%}
+                {{ 'sections.cart.taxes_and_shipping_at_checkout' | t }}
+              {%- endif -%}
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <button type="submit" name="checkout" class="btn-primary" style="width: 100%; padding: 1.125rem;">
+                {{ 'sections.cart.checkout' | t }}
+              </button>
+              <button type="submit" name="update" class="btn-secondary" style="width: 100%; padding: 0.875rem;">
+                {{ 'sections.cart.update' | t }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  .valoir-cart-item-row {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .valoir-cart-item-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+  .valoir-cart-summary {
+    min-width: 280px;
+    text-align: end;
+    margin-inline-start: auto;
+  }
+  @media (max-width: 640px) {
+    .valoir-cart-summary {
+      width: 100%;
+      text-align: start;
+    }
+  }
+  @media (max-width: 520px) {
+    .valoir-cart-item-row {
+      grid-template-columns: 75px 1fr;
+      gap: 1rem;
+    }
+    .valoir-cart-item-img {
+      width: 75px !important;
+      height: 75px !important;
+    }
+    .valoir-cart-item-actions {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.5rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Cart Page",
+  "settings": []
+}
+{% endschema %}

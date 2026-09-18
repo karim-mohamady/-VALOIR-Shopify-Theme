@@ -1,0 +1,96 @@
+/* Base Styles & Reset for Valoir Theme */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --font-arabic: 'Noto Sans Arabic', sans-serif;
+
+  --page-width: 1440px;
+  --header-height: 80px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-normal: 300ms;
+}
+
+[dir="rtl"] {
+  font-family: var(--font-arabic), var(--font-sans);
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: calc(1rem * var(--font-body-scale, 1));
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: var(--font-serif);
+  font-weight: var(--font-serif-weight, 400);
+  font-style: var(--font-serif-style, normal);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+h1 {
+  font-size: calc(2.75rem * var(--font-heading-scale, 1));
+}
+
+h2 {
+  font-size: calc(2rem * var(--font-heading-scale, 1));
+}
+
+h3 {
+  font-size: calc(1.5rem * var(--font-heading-scale, 1));
+}
+
+h4 {
+  font-size: calc(1.125rem * var(--font-heading-scale, 1));
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity var(--duration-normal) var(--transition-smooth);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.valoir-container {
+  width: 100%;
+  max-width: var(--page-width);
+  margin-inline: auto;
+  padding-inline: 2rem;
+}
+
+@media (max-width: 768px) {
+  .valoir-container {
+    padding-inline: 1.25rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .valoir-container {
+    padding-inline: 1rem;
+  }
+}

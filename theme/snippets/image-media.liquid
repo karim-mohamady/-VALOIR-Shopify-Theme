@@ -1,0 +1,18 @@
+{% comment %}
+  Renders responsive high-res product image with optical zoom capability
+{% endcomment %}
+{%- assign focal_point = media.presentation.focal_point -%}
+<img
+  src="{{ media | image_url: width: 1200 }}"
+  alt="{{ media.alt | default: product.title | escape }}"
+  {% if is_first %}
+    loading="eager"
+    fetchpriority="high"
+  {% else %}
+    loading="lazy"
+  {% endif %}
+  width="1200"
+  height="1200"
+  class="product-media-img"
+  {% if focal_point %}style="object-position: {{ focal_point }};"{% endif %}
+>

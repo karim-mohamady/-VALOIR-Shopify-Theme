@@ -1,0 +1,111 @@
+{{ 'component-customer.css' | asset_url | stylesheet_tag }}
+
+<div class="customer-section">
+  <div class="customer-container customer-container--wide">
+    <div class="customer-header" style="text-align: left; display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--color-border); padding-bottom: 1.5rem;">
+      <div>
+        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); font-weight: 600;">
+          {{ 'customer.account.welcome' | t | default: 'Maison Valoir Atelier Client' }}
+        </span>
+        <h1 style="margin: 0.25rem 0 0 0;">{{ customer.name }}</h1>
+      </div>
+      <div>
+        <a href="{{ routes.account_logout_url }}" class="btn-secondary" style="font-size: 0.8125rem; padding: 0.5rem 1rem;">
+          {{ 'customer.account.log_out' | t | default: 'Sign Out' }}
+        </a>
+      </div>
+    </div>
+
+    <div class="customer-grid" style="margin-top: 3rem;">
+      <!-- Order History Column -->
+      <div>
+        <h2 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 300; margin-bottom: 1.5rem;">
+          {{ 'customer.orders.title' | t }}
+        </h2>
+
+        {%- paginate customer.orders by 20 -%}
+          {%- if customer.orders.size > 0 -%}
+            <div style="overflow-x: auto;">
+              <table class="customer-table">
+                <thead>
+                  <tr>
+                    <th>{{ 'customer.orders.order_number' | t }}</th>
+                    <th>{{ 'customer.orders.date' | t }}</th>
+                    <th>{{ 'customer.orders.payment_status' | t }}</th>
+                    <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                    <th style="text-align: right;">{{ 'customer.orders.total' | t }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {%- for order in customer.orders -%}
+                    <tr>
+                      <td>
+                        <a href="{{ order.customer_url }}" style="font-weight: 600; text-decoration: underline; color: var(--color-text);">
+                          {{ order.name }}
+                        </a>
+                      </td>
+                      <td>{{ order.created_at | time_tag: format: 'date' }}</td>
+                      <td>
+                        <span class="customer-badge" style="background: transparent; color: var(--color-text); border: 1px solid var(--color-border);">
+                          {{ order.financial_status_label }}
+                        </span>
+                      </td>
+                      <td>
+                        <span class="customer-badge" style="background: transparent; color: var(--color-text); border: 1px solid var(--color-border);">
+                          {{ order.fulfillment_status_label }}
+                        </span>
+                      </td>
+                      <td style="text-align: right; font-weight: 600;">
+                        {{ order.total_net_amount | money_with_currency }}
+                      </td>
+                    </tr>
+                  {%- endfor -%}
+                </tbody>
+              </table>
+            </div>
+            {%- if paginate.pages > 1 -%}
+              <div style="margin-top: 2rem; text-align: center;">
+                {{ paginate | default_pagination }}
+              </div>
+            {%- endif -%}
+          {%- else -%}
+            <div class="customer-box" style="text-align: center; padding: 3rem 2rem;">
+              <p style="color: var(--color-text-muted); margin-bottom: 1.5rem;">
+                {{ 'customer.orders.none' | t }}
+              </p>
+              <a href="{{ routes.all_products_collection_url }}" class="btn-primary">
+                {{ 'general.continue_shopping' | t }}
+              </a>
+            </div>
+          {%- endif -%}
+        {%- endpaginate -%}
+      </div>
+
+      <!-- Account Profile & Primary Address -->
+      <div>
+        <h2 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 300; margin-bottom: 1.5rem;">
+          {{ 'customer.account.details' | t }}
+        </h2>
+
+        <div class="customer-address-card">
+          <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--color-text);">
+            {{ customer.default_address.name | default: customer.name }}
+          </div>
+          {%- if customer.default_address -%}
+            <div style="font-size: 0.875rem; line-height: 1.6; color: var(--color-text-muted); margin-bottom: 1.25rem;">
+              {{ customer.default_address | format_address }}
+            </div>
+          {%- else -%}
+            <p style="font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: 1.25rem;">
+              {{ 'customer.addresses.no_addresses' | t | default: 'No shipping address registered.' }}
+            </p>
+          {%- endif -%}
+
+          <a href="{{ routes.account_addresses_url }}" class="btn-secondary" style="display: block; text-align: center; font-size: 0.8125rem;">
+            {{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

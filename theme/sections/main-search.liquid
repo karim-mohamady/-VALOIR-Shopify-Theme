@@ -1,0 +1,62 @@
+<section class="valoir-search-section search-container">
+  <div class="valoir-container">
+    <div class="search-header-box">
+      <h1 style="font-size: 2.5rem; font-weight: 300;">{{ 'general.search.title' | t }}</h1>
+
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-input-wrapper">
+        <input
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'general.search.search' | t }}"
+          class="search-field"
+        >
+        <button type="submit" class="search-submit-btn" aria-label="Submit Search">
+          {% render 'icon', name: 'search' %}
+        </button>
+      </form>
+
+      <div class="search-popular-tags">
+        <a href="{{ routes.search_url }}?q=Titanium+Aviator" class="search-tag-pill">Titanium Aviator</a>
+        <a href="{{ routes.search_url }}?q=Round+Acetate" class="search-tag-pill">Round Acetate</a>
+        <a href="{{ routes.search_url }}?q=Polarized+Sun" class="search-tag-pill">Polarized Sun</a>
+        <a href="{{ routes.search_url }}?q=Cat-Eye" class="search-tag-pill">Cat-Eye</a>
+      </div>
+    </div>
+
+    {%- if search.performed -%}
+      {%- if search.results_count == 0 -%}
+        <div style="text-align: center; padding: 4rem 1rem;">
+          <p style="color: var(--color-text-muted); font-size: 1.125rem;">
+            {{ 'general.search.no_results' | t: terms: search.terms }}
+          </p>
+        </div>
+      {%- else -%}
+        {% render 'facets', results: search, enable_filtering: true, enable_sorting: true %}
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem;">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'product-card', product: item %}
+            {%- else -%}
+              <div style="background: var(--color-surface); padding: 1.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+                <span style="font-size: 0.6875rem; text-transform: uppercase; color: var(--color-accent); font-weight: 600;">{{ item.object_type }}</span>
+                <h3 style="font-family: var(--font-serif); font-size: 1.25rem; margin: 0.5rem 0;">
+                  <a href="{{ item.url }}">{{ item.title }}</a>
+                </h3>
+                <p style="font-size: 0.8125rem; color: var(--color-text-muted);">{{ item.content | strip_html | truncatewords: 25 }}</p>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search Page",
+  "settings": []
+}
+{% endschema %}

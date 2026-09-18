@@ -1,0 +1,65 @@
+/* Component Search Page & Quick Search */
+.search-container {
+  padding-top: 3.5rem;
+  padding-bottom: 5rem;
+}
+
+.search-header-box {
+  max-width: 680px;
+  margin: 0 auto 3rem auto;
+  text-align: center;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.search-field {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  font-size: 1.125rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 200ms ease;
+}
+
+.search-field:focus {
+  border-color: var(--color-text);
+}
+
+.search-submit-btn {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text);
+}
+
+[dir="rtl"] .search-submit-btn {
+  right: auto;
+  left: 1rem;
+}
+
+.search-popular-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+  font-size: 0.8125rem;
+}
+
+.search-tag-pill {
+  background: #F0ECE4;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  color: var(--color-text);
+  font-size: 0.75rem;
+}

@@ -1,0 +1,117 @@
+<section class="valoir-testimonials-section" style="padding: clamp(3rem, 6vw, 5rem) 0; background: var(--color-bg);" data-section-id="{{ section.id }}">
+  <div class="valoir-container">
+    <div style="text-align: center; margin-bottom: clamp(2rem, 4vw, 3.5rem);">
+      {%- if section.settings.subheading != blank -%}
+        <span style="font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-accent); font-weight: 600; display: block; margin-bottom: 0.5rem;">
+          {{ section.settings.subheading | escape }}
+        </span>
+      {%- endif -%}
+      <h2 style="font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 300; font-family: var(--font-serif); margin: 0;">
+        {{ section.settings.heading | default: "Editorial Notes" | escape }}
+      </h2>
+    </div>
+
+    <div class="valoir-testimonials-grid">
+      {%- for block in section.blocks -%}
+        <div class="valoir-testimonial-card" {{ block.shopify_attributes }}>
+          <blockquote style="font-family: var(--font-serif); font-size: 1.125rem; line-height: 1.6; color: var(--color-text); margin: 0 0 1.5rem 0; font-style: italic;">
+            "{{ block.settings.quote | escape }}"
+          </blockquote>
+          <div>
+            <div style="font-weight: 600; font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text);">
+              {{ block.settings.author | escape }}
+            </div>
+            <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.25rem;">
+              {{ block.settings.publication | escape }}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .valoir-testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .valoir-testimonial-card {
+    background: var(--color-surface);
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  @media (min-width: 768px) {
+    .valoir-testimonials-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.75rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .valoir-testimonials-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "CRITICAL ACCLAIM"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Editorial Notes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Quote",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "Valoir achieves what few modern eyewear houses can: an optical instrument of surgical precision that feels weightless and unapologetically sculptural."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author",
+          "default": "Architectural Design Review"
+        },
+        {
+          "type": "text",
+          "id": "publication",
+          "label": "Publication",
+          "default": "Issue 44, Milan"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        { "type": "testimonial", "settings": { "quote": "The titanium hinge damping is extraordinary. It feels like closing the door of a bespoke Swiss timepiece.", "author": "Hélène de Montfort", "publication": "Parisian Optical Gazette" } },
+        { "type": "testimonial", "settings": { "quote": "Valoir achieves an optical instrument of surgical precision that feels weightless on the nose bridge.", "author": "Marco Santoro", "publication": "Milan Design Review" } },
+        { "type": "testimonial", "settings": { "quote": "Their mineral polarized lenses provide crystal clarity without chromatic aberration or peripheral distortion.", "author": "Dr. Kenji Takahashi", "publication": "Tokyo Optometry Quarterly" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

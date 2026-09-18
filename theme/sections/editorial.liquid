@@ -1,0 +1,83 @@
+<section class="valoir-editorial-section" style="padding: clamp(3.5rem, 6vw, 6rem) 0; background-color: var(--color-bg);">
+  <div class="valoir-container">
+    <div class="valoir-editorial-grid">
+      <div>
+        <span style="font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-accent); font-weight: 600; display: block; margin-bottom: 0.75rem;">
+          {{ section.settings.subheading | default: "THE SABAÈ ATELIER" }}
+        </span>
+        <h2 style="font-size: clamp(1.875rem, 3.5vw, 2.75rem); line-height: 1.15; font-weight: 300; margin-bottom: 1.5rem;">
+          {{ section.settings.heading | default: "One Hundred & Sixty Steps of Optical Mastery" }}
+        </h2>
+        <div style="font-size: 0.9375rem; line-height: 1.8; color: var(--color-text-muted); display: flex; flex-direction: column; gap: 1.25rem;">
+          <p>
+            Every Valoir frame is born in Sabae, Japan—a legendary enclave where metallurgical masters have honed eyewear manufacturing across three centuries. Over two hundred days are required to cure our natural cotton-based acetate slabs before microscopic CNC routing begins.
+          </p>
+          <p>
+            Temples undergo five consecutive stages of tumbling with organic bamboo chips and walnut husks, achieving a liquid-smooth gloss impossible through chemical baths.
+          </p>
+        </div>
+        <div style="margin-top: 2rem;">
+          <a href="{{ section.settings.button_link | default: routes.root_url }}" class="btn-secondary">
+            {{ section.settings.button_text | default: "Read The Atelier Manifesto &rarr;" }}
+          </a>
+        </div>
+      </div>
+      <div style="position: relative; aspect-ratio: 4 / 5; background: #ECE8E0; border-radius: var(--radius-sm); overflow: hidden; display: flex; align-items: center; justify-content: center;">
+        <div style="font-family: var(--font-serif); font-size: clamp(1.5rem, 3vw, 2rem); color: #8F8B83; font-style: italic; text-align: center; padding: 2rem;">
+          "Light made architectural."
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .valoir-editorial-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 769px) {
+    .valoir-editorial-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2.5rem, 4.5vw, 4.5rem);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Editorial Story",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "THE SABAÈ ATELIER"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "One Hundred & Sixty Steps of Optical Mastery"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Label",
+      "default": "Read The Atelier Manifesto →"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Story"
+    }
+  ]
+}
+{% endschema %}

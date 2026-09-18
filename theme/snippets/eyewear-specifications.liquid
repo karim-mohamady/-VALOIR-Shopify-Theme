@@ -1,0 +1,82 @@
+{% comment %}
+  Renders Eyewear Technical Specifications & Caliper Measurements
+  Uses Shopify 2.0 Product Metafields with sensible defaults
+  Usage: {% render 'eyewear-specifications', product: product %}
+{% endcomment %}
+{%- liquid
+  assign frame_shape = product.metafields.eyewear.frame_shape | default: "Geometric Aviator"
+  assign frame_material = product.metafields.eyewear.frame_material | default: "Handcrafted Mazzucchelli Acetate & Beta-Titanium"
+  assign lens_material = product.metafields.eyewear.lens_material | default: "Mineral Optical Glass, Dual Anti-Reflective Coating"
+  assign uv_rating = product.metafields.eyewear.uv_rating | default: "100% UVA/UVB Category 3"
+  assign polarized = product.metafields.eyewear.polarized | default: "Japanese Polarized Film"
+  assign frame_width = product.metafields.eyewear.frame_width | default: "142 mm"
+  assign bridge_width = product.metafields.eyewear.bridge_width | default: "19 mm"
+  assign temple_length = product.metafields.eyewear.temple_length | default: "145 mm"
+  assign lens_height = product.metafields.eyewear.lens_height | default: "46 mm"
+  assign frame_weight = product.metafields.eyewear.frame_weight | default: "24.8 grams"
+  assign origin = product.metafields.eyewear.origin | default: "Sabae, Fukui, Japan"
+-%}
+
+<div class="eyewear-specs-box">
+  <div class="eyewear-specs-header">
+    <span>{{ 'products.product.optical_specs' | t }}</span>
+    <span style="font-size: 0.6875rem; color: var(--color-accent); letter-spacing: 0.08em; text-transform: uppercase;">
+      {{ origin }}
+    </span>
+  </div>
+
+  <div class="eyewear-specs-grid">
+    <div class="spec-item">
+      <span class="spec-label">{{ 'products.facets.frame_shape' | t }}</span>
+      <span class="spec-value">{{ frame_shape }}</span>
+    </div>
+    <div class="spec-item">
+      <span class="spec-label">{{ 'products.facets.frame_material' | t }}</span>
+      <span class="spec-value">{{ frame_material }}</span>
+    </div>
+    <div class="spec-item">
+      <span class="spec-label">{{ 'products.facets.lens_type' | t }}</span>
+      <span class="spec-value">{{ lens_material }}</span>
+    </div>
+    <div class="spec-item">
+      <span class="spec-label">{{ 'products.product.lens_protection' | t }}</span>
+      <span class="spec-value">{{ uv_rating }} • {{ polarized }}</span>
+    </div>
+    <div class="spec-item">
+      <span class="spec-label">{{ 'products.product.weight' | t }}</span>
+      <span class="spec-value">{{ frame_weight }}</span>
+    </div>
+    <div class="spec-item">
+      <span class="spec-label">{{ 'products.product.origin' | t }}</span>
+      <span class="spec-value">{{ origin }}</span>
+    </div>
+  </div>
+
+  <!-- Caliper Measurements -->
+  <div class="caliper-bar-container">
+    <div style="font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); margin-bottom: 0.5rem;">
+      {{ 'products.product.frame_measurements' | t }}
+    </div>
+    <div class="caliper-schematic">
+      <div>
+        <div style="font-weight: 600; color: var(--color-text);">{{ frame_width }}</div>
+        <div style="font-size: 0.625rem;">{{ 'products.product.frame_width' | t }}</div>
+      </div>
+      <div>—</div>
+      <div>
+        <div style="font-weight: 600; color: var(--color-text);">{{ bridge_width }}</div>
+        <div style="font-size: 0.625rem;">{{ 'products.product.bridge_width' | t }}</div>
+      </div>
+      <div>—</div>
+      <div>
+        <div style="font-weight: 600; color: var(--color-text);">{{ lens_height }}</div>
+        <div style="font-size: 0.625rem;">{{ 'products.product.lens_height' | t }}</div>
+      </div>
+      <div>—</div>
+      <div>
+        <div style="font-weight: 600; color: var(--color-text);">{{ temple_length }}</div>
+        <div style="font-size: 0.625rem;">{{ 'products.product.temple_length' | t }}</div>
+      </div>
+    </div>
+  </div>
+</div>

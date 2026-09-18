@@ -1,0 +1,189 @@
+<section class="valoir-3d-explorer-section" style="padding: clamp(3.5rem, 6vw, 6rem) 0; background: #121214; color: #FAF9F6; position: relative;">
+  <div class="valoir-container">
+    <div class="valoir-3d-explorer-grid">
+      <!-- Content Column -->
+      <div>
+        <span style="font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-accent); font-weight: 600; display: block; margin-bottom: 1rem;">
+          {{ section.settings.badge | default: "INTERACTIVE 3D OPTICAL LAB" }}
+        </span>
+        <h2 style="font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; line-height: 1.15; color: #FAF9F6; margin-bottom: 1.5rem;">
+          {{ section.settings.title | default: "Micro-Precision Architecture in 360°" }}
+        </h2>
+        <p style="font-size: 0.9375rem; line-height: 1.7; color: #A8A59E; margin-bottom: 2rem;">
+          {{ section.settings.text | default: "Inspect our patented 5-barrel custom barrel hinges, bevel-cut Mazzucchelli acetate temples, and hand-finished mineral crystal optics directly in your browser or physical space." }}
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem;">
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #26262A; display: flex; align-items: center; justify-content: center; color: var(--color-accent); font-size: 0.75rem;">1</div>
+            <div>
+              <div style="font-weight: 500; font-size: 0.875rem;">Pure Japanese Beta-Titanium</div>
+              <div style="font-size: 0.75rem; color: #7A7873;">High tensile strength, featherlight 24.8g mass</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #26262A; display: flex; align-items: center; justify-content: center; color: var(--color-accent); font-size: 0.75rem;">2</div>
+            <div>
+              <div style="font-weight: 500; font-size: 0.875rem;">Precision Anti-Reflective Coating</div>
+              <div style="font-size: 0.75rem; color: #7A7873;">8-layer vacuum-deposited optical treatment</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="valoir-3d-finish-selector" style="margin-bottom: 2rem;">
+          <span style="display: block; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #A8A59E; margin-bottom: 0.75rem;">
+            {{ 'sections.eyewear_explorer.finish_label' | t }}
+          </span>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" role="radiogroup" aria-label="{{ 'sections.eyewear_explorer.finish_label' | t }}">
+            {%- assign finishes = "Champagne Titanium,Onyx Black,Tortoise Amber,Smoked Slate,Polished Silver" | split: "," -%}
+            {%- assign default_finish = section.settings.initial_finish | default: "Champagne Titanium" -%}
+            {%- for finish in finishes -%}
+              <button
+                type="button"
+                class="valoir-3d-finish-btn {% if finish == default_finish %}is-active{% endif %}"
+                data-finish="{{ finish }}"
+                role="radio"
+                aria-checked="{% if finish == default_finish %}true{% else %}false{% endif %}"
+                style="font-size: 0.8125rem; padding: 0.4rem 0.875rem; border-radius: 9999px; border: 1px solid #3E3E46; background: {% if finish == default_finish %}#FAF9F6{% else %}transparent{% endif %}; color: {% if finish == default_finish %}#121214{% else %}#FAF9F6{% endif %}; cursor: pointer; transition: all 150ms ease;"
+              >
+                {{ finish }}
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="btn-primary" style="background: #FAF9F6; color: #121214;">
+            {{ section.settings.button_text | default: "Experience Model" }}
+          </a>
+        </div>
+      </div>
+
+      <!-- 3D Viewer Interactive Stage -->
+      <div style="width: 100%; aspect-ratio: 1 / 1; border-radius: var(--radius-sm); border: 1px solid #2C2C32; overflow: hidden; background: #18181C;">
+        <valoir-3d-viewer
+          data-model-src="{{ section.settings.model_url | escape }}"
+          data-ios-model-src="{{ section.settings.ios_model_url | escape }}"
+          data-auto-rotate="{{ section.settings.enable_auto_rotate }}"
+          data-initial-finish="{{ section.settings.initial_finish | default: 'Champagne Titanium' | escape }}"
+        ></valoir-3d-viewer>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const explorer = document.querySelector('.valoir-3d-explorer-section');
+    if (!explorer) return;
+    const finishBtns = explorer.querySelectorAll('.valoir-3d-finish-btn');
+    const viewer = explorer.querySelector('valoir-3d-viewer');
+
+    finishBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const finish = btn.getAttribute('data-finish');
+        finishBtns.forEach(b => {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-checked', 'false');
+          b.style.background = 'transparent';
+          b.style.color = '#FAF9F6';
+        });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-checked', 'true');
+        btn.style.background = '#FAF9F6';
+        btn.style.color = '#121214';
+
+        if (viewer && typeof viewer.updateMaterialColor === 'function') {
+          viewer.updateMaterialColor(finish);
+          window.ValoirA11y?.announce(finish);
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .valoir-3d-explorer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .valoir-3d-explorer-grid {
+      grid-template-columns: 1fr 1.25fr;
+      gap: clamp(2.5rem, 4vw, 4rem);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "3D Eyewear Explorer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge",
+      "default": "INTERACTIVE 3D OPTICAL LAB"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Micro-Precision Architecture in 360°"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Inspect our patented 5-barrel custom barrel hinges, bevel-cut Mazzucchelli acetate temples, and hand-finished mineral crystal optics directly in your browser or physical space."
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Label",
+      "default": "Experience Model"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_auto_rotate",
+      "label": "Enable automatic rotation",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "initial_finish",
+      "label": "Initial Frame Finish",
+      "options": [
+        { "value": "Champagne Titanium", "label": "Champagne Titanium" },
+        { "value": "Onyx Black", "label": "Onyx Black" },
+        { "value": "Tortoise Amber", "label": "Tortoise Amber" },
+        { "value": "Smoked Slate", "label": "Smoked Slate" },
+        { "value": "Polished Silver", "label": "Polished Silver" }
+      ],
+      "default": "Champagne Titanium"
+    },
+    {
+      "type": "text",
+      "id": "model_url",
+      "label": "3D Model File (GLB/GLTF for Android / Web)"
+    },
+    {
+      "type": "text",
+      "id": "ios_model_url",
+      "label": "3D Model File (USDZ for iOS Quick Look)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "3D Eyewear Explorer"
+    }
+  ]
+}
+{% endschema %}

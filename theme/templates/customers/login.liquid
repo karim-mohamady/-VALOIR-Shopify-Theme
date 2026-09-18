@@ -1,0 +1,164 @@
+{{ 'component-customer.css' | asset_url | stylesheet_tag }}
+
+<div class="customer-section">
+  <div class="customer-container">
+    <div class="customer-header">
+      <h1>{{ 'customer.login_page.title' | t }}</h1>
+      <p>{{ 'customer.login_page.subtext' | t | default: 'Access your bespoke eyewear portfolio and atelier orders' }}</p>
+    </div>
+
+    <!-- Login Form -->
+    <div id="CustomerLoginForm" class="customer-box">
+      {%- form 'customer_login', class: 'customer-form' -%}
+        {%- if form.errors -%}
+          <div class="customer-error-list" tabindex="-1" autofocus>
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <div class="customer-form-group">
+          <label for="CustomerEmail">{{ 'customer.login_page.email' | t }}</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="CustomerEmail"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+            {% if form.errors contains 'form' %}aria-invalid="true"{% endif %}
+          >
+        </div>
+
+        {%- if form.password_needed -%}
+          <div class="customer-form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <label for="CustomerPassword" style="margin-bottom: 0;">{{ 'customer.login_page.password' | t }}</label>
+              <a href="#recover" id="RecoverPassword" style="font-size: 0.75rem; color: var(--color-text-muted); text-decoration: underline;">
+                {{ 'customer.login_page.forgot_password' | t }}
+              </a>
+            </div>
+            <input
+              type="password"
+              name="customer[password]"
+              id="CustomerPassword"
+              autocomplete="current-password"
+              required
+              {% if form.errors contains 'form' %}aria-invalid="true"{% endif %}
+            >
+          </div>
+        {%- endif -%}
+
+        <div class="customer-form-actions">
+          <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem;">
+            {{ 'customer.login_page.sign_in' | t }}
+          </button>
+        </div>
+
+        <div class="customer-links" style="justify-content: center; margin-top: 2rem;">
+          <span>
+            {{ 'customer.login_page.new_client' | t | default: 'New to Valoir Atelier?' }}
+            <a href="{{ routes.account_register_url }}">{{ 'customer.login_page.create_account' | t }}</a>
+          </span>
+        </div>
+      {%- endform -%}
+    </div>
+
+    <!-- Password Recovery Form -->
+    <div id="RecoverPasswordForm" class="customer-box" style="display: none; margin-top: 2rem;">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 1.75rem; font-weight: 300;">
+          {{ 'customer.recover_password.title' | t }}
+        </h2>
+        <p style="font-size: 0.875rem; color: var(--color-text-muted); margin-top: 0.5rem;">
+          {{ 'customer.recover_password.subtext' | t }}
+        </p>
+      </div>
+
+      {%- form 'recover_customer_password' -%}
+        {%- if form.posted_successfully? -%}
+          <div style="background: #f0fff4; border: 1px solid #c6f6d5; color: #276749; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; font-size: 0.8125rem;">
+            {{ 'customer.recover_password.success' | t | default: 'We have sent an email with a link to update your password.' }}
+          </div>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <div class="customer-error-list" tabindex="-1" autofocus>
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <div class="customer-form-group">
+          <label for="RecoverEmail">{{ 'customer.login_page.email' | t }}</label>
+          <input
+            type="email"
+            name="email"
+            id="RecoverEmail"
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            required
+            {% if form.errors %}aria-invalid="true"{% endif %}
+          >
+        </div>
+
+        <div class="customer-form-actions">
+          <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem;">
+            {{ 'customer.recover_password.submit' | t }}
+          </button>
+          <button type="button" id="HideRecoverPasswordLink" class="btn-secondary" style="width: 100%; padding: 0.875rem;">
+            {{ 'customer.recover_password.cancel' | t }}
+          </button>
+        </div>
+      {%- endform -%}
+    </div>
+
+    {%- if shop.checkout.guest_login -%}
+      <div style="text-align: center; margin-top: 3rem;">
+        <h3 style="font-size: 1rem; font-weight: 400; margin-bottom: 1rem;">
+          {{ 'customer.login_page.guest_title' | t | default: 'Continue as a guest' }}
+        </h3>
+        {%- form 'guest_login' -%}
+          <button type="submit" class="btn-secondary">
+            {{ 'customer.login_page.guest_continue' | t | default: 'Continue to Checkout' }}
+          </button>
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (function() {
+    const recoverLink = document.getElementById('RecoverPassword');
+    const hideRecoverLink = document.getElementById('HideRecoverPasswordLink');
+    const loginForm = document.getElementById('CustomerLoginForm');
+    const recoverForm = document.getElementById('RecoverPasswordForm');
+
+    if (recoverLink && hideRecoverLink && loginForm && recoverForm) {
+      function showRecover(e) {
+        if (e) e.preventDefault();
+        loginForm.style.display = 'none';
+        recoverForm.style.display = 'block';
+        if (window.location.hash !== '#recover') {
+          window.location.hash = '#recover';
+        }
+      }
+
+      function hideRecover(e) {
+        if (e) e.preventDefault();
+        recoverForm.style.display = 'none';
+        loginForm.style.display = 'block';
+        if (window.location.hash === '#recover') {
+          history.replaceState(null, null, ' ');
+        }
+      }
+
+      recoverLink.addEventListener('click', showRecover);
+      hideRecoverLink.addEventListener('click', hideRecover);
+
+      if (window.location.hash === '#recover') {
+        showRecover();
+      }
+    }
+  })();
+</script>

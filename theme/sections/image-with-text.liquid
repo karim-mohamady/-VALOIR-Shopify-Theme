@@ -1,0 +1,99 @@
+<section class="valoir-image-with-text" style="padding: clamp(3rem, 6vw, 5rem) 0;" data-section-id="{{ section.id }}">
+  <div class="valoir-container">
+    <div class="valoir-split-grid">
+      <div class="valoir-split-media">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: section.settings.heading, style: 'width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm);' }}
+        {%- else -%}
+          <div style="aspect-ratio: 4 / 3; background: #ECE8E0; border-radius: var(--radius-sm); overflow: hidden; display: flex; align-items: center; justify-content: center; width: 100%;">
+            <span style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--color-text-muted);">Optical Engineering</span>
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="valoir-split-content">
+        {%- if section.settings.subheading != blank -%}
+          <span style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-accent); font-weight: 600; display: block; margin-bottom: 0.5rem;">
+            {{ section.settings.subheading | escape }}
+          </span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 style="font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 300; margin-bottom: 1.25rem; font-family: var(--font-serif); line-height: 1.2;">
+            {{ section.settings.heading | escape }}
+          </h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <p style="font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-muted); margin-bottom: 1.5rem;">
+            {{ section.settings.text | escape }}
+          </p>
+        {%- endif -%}
+        {%- if section.settings.button_label != blank and section.settings.link != blank -%}
+          <a href="{{ section.settings.link }}" class="btn-secondary">
+            {{ section.settings.button_label | escape }} &rarr;
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .valoir-split-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  @media (min-width: 769px) {
+    .valoir-split-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2.5rem, 4vw, 4rem);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Image with Text",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "MATERIAL SCIENCE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Japanese Beta-Titanium Metallurgy"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "With a density 45% lighter than steel and unmatched elastic memory, our cold-drawn Japanese beta-titanium temples flex gently to conform to individual cranial anatomy without losing tension over decades."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Explore Material Matrix"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with Text"
+    }
+  ]
+}
+{% endschema %}

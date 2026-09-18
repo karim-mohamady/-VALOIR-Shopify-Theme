@@ -1,0 +1,66 @@
+{% comment %}
+  Renders product add-to-cart form, quantity picker, and accelerated checkout buttons
+  Usage: {% render 'product-form', product: product, section_id: section.id %}
+{% endcomment %}
+<div class="product-form-wrapper" id="product-form-{{ section_id }}">
+  {%- form 'product', product, id: 'product-form-component', class: 'valoir-form', novalidate: 'novalidate' -%}
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+    <div class="product-form-quantity" style="margin-top: 1.25rem;">
+      <label for="Quantity-{{ section_id }}" style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; margin-bottom: 0.5rem; color: var(--color-text);">
+        {{ 'products.product.quantity' | t }}
+      </label>
+      <div class="qty-stepper" style="display: inline-flex; align-items: center; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface); height: 42px;">
+        <button
+          type="button"
+          class="qty-btn"
+          aria-label="{{ 'products.product.quantity' | t }} -"
+          onclick="const el=this.nextElementSibling; if(el.value>1){el.value--; el.dispatchEvent(new Event('change', {bubbles:true}));}"
+          style="width: 36px; height: 100%; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; color: var(--color-text); font-size: 1.125rem;"
+        >-</button>
+        <input
+          type="number"
+          name="quantity"
+          id="Quantity-{{ section_id }}"
+          min="1"
+          value="1"
+          aria-label="{{ 'products.product.quantity' | t }}"
+          style="width: 44px; height: 100%; text-align: center; border: none; background: transparent; font-size: 0.875rem; font-weight: 500; color: var(--color-text); -moz-appearance: textfield;"
+        >
+        <button
+          type="button"
+          class="qty-btn"
+          aria-label="{{ 'products.product.quantity' | t }} +"
+          onclick="const el=this.previousElementSibling; el.value++; el.dispatchEvent(new Event('change', {bubbles:true}));"
+          style="width: 36px; height: 100%; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; color: var(--color-text); font-size: 1.125rem;"
+        >+</button>
+      </div>
+    </div>
+
+    <div class="product-form-buttons" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
+      <button
+        type="submit"
+        name="add"
+        class="btn-primary"
+        style="width: 100%; padding: 1.125rem;"
+        {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}
+      >
+        <span>
+          {%- if product.selected_or_first_available_variant.available -%}
+            {{ 'products.product.add_to_cart' | t }}
+          {%- else -%}
+            {{ 'products.product.sold_out' | t }}
+          {%- endif -%}
+        </span>
+      </button>
+
+      {%- if block.settings.show_dynamic_checkout -%}
+        {{ form | payment_button }}
+      {%- endif -%}
+
+      <div class="product-form__payment-terms" style="font-size: 0.8125rem; color: var(--color-text-muted);">
+        {{ form | payment_terms }}
+      </div>
+    </div>
+  {%- endform -%}
+</div>
