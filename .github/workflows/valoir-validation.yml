@@ -1,0 +1,293 @@
+name: VALOIR Production Validation
+
+on:
+push:
+branches:
+- audit/production-readiness
+pull_request:
+branches:
+- audit/production-readiness
+workflow_dispatch:
+
+permissions:
+contents: read
+
+jobs:
+validate:
+name: Validate VALOIR Shopify Theme
+runs-on: ubuntu-latest
+
+```
+steps:
+  - name: Checkout
+    uses: actions/checkout@v4
+
+  - name: Setup Node.js
+    uses: actions/setup-node@v4
+    with:
+      node-version: 22
+      cache: npm
+
+  - name: Install dependencies
+    run: |
+      if [ -f package-lock.json ]; then
+        npm ci
+      elif [ -f npm-shrinkwrap.json ]; then
+        npm ci
+      elif [ -f package.json ]; then
+        npm install
+      else
+        echo "No package.json found."
+      fi
+
+  - name: Validate JSON
+    shell: bash
+    run: |
+      node <<'NODE'
+      const fs = require('fs');
+      const path = require('path');
+
+      const root = path.resolve('theme');
+      const failures = [];
+      let count = 0;
+
+      function walk(dir) {
+        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+          const full = path.join(dir, entry.name);
+
+          if (entry.isDirectory()) {
+            walk(full);
+          } else if (entry.isFile() && entry.name.endsWith('.json')) {
+            count++;
+
+            try {
+              JSON.parse(fs.readFileSync(full, 'utf8'));
+              console.log(`PASS ${full}`);
+            } catch (error) {
+              failures.push(full);
+              console.error(`FAIL ${full}`);
+              console.error(error.message);
+            }
+          }
+        }
+      }
+
+      walk(root);
+
+      console.log(`Checked ${count} JSON files.`);
+
+      if (failures.length) {
+        console.error('\nInvalid JSON files:');
+        for (const file of failures) console.error(`- ${file}`);
+        process.exit(1);
+      }
+      NODE
+
+  - name: Validate locale parity
+    shell: bash
+    run: |
+      node <<'NODE'
+      const fs = require('fs');
+
+      const en = JSON.parse(
+        fs.readFileSync('theme/locales/en.default.json', 'utf8')
+      );
+
+      const ar = JSON.parse(
+        fs.readFileSync('theme/locales/ar.json', 'utf8')
+      );
+
+      const missingInArabic = [];
+      const missingInEnglish = [];
+      const corrupted = [];
+
+      function flatten(value, prefix = '', output = {}) {
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+          for (const [key, child] of Object.entries(value)) {
+            const next = prefix ? `${prefix}.${key}` : key;
+            flatten(child, next, output);
+          }
+        } else {
+          output[prefix] = value;
+        }
+
+        return output;
+      }
+
+      const enKeys = flatten(en);
+      const arKeys = flatten(ar);
+
+      for (const key of Object.keys(enKeys)) {
+        if (!(key in arKeys)) {
+          missingInArabic.push(key);
+        }
+      }
+
+      for (const key of Object.keys(arKeys)) {
+        if (!(key in enKeys)) {
+          missingInEnglish.push(key);
+        }
+      }
+
+      for (const [key, value] of Object.entries(arKeys)) {
+        if (typeof value === 'string' && value.includes('\uFFFD')) {
+          corrupted.push(key);
+        }
+      }
+
+      console.log(`English keys: ${Object.keys(enKeys).length}`);
+      console.log(`Arabic keys: ${Object.keys(arKeys).length}`);
+
+      if (missingInArabic.length) {
+        console.error('\nMissing in Arabic:');
+        missingInArabic.forEach(key => console.error(`- ${key}`));
+      }
+
+      if (missingInEnglish.length) {
+        console.error('\nMissing in English:');
+        missingInEnglish.forEach(key => console.error(`- ${key}`));
+      }
+
+      if (corrupted.length) {
+        console.error('\nCorrupted Arabic values:');
+        corrupted.forEach(key => console.error(`- ${key}`));
+      }
+
+      if (
+        missingInArabic.length ||
+        missingInEnglish.length ||
+        corrupted.length
+      ) {
+        process.exit(1);
+      }
+
+      console.log('Locale parity: PASS');
+      NODE
+
+  - name: Run Shopify Theme Check
+    shell: bash
+    run: |
+      npx @shopify/cli theme check --path ./theme
+
+  - name: Validate JavaScript
+    shell: bash
+    run: |
+      node --check ./theme/assets/cart.js
+      node --check ./theme/assets/theme.js
+
+  - name: Validate checkout route
+    shell: bash
+    run: |
+      node <<'NODE'
+      const fs = require('fs');
+
+      const layout = fs.readFileSync(
+        'theme/layout/theme.liquid',
+        'utf8'
+      );
+
+      const routeSnippet = fs.readFileSync(
+        'theme/snippets/checkout-route.liquid',
+        'utf8'
+      );
+
+      const cart = fs.readFileSync(
+        'theme/assets/cart.js',
+        'utf8'
+      );
+
+      if (!layout.includes('checkout-route')) {
+        console.error(
+          'checkout-route.liquid is not referenced by theme.liquid'
+        );
+        process.exit(1);
+      }
+
+      if (!routeSnippet.includes('checkout')) {
+        console.error(
+          'checkout-route.liquid does not appear to expose checkout route data'
+        );
+        process.exit(1);
+      }
+
+      if (!cart.includes('window.Valoir.routes.checkout_url')) {
+        console.error(
+          'cart.js does not use window.Valoir.routes.checkout_url'
+        );
+        process.exit(1);
+      }
+
+      console.log('Checkout route validation: PASS');
+      NODE
+
+  - name: Security regression scan
+    shell: bash
+    run: |
+      node <<'NODE'
+      const fs = require('fs');
+      const path = require('path');
+
+      const root = path.resolve('theme');
+      const failures = [];
+
+      function walk(dir) {
+        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+          const full = path.join(dir, entry.name);
+
+          if (entry.isDirectory()) {
+            walk(full);
+            continue;
+          }
+
+          if (!/\.(js|liquid|json|css|html)$/i.test(entry.name)) {
+            continue;
+          }
+
+          const content = fs.readFileSync(full, 'utf8');
+
+          if (/demo_eyewear\.glb/i.test(content)) {
+            failures.push(`${full}: fake/demo GLB reference`);
+          }
+
+          if (/demo_eyewear\.usdz/i.test(content)) {
+            failures.push(`${full}: fake/demo USDZ reference`);
+          }
+
+          if (/\.glb\s*\.replace/i.test(content)) {
+            failures.push(`${full}: suspicious GLB URL rewriting`);
+          }
+
+          if (/\.usdz\s*\.replace/i.test(content)) {
+            failures.push(`${full}: suspicious USDZ URL rewriting`);
+          }
+
+          if (/['"]\/checkout['"]/i.test(content)) {
+            failures.push(`${full}: hardcoded /checkout`);
+          }
+
+          if (/document\.write\s*\(/i.test(content)) {
+            failures.push(`${full}: document.write usage`);
+          }
+        }
+      }
+
+      walk(root);
+
+      if (failures.length) {
+        console.error('\nSecurity/regression findings:');
+        failures.forEach(item => console.error(`- ${item}`));
+        process.exit(1);
+      }
+
+      console.log('Security regression scan: PASS');
+      NODE
+
+  - name: Git diff check
+    run: git diff --check
+
+  - name: Validation summary
+    if: always()
+    run: |
+      echo "VALOIR validation workflow completed."
+      echo "Review the individual step results above."
+```
