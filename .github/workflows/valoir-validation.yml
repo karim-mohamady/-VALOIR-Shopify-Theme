@@ -16,8 +16,6 @@ jobs:
 validate:
 name: Validate VALOIR Shopify Theme
 runs-on: ubuntu-latest
-
-```
 steps:
   - name: Checkout
     uses: actions/checkout@v4
@@ -307,4 +305,4 @@ steps:
     run: |
       echo "VALOIR validation workflow completed."
       echo "Review the individual step results above."
-```
+
