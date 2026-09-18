@@ -26,9 +26,9 @@ steps:
     uses: actions/setup-node@v4
     with:
       node-version: 22
-      cache: npm
 
   - name: Install dependencies
+    shell: bash
     run: |
       if [ -f package-lock.json ]; then
         npm ci
@@ -37,7 +37,7 @@ steps:
       elif [ -f package.json ]; then
         npm install
       else
-        echo "No package.json found."
+        echo "No package.json found. Continuing without npm dependencies."
       fi
 
   - name: Validate JSON
@@ -78,7 +78,9 @@ steps:
 
       if (failures.length) {
         console.error('\nInvalid JSON files:');
-        for (const file of failures) console.error(`- ${file}`);
+        for (const file of failures) {
+          console.error(`- ${file}`);
+        }
         process.exit(1);
       }
       NODE
@@ -102,7 +104,11 @@ steps:
       const corrupted = [];
 
       function flatten(value, prefix = '', output = {}) {
-        if (value && typeof value === 'object' && !Array.isArray(value)) {
+        if (
+          value &&
+          typeof value === 'object' &&
+          !Array.isArray(value)
+        ) {
           for (const [key, child] of Object.entries(value)) {
             const next = prefix ? `${prefix}.${key}` : key;
             flatten(child, next, output);
@@ -130,7 +136,10 @@ steps:
       }
 
       for (const [key, value] of Object.entries(arKeys)) {
-        if (typeof value === 'string' && value.includes('\uFFFD')) {
+        if (
+          typeof value === 'string' &&
+          value.includes('\uFFFD')
+        ) {
           corrupted.push(key);
         }
       }
@@ -140,17 +149,23 @@ steps:
 
       if (missingInArabic.length) {
         console.error('\nMissing in Arabic:');
-        missingInArabic.forEach(key => console.error(`- ${key}`));
+        missingInArabic.forEach(key =>
+          console.error(`- ${key}`)
+        );
       }
 
       if (missingInEnglish.length) {
         console.error('\nMissing in English:');
-        missingInEnglish.forEach(key => console.error(`- ${key}`));
+        missingInEnglish.forEach(key =>
+          console.error(`- ${key}`)
+        );
       }
 
       if (corrupted.length) {
         console.error('\nCorrupted Arabic values:');
-        corrupted.forEach(key => console.error(`- ${key}`));
+        corrupted.forEach(key =>
+          console.error(`- ${key}`)
+        );
       }
 
       if (
@@ -275,7 +290,9 @@ steps:
 
       if (failures.length) {
         console.error('\nSecurity/regression findings:');
-        failures.forEach(item => console.error(`- ${item}`));
+        failures.forEach(item =>
+          console.error(`- ${item}`)
+        );
         process.exit(1);
       }
 
