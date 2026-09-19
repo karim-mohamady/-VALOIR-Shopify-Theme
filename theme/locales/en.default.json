@@ -2,9 +2,27 @@
   "general": {
     "home": "Home",
     "continue_shopping": "Continue Shopping",
-    "pagination": { "page": "Page {{ page }}" },
-    "search": { "search": "Search eyewear, collections, or frame shapes...", "no_results": "No eyewear matches found for \"{{ terms }}\"", "results_with_count": { "one": "{{ count }} result found", "other": "{{ count }} results found" }, "title": "Search Eyewear", "popular_shapes": "Popular Shapes: Aviator, Geometric Titanium, Rounded Acetate" },
-    "newsletter": { "heading": "The Valoir Atelier Journal", "subtext": "Receive private invitations to limited bespoke optical drops and private eyewear previews.", "email_placeholder": "Enter your email address", "button_label": "Subscribe", "submit": "Notify Me", "success": "Welcome to the Valoir Maison. You have been added to our private register." }
+    "pagination": {
+      "page": "Page {{ page }}"
+    },
+    "search": {
+      "search": "Search eyewear, collections, or frame shapes...",
+      "no_results": "No eyewear matches found for \"{{ terms }}\"",
+      "results_with_count": {
+        "one": "{{ count }} result found",
+        "other": "{{ count }} results found"
+      },
+      "title": "Search Eyewear",
+      "popular_shapes": "Popular Shapes: Aviator, Geometric Titanium, Rounded Acetate"
+    },
+    "newsletter": {
+      "heading": "The Valoir Atelier Journal",
+      "subtext": "Receive private invitations to limited bespoke optical drops and private eyewear previews.",
+      "email_placeholder": "Enter your email address",
+      "button_label": "Subscribe",
+      "submit": "Notify Me",
+      "success": "Welcome to the Valoir Maison. You have been added to our private register."
+    }
   },
   "accessibility": {
     "skip_to_text": "Skip to content",

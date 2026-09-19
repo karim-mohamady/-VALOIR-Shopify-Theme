@@ -1,152 +1,222 @@
+/**
+ * Valoir Cart Controller
+ * Native Shopify AJAX Cart API with Drawer & Free Shipping Indicator
+ */
 function formatCartMoney(cents) {
-  const format = window.Valoir?.moneyFormat || '${{amount}}';
-  const value = Number(String(cents).replace('.', '')) || 0;
-  const token = format.match(/\{\{\s*(\w+)\s*\}\}/)?.[1] || 'amount';
-  const precision = token.includes('no_decimals') ? 0 : 2;
-  const comma = token.includes('comma_separator');
-  const parts = (value / 100).toFixed(precision).split('.');
-  parts[0] = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1${comma ? '.' : ','}`);
-  return format.replace(/\{\{\s*\w+\s*\}\}/, parts.join(precision ? (comma ? ',' : '.') : ''));
+  if (typeof cents === 'string') cents = cents.replace('.', '');
+  const formatString = window.Valoir?.moneyFormat || '${{amount}}';
+  const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+
+  function formatWithDelimiters(number, precision, thousands, decimal) {
+    precision = precision ?? 2;
+    thousands = thousands ?? ',';
+    decimal = decimal ?? '.';
+
+    if (isNaN(number) || number == null) return '0';
+    number = (number / 100.0).toFixed(precision);
+    const parts = number.split('.');
+    const dollars = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands);
+    const centsVal = parts[1] ? (decimal + parts[1]) : '';
+    return dollars + centsVal;
+  }
+
+  let value = '';
+  switch (formatString.match(placeholderRegex)?.[1]) {
+    case 'amount':
+      value = formatWithDelimiters(cents, 2);
+      break;
+    case 'amount_no_decimals':
+      value = formatWithDelimiters(cents, 0);
+      break;
+    case 'amount_with_comma_separator':
+      value = formatWithDelimiters(cents, 2, '.', ',');
+      break;
+    case 'amount_no_decimals_with_comma_separator':
+      value = formatWithDelimiters(cents, 0, '.', ',');
+      break;
+    default:
+      value = formatWithDelimiters(cents, 2);
+  }
+
+  return formatString.replace(placeholderRegex, value);
 }
 
 class ValoirCart {
   constructor() {
-    this.body = document.getElementById('cart-drawer-body');
-    this.badges = document.querySelectorAll('.cart-count-badge');
-    this.submitting = false;
-    this.updating = false;
-    this.bindEvents();
+    this.cartDrawerBody = document.getElementById('cart-drawer-body');
+    this.cartCountBadges = document.querySelectorAll('.cart-count-badge');
+    this.isSubmitting = false;
+    this.isUpdating = false;
+    this.initEventListeners();
     this.refresh();
   }
 
-  get strings() { return window.Valoir?.strings || {}; }
-  get routes() { return window.Valoir?.routes || {}; }
-  create(tag, text, className) {
-    const element = document.createElement(tag);
-    if (text !== undefined) element.textContent = text;
-    if (className) element.className = className;
-    return element;
-  }
-
-  bindEvents() {
-    document.addEventListener('submit', async (event) => {
-      const form = event.target.closest('form[action*="/cart/add"]');
+  initEventListeners() {
+    // Intercept form submissions for Add to Bag
+    document.addEventListener('submit', async (e) => {
+      const form = e.target.closest('form[action*="/cart/add"]');
       if (!form) return;
-      event.preventDefault();
-      if (this.submitting) return;
-      const variant = form.querySelector('[name="id"]');
-      if (variant && !variant.value) {
-        this.showError(form, this.strings.unavailable);
-        window.ValoirA11y?.announce(this.strings.unavailable);
+      e.preventDefault();
+
+      if (this.isSubmitting) return;
+
+      const variantInput = form.querySelector('input[name="id"]');
+      if (variantInput && !variantInput.value) {
+        const errorMsg = window.Valoir?.strings?.unavailable || 'Please select an available option';
+        this.showFormError(form, errorMsg);
+        window.ValoirA11y?.announce(errorMsg);
         return;
       }
-      this.submitting = true;
-      const button = form.querySelector('[type="submit"]');
-      const originalText = button?.textContent || '';
-      if (button) { button.disabled = true; button.textContent = this.strings.adding; }
+
+      this.isSubmitting = true;
+      const submitBtn = form.querySelector('[type="submit"]');
+      const originalText = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span>${window.Valoir?.strings?.adding || 'Adding...'}</span>`;
+      }
+
+      // Clear any previous error
+      const prevError = form.querySelector('.cart-error-message');
+      if (prevError) prevError.remove();
+
       try {
-        const response = await fetch(this.routes.cart_add_url, { method: 'POST', body: new FormData(form), headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.description || this.strings.cartError);
-        await this.refresh();
-        window.valoirDrawerManager?.open('cart-drawer-container');
-        window.ValoirA11y?.announce(this.strings.itemAdded);
-      } catch (error) {
-        this.showError(form, error.message || this.strings.cartError);
-        window.ValoirA11y?.announce(error.message || this.strings.cartError);
+        const formData = new FormData(form);
+        const res = await fetch(window.Valoir?.routes?.cart_add_url || '/cart/add.js', {
+          method: 'POST',
+          body: formData,
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+        const data = await res.json();
+        if (res.ok) {
+          await this.refresh();
+          window.valoirDrawerManager?.open('cart-drawer-container');
+          window.ValoirA11y?.announce(window.Valoir?.strings?.itemAdded || 'Item successfully added to shopping bag');
+        } else {
+          const errorMsg = data.description || window.Valoir?.strings?.cartError || 'Error adding item to bag';
+          window.ValoirA11y?.announce(errorMsg);
+          this.showFormError(form, errorMsg);
+        }
+      } catch (err) {
+        console.error('Cart add error:', err);
+        const errorMsg = window.Valoir?.strings?.cartError || 'A network error occurred while updating your bag. Please try again.';
+        window.ValoirA11y?.announce(errorMsg);
+        this.showFormError(form, errorMsg);
       } finally {
-        if (button) { button.disabled = false; button.textContent = originalText; }
-        this.submitting = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }
+        this.isSubmitting = false;
       }
     });
 
-    this.body?.addEventListener('click', (event) => {
-      const button = event.target.closest('[data-cart-change]');
-      if (button) this.updateItem(button.dataset.cartKey, Number(button.dataset.cartQty));
-    });
-    this.body?.addEventListener('change', (event) => {
-      const input = event.target.closest('input[data-cart-key]');
-      if (input) {
-        const quantity = Number(input.value);
-        if (Number.isInteger(quantity) && quantity >= 0) this.updateItem(input.dataset.cartKey, quantity);
-        else this.refresh();
-      }
-      const note = event.target.closest('#CartDrawerNote');
-      if (note) fetch(this.routes.cart_update_url, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ note: note.value }) }).catch(() => {});
-    });
+    // Handle Quantity updates, direct edits, and removals in cart drawer
+    if (this.cartDrawerBody) {
+      this.cartDrawerBody.addEventListener('click', async (e) => {
+        const changeBtn = e.target.closest('[data-cart-change]');
+        if (changeBtn) {
+          const key = changeBtn.getAttribute('data-cart-key');
+          const qty = parseInt(changeBtn.getAttribute('data-cart-qty'), 10);
+          await this.updateItem(key, qty);
+        }
+      });
+
+      this.cartDrawerBody.addEventListener('change', async (e) => {
+        const input = e.target.closest('input[data-cart-key]');
+        if (input) {
+          const key = input.getAttribute('data-cart-key');
+          const newQty = parseInt(input.value, 10);
+          if (!isNaN(newQty) && newQty >= 0) {
+            await this.updateItem(key, newQty);
+          } else {
+            await this.refresh();
+          }
+        }
+
+        const noteTextarea = e.target.closest('#CartDrawerNote');
+        if (noteTextarea) {
+          try {
+            await fetch(window.Valoir?.routes?.cart_update_url || '/cart/update.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify({ note: noteTextarea.value })
+            });
+          } catch (noteErr) {
+            console.warn('Could not save cart note:', noteErr);
+          }
+        }
+      });
+    }
   }
 
-  showError(form, message) {
-    let error = form.querySelector('.cart-error-message');
-    if (!error) { error = this.create('div', undefined, 'cart-error-message'); form.append(error); }
-    error.textContent = message;
+  showFormError(form, message) {
+    let errorEl = form.querySelector('.cart-error-message');
+    if (!errorEl) {
+      errorEl = document.createElement('div');
+      errorEl.className = 'cart-error-message';
+      errorEl.style.cssText = 'color: #842029; background: #FDF2F2; padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); font-size: 0.75rem; margin-top: 0.5rem;';
+      form.appendChild(errorEl);
+    }
+    errorEl.textContent = message;
   }
 
   async refresh() {
     try {
-      const response = await fetch(`${this.routes.cart_url}.js`, { headers: { Accept: 'application/json' } });
-      if (response.ok) this.render(await response.json());
-    } catch (error) { console.warn('Could not fetch cart:', error); }
+      const res = await fetch(window.Valoir?.routes?.cart_url ? `${window.Valoir.routes.cart_url}.js` : '/cart.js', {
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!res.ok) return;
+      const cart = await res.json();
+      this.renderCart(cart);
+    } catch (err) {
+      console.warn('Could not fetch cart:', err);
+    }
   }
 
-  async updateItem(key, quantity) {
-    if (this.updating) return;
-    this.updating = true;
-    if (this.body) { this.body.setAttribute('aria-busy', 'true'); this.body.style.opacity = '0.6'; }
+  async updateItem(lineKey, quantity) {
+    if (this.isUpdating) return;
+    this.isUpdating = true;
+
+    if (this.cartDrawerBody) {
+      this.cartDrawerBody.style.pointerEvents = 'none';
+      this.cartDrawerBody.style.opacity = '0.6';
+    }
+
     try {
-      const response = await fetch(this.routes.cart_change_url, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ id: key, quantity }) });
-      if (!response.ok) throw new Error(this.strings.cartError);
-      this.render(await response.json());
-      window.ValoirA11y?.announce(quantity === 0 ? this.strings.remove : this.strings.update);
-    } catch (error) {
+      const res = await fetch(window.Valoir?.routes?.cart_change_url || '/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ id: lineKey, quantity })
+      });
+      if (res.ok) {
+        const cart = await res.json();
+        this.renderCart(cart);
+        window.ValoirA11y?.announce(quantity === 0 ? (window.Valoir?.strings?.remove || 'Item removed') : 'Cart updated');
+      } else {
+        await this.refresh();
+        window.ValoirA11y?.announce(window.Valoir?.strings?.cartError || 'Error updating bag');
+      }
+    } catch (err) {
+      console.error('Cart update error:', err);
       await this.refresh();
-      window.ValoirA11y?.announce(error.message || this.strings.cartError);
+      window.ValoirA11y?.announce(window.Valoir?.strings?.cartError || 'Network error updating bag');
     } finally {
-      this.updating = false;
-      if (this.body) { this.body.removeAttribute('aria-busy'); this.body.style.opacity = ''; }
+      this.isUpdating = false;
+      if (this.cartDrawerBody) {
+        this.cartDrawerBody.style.pointerEvents = '';
+        this.cartDrawerBody.style.opacity = '';
+      }
     }
   }
 
-  render(cart) {
-    this.badges.forEach((badge) => { badge.textContent = cart.item_count || 0; badge.style.display = cart.item_count ? 'flex' : 'none'; });
-    if (!this.body) return;
-    this.body.replaceChildren();
-    if (!cart.items.length) {
-      const empty = this.create('div', undefined, 'cart-empty-state');
-      empty.append(this.create('p', this.strings.cartEmpty));
-      const link = this.create('a', this.strings.continueShopping, 'btn-primary');
-      link.href = this.routes.all_products_collection_url;
-      link.dataset.action = 'close-drawer';
-      empty.append(link); this.body.append(empty); return;
-    }
-
-    const threshold = Number(window.Valoir?.freeShippingThreshold || 0) * 100;
-    if (threshold > 0) {
-      const progress = Math.min(100, (cart.total_price / threshold) * 100);
-      const progressWrap = this.create('div', undefined, 'free-shipping-container');
-      const message = progress >= 100 ? this.strings.freeShippingReached : (this.strings.freeShippingRemaining || '').replace(/\{\{\s*remaining\s*\}\}/g, formatCartMoney(Math.max(0, threshold - cart.total_price)));
-      progressWrap.append(this.create('p', message));
-      const bar = this.create('div'); bar.setAttribute('role', 'progressbar'); bar.setAttribute('aria-valuenow', String(Math.round(progress))); bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', '100'); bar.setAttribute('aria-label', this.strings.freeShippingProgress || this.strings.freeShippingReached);
-      const fill = this.create('div'); fill.style.width = `${progress}%`; bar.append(fill); progressWrap.append(bar); this.body.append(progressWrap);
-    }
-
-    const list = this.create('div', undefined, 'cart-items-list');
-    cart.items.forEach((item) => {
-      const row = this.create('div', undefined, 'cart-item'); row.dataset.cartItemKey = item.key;
-      const imageLink = this.create('a'); imageLink.href = item.url; imageLink.className = 'cart-item-image-link';
-      if (item.image) { const image = this.create('img'); image.src = item.image; image.alt = item.title || item.product_title || ''; image.width = 100; image.height = 100; image.loading = 'lazy'; image.className = 'cart-item-image'; imageLink.append(image); }
-      const details = this.create('div', undefined, 'cart-item-details');
-      const titleLink = this.create('a', item.product_title || item.title); titleLink.href = item.url; details.append(titleLink);
-      if (item.variant_title && item.variant_title !== 'Default Title') details.append(this.create('p', item.variant_title));
-      details.append(this.create('div', formatCartMoney(item.final_price), 'cart-item-price'));
-      if (item.discounts?.length) { const discounts = this.create('div', undefined, 'cart-item-discounts'); item.discounts.forEach((discount) => discounts.append(this.create('div', `${discount.title}: -${formatCartMoney(discount.amount)}`))); details.append(discounts); }
-      const controls = this.create('div', undefined, 'cart-item-qty-row');
-      const decrease = this.create('button', '−'); decrease.type = 'button'; decrease.dataset.cartChange = ''; decrease.dataset.cartKey = item.key; decrease.dataset.cartQty = String(Math.max(0, item.quantity - 1)); decrease.setAttribute('aria-label', this.strings.decreaseQuantity || this.strings.quantity);
-      const quantity = this.create('input'); quantity.type = 'number'; quantity.min = '0'; quantity.value = item.quantity; quantity.dataset.cartKey = item.key; quantity.setAttribute('aria-label', this.strings.quantity);
-      const increase = this.create('button', '+'); increase.type = 'button'; increase.dataset.cartChange = ''; increase.dataset.cartKey = item.key; increase.dataset.cartQty = String(item.quantity + 1); increase.setAttribute('aria-label', this.strings.increaseQuantity || this.strings.quantity);
-      const remove = this.create('button', this.strings.remove); remove.type = 'button'; remove.dataset.cartChange = ''; remove.dataset.cartKey = item.key; remove.dataset.cartQty = '0'; controls.append(decrease, quantity, increase, remove); details.append(controls); row.append(imageLink, details); list.append(row);
+  renderCart(cart) {
+    // Update count badges
+    const totalCount = cart.item_count || 0;
+    this.cartCountBadges.forEach(badge => {
+      badge.textContent = totalCount;
+      badge.style.display = totalCount > 0 ? 'flex' : 'none';
     });
-    this.body.append(list);
 
     if (!this.cartDrawerBody) return;
 
@@ -271,4 +341,7 @@ class ValoirCart {
     `;
   }
 }
-document.addEventListener('DOMContentLoaded', () => { window.valoirCart = new ValoirCart(); });
+
+document.addEventListener('DOMContentLoaded', () => {
+  window.valoirCart = new ValoirCart();
+});

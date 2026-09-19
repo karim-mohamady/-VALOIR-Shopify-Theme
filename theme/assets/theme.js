@@ -1,28 +1,17 @@
 /**
- * Valoir theme interaction primitives.
- * Keeps drawers and dialogs keyboard accessible without requiring a framework.
+ * Valoir Eyewear Theme Core JavaScript
+ * Online Store 2.0 Compliant
  */
 (() => {
   'use strict';
 
-  const FOCUSABLE_SELECTOR = [
-    'a[href]',
-    'area[href]',
-    'button:not([disabled])',
-    'input:not([disabled]):not([type="hidden"])',
-    'select:not([disabled])',
-    'textarea:not([disabled])',
-    'iframe',
-    'object',
-    'embed',
-    '[contenteditable]',
-    '[tabindex]:not([tabindex="-1"])'
-  ].join(',');
-
-  window.ValoirA11y = window.ValoirA11y || {
+  // Announcer for screen readers
+  window.ValoirA11y = {
     announce(message) {
       const announcer = document.getElementById('valoir-a11y-announcer');
-      if (announcer) announcer.textContent = message;
+      if (announcer) {
+        announcer.textContent = message;
+      }
     }
   };
 
@@ -103,24 +92,13 @@
           setTimeout(() => focusable.focus(), 60);
         }
       }
-      document.body.classList.add('valoir-overlay-open');
-      document.body.style.overflow = 'hidden';
-
-      const focusable = this.getFocusable(element);
-      window.setTimeout(() => (focusable[0] || element).focus(), 0);
     }
 
-    close(element = this.active) {
-      if (!element) return;
-      element.classList.remove('is-open');
-      element.setAttribute('aria-hidden', 'true');
-      if (this.trigger && this.trigger.matches('[aria-expanded]')) {
-        this.trigger.setAttribute('aria-expanded', 'false');
-      }
-      const restoreTarget = this.trigger;
-      this.active = null;
-      this.trigger = null;
-      document.body.classList.remove('valoir-overlay-open');
+    closeAll() {
+      document.querySelectorAll('.drawer-container, .mobile-nav-drawer').forEach((drawer) => {
+        drawer.classList.remove('is-open');
+        drawer.setAttribute('aria-hidden', 'true');
+      });
       document.body.style.overflow = '';
       this.activeDrawer = null;
 
@@ -131,10 +109,7 @@
     }
   }
 
-  const drawerManager = new OverlayManager('.drawer-container, .mobile-nav-drawer', '[data-action="close-drawer"]');
-  const modalManager = new OverlayManager('.valoir-modal', '[data-action="close-modal"]');
-  window.valoirDrawerManager = drawerManager;
-  window.valoirModalManager = modalManager;
+  window.valoirDrawerManager = new DrawerManager();
 
   // Modal Manager
   class ModalManager {

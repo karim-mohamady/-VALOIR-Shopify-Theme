@@ -1,74 +1,62 @@
 {% comment %}
-  SEO metadata and context-appropriate JSON-LD for the storefront.
+  SEO Meta Tags & Structured Data (JSON-LD) for Valoir Eyewear
 {% endcomment %}
 <title>
-  {{ page_title | escape }}
-  {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' | escape }}"{% endif -%}
-  {%- if current_page != 1 %} &ndash; {{ 'general.pagination.page' | t: page: current_page }}{% endif -%}
-  {%- unless page_title contains shop.name %} &ndash; {{ shop.name | escape }}{% endunless -%}
+  {{ page_title }}
+  {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+  {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+  {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
 </title>
 
-{%- if page_description != blank -%}
-  <meta name="description" content="{{ page_description | strip_html | escape }}">
+{%- if page_description -%}
+  <meta name="description" content="{{ page_description | escape }}">
 {%- endif -%}
-<meta property="og:site_name" content="{{ shop.name | escape }}">
+
+<!-- Open Graph Meta Tags -->
+<meta property="og:site_name" content="{{ shop.name }}">
 <meta property="og:url" content="{{ canonical_url }}">
-<meta property="og:title" content="{{ page_title | default: shop.name | escape }}">
-<meta property="og:type" content="{% if template contains 'product' %}product{% elsif template contains 'article' %}article{% else %}website{% endif %}">
-<meta property="og:description" content="{{ page_description | default: shop.description | strip_html | escape }}">
+<meta property="og:title" content="{{ page_title | default: shop.name }}">
+<meta property="og:type" content="{% if template contains 'product' %}product{% else %}website{% endif %}">
+<meta property="og:description" content="{{ page_description | default: shop.description | escape }}">
+
 {%- if page_image -%}
-  <meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">
+  <meta property="og:image" content="http:{{ page_image | image_url: width: 1200 }}">
+  <meta property="og:image:secure_url" content="https:{{ page_image | image_url: width: 1200 }}">
   <meta property="og:image:width" content="{{ page_image.width }}">
   <meta property="og:image:height" content="{{ page_image.height }}">
 {%- endif -%}
+
+<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ page_title | default: shop.name | escape }}">
-<meta name="twitter:description" content="{{ page_description | default: shop.description | strip_html | escape }}">
+<meta name="twitter:title" content="{{ page_title | default: shop.name }}">
+<meta name="twitter:description" content="{{ page_description | default: shop.description | escape }}">
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": {{ shop.name | json }},
-  "url": {{ shop.url | json }}{% if shop.brand.logo %},
-  "logo": {{ shop.brand.logo | image_url: width: 600 | prepend: 'https:' | json }}{% endif %}
-}
-</script>
-
-{%- if template contains 'product' and product -%}
-  {%- assign product_variant = product.selected_or_first_available_variant -%}
+{%- if template contains 'product' -%}
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": {{ product.title | json }},
-    "url": {{ canonical_url | json }},
-    "description": {{ product.description | strip_html | json }}{% if product.vendor != blank %},
-    "brand": {"@type":"Brand","name":{{ product.vendor | json }}}{% endif %}{% if product.featured_media %},
-    "image": [{{ product.featured_media | image_url: width: 1200 | prepend: 'https:' | json }}]{% endif %},
-    "offers": {
-      "@type": "Offer",
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": {{ product.title | json }},
       "url": {{ canonical_url | json }},
-      "priceCurrency": {{ cart.currency.iso_code | json }},
-      "price": {{ product_variant.price | divided_by: 100.0 | json }},
-      "availability": "https://schema.org/{% if product_variant.available %}InStock{% else %}OutOfStock{% endif %}"
+      {%- if product.featured_media -%}
+        "image": [{{ product.featured_media | image_url: width: 800 | json }}],
+      {%- endif -%}
+      "description": {{ product.description | strip_html | json }},
+      {%- if product.selected_or_first_available_variant.sku != blank -%}
+        "sku": {{ product.selected_or_first_available_variant.sku | json }},
+      {%- endif -%}
+      "brand": {
+        "@type": "Brand",
+        "name": {{ product.vendor | default: "Valoir Atelier" | json }}
+      },
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
+        "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+        "url": {{ canonical_url | json }}
+      }
     }
-  }
-  </script>
-{%- endif -%}
-
-{%- if template contains 'article' and article -%}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": {{ article.title | json }},
-    "url": {{ canonical_url | json }},
-    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},
-    "dateModified": {{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},
-    "author": {"@type":"Person","name":{{ article.author | json }}}{% if article.image %},
-    "image": [{{ article.image | image_url: width: 1200 | prepend: 'https:' | json }}]{% endif %}
-  }
   </script>
 {%- elsif template == 'index' -%}
   <script type="application/ld+json">
