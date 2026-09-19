@@ -343,7 +343,7 @@ class ValoirCart {
           ${window.Valoir?.strings?.taxesAndShipping || 'Taxes and shipping calculated at checkout.'}
         </p>
         <form action="${window.Valoir?.routes?.cart_url || '/cart'}" method="post" style="width: 100%;">
-          <button type="submit" name="checkout" class="btn-primary" style="width: 100%; text-align: center; border: none; cursor: pointer; display: block;">
+          <button type="submit" name="checkout" class="btn-primary" data-checkout-url="${(window.Valoir && window.Valoir.routes && window.Valoir.routes.checkout_url) || ''}" style="width: 100%; text-align: center; border: none; cursor: pointer; display: block;">
             ${window.Valoir?.strings?.checkout || 'Proceed to Checkout'}
           </button>
         </form>

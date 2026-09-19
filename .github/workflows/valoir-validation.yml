@@ -200,7 +200,7 @@ steps:
       );
 
       const routeSnippet = fs.readFileSync(
-        'theme/snippets/checkout-route.liquid',
+        'theme/snippets/checkout-url.liquid',
         'utf8'
       );
 
@@ -209,16 +209,16 @@ steps:
         'utf8'
       );
 
-      if (!layout.includes('checkout-route')) {
+      if (!layout.includes('checkout-url')) {
         console.error(
-          'checkout-route.liquid is not referenced by theme.liquid'
+          'checkout-url.liquid is not referenced by theme.liquid'
         );
         process.exit(1);
       }
 
       if (!routeSnippet.includes('checkout')) {
         console.error(
-          'checkout-route.liquid does not appear to expose checkout route data'
+          'checkout-url.liquid does not appear to expose checkout route data'
         );
         process.exit(1);
       }

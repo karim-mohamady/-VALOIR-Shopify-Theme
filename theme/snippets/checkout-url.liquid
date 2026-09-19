@@ -1,0 +1,15 @@
+{%- comment -%}
+  This snippet only exposes a computed checkout URL string to client-side JS. It does not modify, wrap, or intercept Shopify's checkout flow in any way.
+{%- endcomment -%}
+{%- assign checkout_url_prefix = routes.root_url -%}
+{%- unless checkout_url_prefix == '/' -%}
+  {%- assign checkout_url_prefix = checkout_url_prefix | append: '/' -%}
+{%- endunless -%}
+{%- assign checkout_url_prefix = checkout_url_prefix | replace: '//', '/' -%}
+{%- assign checkout_destination = checkout_url_prefix | append: 'checkout' -%}
+
+<script>
+  window.Valoir = window.Valoir || {};
+  window.Valoir.routes = window.Valoir.routes || {};
+  window.Valoir.routes.checkout_url = {{ checkout_destination | json }};
+</script>
