@@ -249,7 +249,8 @@
       "disabled": "This gift card is currently inactive",
       "print_gift_card": "Print Gift Card",
       "shop_link": "Visit Valoir Atelier",
-      "add_to_apple_wallet": "Add to Apple Wallet"
+      "add_to_apple_wallet": "Add to Apple Wallet",
+      "instructions": "Use this allocation code at checkout to acquire bespoke titanium frames, polarized mineral lenses, or optical consultation services."
     }
   }
 }

@@ -70,6 +70,7 @@
 
         --font-heading-scale: {{ settings.heading_scale | default: 100 | divided_by: 100.0 }};
         --font-body-scale: {{ settings.body_scale | default: 100 | divided_by: 100.0 }};
+        --font-arabic: 'Noto Naskh Arabic', 'Amiri', 'Segoe UI', Tahoma, sans-serif;
 
         --page-width: {{ settings.page_width | default: 1440 }}px;
         --card-aspect-ratio: {{ settings.card_aspect_ratio | default: '4/5' }};
@@ -149,6 +150,7 @@
         }
       };
     </script>
+    {% render 'checkout-route' %}
 
     <!-- Theme Scripts -->
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>

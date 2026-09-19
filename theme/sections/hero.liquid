@@ -1,3 +1,10 @@
+{%- assign root_url_prefix = routes.root_url -%}
+{%- unless root_url_prefix == '/' -%}
+  {%- assign root_url_prefix = root_url_prefix | append: '/' -%}
+{%- endunless -%}
+{%- assign root_url_prefix = root_url_prefix | replace: '//', '/' -%}
+{%- assign default_showroom_url = root_url_prefix | append: 'pages/3d-showroom' -%}
+
 <section class="valoir-hero-section" style="position: relative; background: #0E0E10; color: #FAF9F6; overflow: hidden; padding: 7rem 0 6rem 0;">
   <div class="valoir-container" style="position: relative; z-index: 2;">
     <div style="max-width: 680px;">
@@ -11,10 +18,10 @@
         {{ section.settings.paragraph | default: "Experience eyewear engineered as sculptural form. Handcrafted in Sabae, Japan with multi-axis titanium mills and custom-tinted mineral glass." }}
       </p>
       <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-        <a href="{{ section.settings.button_url | default: '/collections/all' }}" class="btn-primary" style="background: #FAF9F6; color: #141414;">
+        <a href="{{ section.settings.button_url | default: routes.all_products_collection_url }}" class="btn-primary" style="background: #FAF9F6; color: #141414;">
           {{ section.settings.button_label | default: "Explore 2026 Collection" }}
         </a>
-        <a href="{{ section.settings.secondary_url | default: '/pages/3d-showroom' }}" class="btn-secondary" style="border-color: #444; color: #FAF9F6;">
+        <a href="{{ section.settings.secondary_url | default: default_showroom_url }}" class="btn-secondary" style="border-color: #444; color: #FAF9F6;">
           {{ section.settings.secondary_label | default: "3D Virtual Showroom" }}
         </a>
       </div>

@@ -334,7 +334,7 @@ class ValoirCart {
         <p style="font-size: 0.6875rem; color: var(--color-text-muted); margin-bottom: 1rem;">
           ${window.Valoir?.strings?.taxesAndShipping || 'Taxes and shipping calculated at checkout.'}
         </p>
-        <a href="/checkout" class="btn-primary" style="width: 100%; text-align: center; text-decoration: none;">
+        <a href="${window.Valoir.routes.checkout_url || (window.Valoir?.routes?.cart_url || '')}" class="btn-primary" style="width: 100%; text-align: center; text-decoration: none;">
           ${window.Valoir?.strings?.checkout || 'Proceed to Checkout'}
         </a>
       </div>
