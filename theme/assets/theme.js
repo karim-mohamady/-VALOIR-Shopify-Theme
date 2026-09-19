@@ -26,35 +26,82 @@
     }
   };
 
-  class OverlayManager {
-    constructor(selector, closeSelector) {
-      this.selector = selector;
-      this.closeSelector = closeSelector;
-      this.active = null;
-      this.trigger = null;
-      this.boundKeydown = this.onKeydown.bind(this);
-      this.boundClick = this.onClick.bind(this);
-      document.addEventListener('click', this.boundClick);
-      document.addEventListener('keydown', this.boundKeydown);
+  // Focus Trap Helper
+  function trapFocus(container, event) {
+    if (!container) return;
+    const focusableSelector = 'button:not([disabled]), [href], input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const focusables = Array.from(container.querySelectorAll(focusableSelector)).filter(el => {
+      return el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0;
+    });
+
+    if (focusables.length === 0) {
+      event.preventDefault();
+      return;
     }
 
-    getFocusable(element) {
-      return [...element.querySelectorAll(FOCUSABLE_SELECTOR)].filter((node) => {
-        return node.getClientRects().length > 0 && !node.hasAttribute('inert');
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+
+    if (event.shiftKey) {
+      if (document.activeElement === first || !container.contains(document.activeElement)) {
+        event.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last || !container.contains(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  }
+
+  // Drawer Manager
+  class DrawerManager {
+    constructor() {
+      this.activeDrawer = null;
+      this.lastFocusedElement = null;
+      this.init();
+    }
+
+    init() {
+      document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('[data-drawer-trigger]');
+        if (trigger) {
+          const targetId = trigger.getAttribute('data-drawer-trigger');
+          this.open(targetId, trigger);
+          return;
+        }
+
+        const closeBtn = e.target.closest('[data-action="close-drawer"]');
+        if (closeBtn) {
+          this.closeAll();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!this.activeDrawer) return;
+
+        if (e.key === 'Escape') {
+          this.closeAll();
+        } else if (e.key === 'Tab') {
+          trapFocus(this.activeDrawer, e);
+        }
       });
     }
 
-    open(id, trigger = document.activeElement) {
-      const element = document.getElementById(id);
-      if (!element) return;
+    open(drawerId, triggerElement = null) {
+      const drawer = document.getElementById(drawerId);
+      if (drawer) {
+        this.lastFocusedElement = triggerElement || document.activeElement;
+        this.activeDrawer = drawer;
+        drawer.classList.add('is-open');
+        drawer.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
 
-      if (this.active && this.active !== element) this.close();
-      this.active = element;
-      this.trigger = trigger && typeof trigger.focus === 'function' ? trigger : null;
-      element.classList.add('is-open');
-      element.setAttribute('aria-hidden', 'false');
-      if (this.trigger && this.trigger.matches('[aria-expanded]')) {
-        this.trigger.setAttribute('aria-expanded', 'true');
+        const focusable = drawer.querySelector('[data-action="close-drawer"], button:not([disabled]), a[href], input:not([disabled])');
+        if (focusable) {
+          setTimeout(() => focusable.focus(), 60);
+        }
       }
       document.body.classList.add('valoir-overlay-open');
       document.body.style.overflow = 'hidden';
@@ -75,45 +122,12 @@
       this.trigger = null;
       document.body.classList.remove('valoir-overlay-open');
       document.body.style.overflow = '';
-      if (restoreTarget && document.contains(restoreTarget)) restoreTarget.focus();
-    }
+      this.activeDrawer = null;
 
-    onClick(event) {
-      const trigger = event.target.closest('[data-drawer-trigger], [data-modal-trigger]');
-      if (trigger) {
-        const id = trigger.getAttribute('data-drawer-trigger') || trigger.getAttribute('data-modal-trigger');
-        this.open(id, trigger);
-        return;
+      if (this.lastFocusedElement && typeof this.lastFocusedElement.focus === 'function' && document.body.contains(this.lastFocusedElement)) {
+        this.lastFocusedElement.focus();
       }
-
-      const closeControl = event.target.closest(this.closeSelector);
-      if (closeControl && this.active && this.active.contains(closeControl)) this.close();
-    }
-
-    onKeydown(event) {
-      if (!this.active) return;
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        this.close();
-        return;
-      }
-      if (event.key !== 'Tab') return;
-
-      const focusable = this.getFocusable(this.active);
-      if (!focusable.length) {
-        event.preventDefault();
-        this.active.focus();
-        return;
-      }
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
+      this.lastFocusedElement = null;
     }
   }
 
@@ -122,10 +136,82 @@
   window.valoirDrawerManager = drawerManager;
   window.valoirModalManager = modalManager;
 
-  // Shopify section rendering can replace markup without reloading this file.
-  document.addEventListener('shopify:section:load', () => {
-    document.querySelectorAll('[data-drawer-trigger], [data-modal-trigger]').forEach((trigger) => {
-      if (!trigger.hasAttribute('aria-expanded')) trigger.setAttribute('aria-expanded', 'false');
+  // Modal Manager
+  class ModalManager {
+    constructor() {
+      this.activeModal = null;
+      this.lastFocusedElement = null;
+      this.init();
+    }
+
+    init() {
+      document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('[data-modal-trigger]');
+        if (trigger) {
+          const modalId = trigger.getAttribute('data-modal-trigger');
+          this.open(modalId, trigger);
+          return;
+        }
+
+        const closeBtn = e.target.closest('[data-action="close-modal"]');
+        if (closeBtn) {
+          this.closeAll();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!this.activeModal) return;
+
+        if (e.key === 'Escape') {
+          this.closeAll();
+        } else if (e.key === 'Tab') {
+          trapFocus(this.activeModal, e);
+        }
+      });
+    }
+
+    open(modalId, triggerElement = null) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        this.lastFocusedElement = triggerElement || document.activeElement;
+        this.activeModal = modal;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+
+        const focusable = modal.querySelector('[data-action="close-modal"], button:not([disabled]), a[href], input:not([disabled])');
+        if (focusable) {
+          setTimeout(() => focusable.focus(), 60);
+        }
+      }
+    }
+
+    closeAll() {
+      document.querySelectorAll('.valoir-modal').forEach((modal) => {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+      });
+      document.body.style.overflow = '';
+      this.activeModal = null;
+
+      if (this.lastFocusedElement && typeof this.lastFocusedElement.focus === 'function' && document.body.contains(this.lastFocusedElement)) {
+        this.lastFocusedElement.focus();
+      }
+      this.lastFocusedElement = null;
+    }
+  }
+
+  window.valoirModalManager = new ModalManager();
+
+  // Shopify Theme Editor Integration
+  if (window.Shopify && window.Shopify.designMode) {
+    document.addEventListener('shopify:section:load', () => {
+      window.valoirDrawerManager.closeAll();
+      window.valoirModalManager.closeAll();
     });
-  });
+    document.addEventListener('shopify:section:unload', () => {
+      window.valoirDrawerManager.closeAll();
+      window.valoirModalManager.closeAll();
+    });
+  }
 })();

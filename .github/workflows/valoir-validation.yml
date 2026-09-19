@@ -1,23 +1,21 @@
+name: VALOIR Production Validation
+
 on:
-  push:
-    branches:
-      - audit/production-readiness
-  pull_request:
-    branches:
-      - audit/production-readiness
-  workflow_dispatch:
+push:
+branches:
+- audit/production-readiness
+pull_request:
+branches:
+- audit/production-readiness
+workflow_dispatch:
 
 permissions:
-  contents: read
+contents: read
 
 jobs:
-  validate:
-    name: Validate VALOIR Shopify Theme
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-
+validate:
+name: Validate VALOIR Shopify Theme
+runs-on: ubuntu-latest
 steps:
   - name: Checkout
     uses: actions/checkout@v4

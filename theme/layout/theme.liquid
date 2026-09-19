@@ -7,13 +7,78 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="{{ settings.color_accent }}">
     <link rel="canonical" href="{{ canonical_url }}">
-    {% if settings.favicon != blank %}<link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">{% endif %}
-    {% render 'seo-meta' %}
-    {% style %}
-      {% if settings.font_heading != blank %}{{ settings.font_heading | font_face: font_display: 'swap' }}{% endif %}
-      {% if settings.font_body != blank %}{{ settings.font_body | font_face: font_display: 'swap' }}{% endif %}
-      :root { --color-bg: {{ settings.color_bg | default: '#FAF9F6' }}; --color-surface: {{ settings.color_surface | default: '#FFFFFF' }}; --color-text: {{ settings.color_text | default: '#1A1A1A' }}; --color-text-muted: {{ settings.color_text_muted | default: '#6B6864' }}; --color-accent: {{ settings.color_accent | default: '#C29B38' }}; --color-border: {{ settings.color_border | default: '#E5E2DC' }}; --color-sale: {{ settings.color_sale | default: '#8B261E' }}; --font-heading-scale: {{ settings.heading_scale | default: 100 | divided_by: 100.0 }}; --font-body-scale: {{ settings.body_scale | default: 100 | divided_by: 100.0 }}; --page-width: {{ settings.page_width | default: 1440 }}px; --card-aspect-ratio: {{ settings.card_aspect_ratio | default: '4/5' }}; }
-    {% endstyle %}
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- render 'seo-meta' -%}
+
+    <!-- Typography & Dynamic Theme Variables via Shopify Settings -->
+    {%- style -%}
+      {%- if settings.font_heading != blank -%}
+        {{ settings.font_heading | font_face: font_display: 'swap' }}
+        {%- assign font_heading_bold = settings.font_heading | font_modify: 'weight', 'bolder' -%}
+        {%- if font_heading_bold -%}
+          {{ font_heading_bold | font_face: font_display: 'swap' }}
+        {%- endif -%}
+        {%- assign font_heading_italic = settings.font_heading | font_modify: 'style', 'italic' -%}
+        {%- if font_heading_italic -%}
+          {{ font_heading_italic | font_face: font_display: 'swap' }}
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- if settings.font_body != blank -%}
+        {{ settings.font_body | font_face: font_display: 'swap' }}
+        {%- assign font_body_bold = settings.font_body | font_modify: 'weight', 'bolder' -%}
+        {%- if font_body_bold -%}
+          {{ font_body_bold | font_face: font_display: 'swap' }}
+        {%- endif -%}
+        {%- assign font_body_italic = settings.font_body | font_modify: 'style', 'italic' -%}
+        {%- if font_body_italic -%}
+          {{ font_body_italic | font_face: font_display: 'swap' }}
+        {%- endif -%}
+      {%- endif -%}
+
+      :root {
+        --color-bg: {{ settings.color_bg | default: '#FAF9F6' }};
+        --color-surface: {{ settings.color_surface | default: '#FFFFFF' }};
+        --color-text: {{ settings.color_text | default: '#1A1A1A' }};
+        --color-text-muted: {{ settings.color_text_muted | default: '#6B6864' }};
+        --color-accent: {{ settings.color_accent | default: '#C29B38' }};
+        --color-border: {{ settings.color_border | default: '#E5E2DC' }};
+        --color-sale: {{ settings.color_sale | default: '#8B261E' }};
+
+        {%- if settings.font_heading != blank -%}
+          --font-serif: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+          --font-serif-weight: {{ settings.font_heading.weight }};
+          --font-serif-style: {{ settings.font_heading.style }};
+        {%- else -%}
+          --font-serif: 'Cormorant Garamond', Georgia, serif;
+          --font-serif-weight: 400;
+          --font-serif-style: normal;
+        {%- endif -%}
+
+        {%- if settings.font_body != blank -%}
+          --font-sans: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+          --font-sans-weight: {{ settings.font_body.weight }};
+          --font-sans-style: {{ settings.font_body.style }};
+        {%- else -%}
+          --font-sans: 'Assistant', -apple-system, BlinkMacSystemFont, sans-serif;
+          --font-sans-weight: 400;
+          --font-sans-style: normal;
+        {%- endif -%}
+
+        --font-heading-scale: {{ settings.heading_scale | default: 100 | divided_by: 100.0 }};
+        --font-body-scale: {{ settings.body_scale | default: 100 | divided_by: 100.0 }};
+        --font-arabic: 'Noto Naskh Arabic', 'Amiri', 'Segoe UI', Tahoma, sans-serif;
+
+        --page-width: {{ settings.page_width | default: 1440 }}px;
+        --card-aspect-ratio: {{ settings.card_aspect_ratio | default: '4/5' }};
+      }
+    {%- endstyle -%}
+
+    <!-- Theme Core Styles -->
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'theme.css' | asset_url | stylesheet_tag }}
     {{ 'accessibility.css' | asset_url | stylesheet_tag }}
@@ -36,9 +101,29 @@
         routes: { cart_add_url: {{ routes.cart_add_url | json }}, cart_change_url: {{ routes.cart_change_url | json }}, cart_update_url: {{ routes.cart_update_url | json }}, cart_url: {{ routes.cart_url | json }}, checkout_url: {{ checkout_route | json }}, predictive_search_url: {{ routes.predictive_search_url | json }}, all_products_collection_url: {{ routes.all_products_collection_url | json }} }
       };
     </script>
-    <script src="{{ 'theme.js' | asset_url }}" defer></script><script src="{{ 'cart.js' | asset_url }}" defer></script><script src="{{ 'predictive-search.js' | asset_url }}" defer></script>
-    {% if template contains 'product' %}<script src="{{ 'media-gallery.js' | asset_url }}" defer></script><script src="{{ 'variant-picker.js' | asset_url }}" defer></script><script src="{{ 'product.js' | asset_url }}" defer></script>{% endif %}
-    {% if template contains 'product' or template == 'index' %}<script src="{{ '3d-viewer.js' | asset_url }}" defer></script>{% endif %}
+    {% render 'checkout-route' %}
+
+    <!-- Theme Scripts -->
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- if template contains 'product' -%}
+      <script src="{{ 'media-gallery.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'variant-picker.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'product.js' | asset_url }}" defer="defer"></script>
+      {%- assign first_3d_model = product.media | where: 'media_type', 'model' | first -%}
+      {%- if first_3d_model -%}
+        <link id="ModelViewerStyle" rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print" onload="this.media='all'">
+        <script>
+          window.ShopifyXR = window.ShopifyXR || function() { (ShopifyXR.q = ShopifyXR.q || []).push(arguments); };
+          ShopifyXR('addModels', {{ product.media | where: 'media_type', 'model' | json }});
+        </script>
+        <script defer="defer" src="https://cdn.shopify.com/shopifycloud/shopify-xr-js/assets/v1.0/shopify-xr.en.js"></script>
+      {%- endif -%}
+    {%- endif -%}
+    {%- if template contains 'product' or template == 'index' -%}
+      <script src="{{ '3d-viewer.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
   </head>
   <body class="template-{{ template.name | handle }} valoir-body" data-money-format="{{ shop.money_format }}">
     <a class="skip-to-content-link visually-hidden" href="#MainContent">{{ 'accessibility.skip_to_text' | t }}</a>
