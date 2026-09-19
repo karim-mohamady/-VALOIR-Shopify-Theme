@@ -11,7 +11,7 @@
     <div id="CustomerLoginForm" class="customer-box">
       {%- form 'customer_login', class: 'customer-form' -%}
         {%- if form.errors -%}
-          <div class="customer-error-list" tabindex="-1" autofocus>
+          <div class="customer-error-list" role="alert" aria-live="assertive" tabindex="-1" autofocus>
             {{ form.errors | default_errors }}
           </div>
         {%- endif -%}
@@ -82,7 +82,7 @@
           </div>
         {%- endif -%}
         {%- if form.errors -%}
-          <div class="customer-error-list" tabindex="-1" autofocus>
+          <div class="customer-error-list" role="alert" aria-live="assertive" tabindex="-1" autofocus>
             {{ form.errors | default_errors }}
           </div>
         {%- endif -%}

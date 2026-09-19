@@ -433,6 +433,10 @@ class Valoir3DViewer extends HTMLElement {
         const anchor = document.createElement('a');
         anchor.setAttribute('rel', 'ar');
         const img = document.createElement('img');
+        img.setAttribute('alt', strings.viewInAR || 'View in AR');
+        img.setAttribute('width', '1');
+        img.setAttribute('height', '1');
+        img.setAttribute('loading', 'lazy');
         anchor.appendChild(img);
         anchor.setAttribute('href', usdzUrl);
         document.body.appendChild(anchor);

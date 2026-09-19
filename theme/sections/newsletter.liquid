@@ -12,10 +12,13 @@
 
     {%- form 'customer' -%}
       <div class="valoir-newsletter-form-wrapper">
+        <label for="NewsletterSectionEmail" class="visually-hidden">{{ 'general.newsletter.email_placeholder' | t }}</label>
         <input
+          id="NewsletterSectionEmail"
           type="email"
           name="contact[email]"
           placeholder="{{ 'general.newsletter.email_placeholder' | t }}"
+          aria-label="{{ 'general.newsletter.email_placeholder' | t }}"
           required
           style="flex: 1; padding: 0.875rem 1.25rem; background: #222226; border: 1px solid #333338; color: #FAF9F6; font-size: 0.875rem; border-radius: 2px; outline: none;"
         >

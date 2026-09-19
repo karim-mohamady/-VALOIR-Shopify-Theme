@@ -41,6 +41,14 @@ function formatCartMoney(cents) {
   return formatString.replace(placeholderRegex, value);
 }
 
+function getResizedCartImageUrl(url, size = '200x200') {
+  if (!url) return '';
+  if (url.includes('.svg') || url.includes(`_${size}.`)) return url;
+  const match = url.match(/^(.*)\.([a-zA-Z0-9]+)(\?.*)?$/);
+  if (!match) return url;
+  return `${match[1]}_${size}.${match[2]}${match[3] || ''}`;
+}
+
 class ValoirCart {
   constructor() {
     this.cartDrawerBody = document.getElementById('cart-drawer-body');
@@ -221,7 +229,7 @@ class ValoirCart {
     if (!this.cartDrawerBody) return;
 
     if (cart.items.length === 0) {
-      const allUrl = window.Valoir?.routes?.all_products_collection_url || '/collections/all';
+      const allUrl = window.Valoir?.routes?.all_products_collection_url || (window.Valoir?.routes?.root_url ? window.Valoir.routes.root_url.replace(/\/$/, '') + '/collections/all' : '/collections/all');
       this.cartDrawerBody.innerHTML = `
         <div style="text-align: center; padding: 3rem 1rem;">
           <p style="color: var(--color-text-muted); margin-bottom: 1.5rem; font-size: 0.9375rem;">${window.Valoir?.strings?.cartEmpty || 'Your bag is empty'}</p>
@@ -272,7 +280,7 @@ class ValoirCart {
       return `
         <div class="cart-item" data-cart-item-key="${item.key}">
           <a href="${item.url}" class="cart-item-image-link" style="flex-shrink: 0;">
-            <img src="${item.image || ''}" alt="${item.title}" class="cart-item-image">
+            <img src="${getResizedCartImageUrl(item.image, '200x200')}" alt="${(item.title || item.product_title || '').replace(/"/g, '&quot;')}" width="76" height="76" loading="lazy" class="cart-item-image">
           </a>
           <div class="cart-item-details" style="flex: 1; min-width: 0;">
             <a href="${item.url}" style="color: inherit; text-decoration: none;">
@@ -334,9 +342,11 @@ class ValoirCart {
         <p style="font-size: 0.6875rem; color: var(--color-text-muted); margin-bottom: 1rem;">
           ${window.Valoir?.strings?.taxesAndShipping || 'Taxes and shipping calculated at checkout.'}
         </p>
-        <a href="${window.Valoir.routes.checkout_url || (window.Valoir?.routes?.cart_url || '')}" class="btn-primary" style="width: 100%; text-align: center; text-decoration: none;">
-          ${window.Valoir?.strings?.checkout || 'Proceed to Checkout'}
-        </a>
+        <form action="${window.Valoir?.routes?.cart_url || '/cart'}" method="post" style="width: 100%;">
+          <button type="submit" name="checkout" class="btn-primary" style="width: 100%; text-align: center; border: none; cursor: pointer; display: block;">
+            ${window.Valoir?.strings?.checkout || 'Proceed to Checkout'}
+          </button>
+        </form>
       </div>
     `;
   }

@@ -45,14 +45,17 @@
         </p>
         {%- form 'customer', class: 'footer-newsletter-form' -%}
           <div style="display: flex; gap: 0.5rem;">
+            <label for="FooterNewsletterEmail" class="visually-hidden">{{ 'general.newsletter.email_placeholder' | t }}</label>
             <input
+              id="FooterNewsletterEmail"
               type="email"
               name="contact[email]"
               placeholder="{{ 'general.newsletter.email_placeholder' | t }}"
+              aria-label="{{ 'general.newsletter.email_placeholder' | t }}"
               required
               style="padding: 0.75rem 1rem; background: #222222; border: 1px solid #333333; color: #FAF9F6; font-size: 0.8125rem; border-radius: 2px; width: 100%; outline: none;"
             >
-            <button type="submit" class="btn-primary" style="background: #FAF9F6; color: #141414; padding: 0.75rem 1.25rem;">
+            <button type="submit" class="btn-primary" aria-label="{{ 'general.newsletter.submit' | t | default: 'Subscribe' }}" style="background: #FAF9F6; color: #141414; padding: 0.75rem 1.25rem;">
               &rarr;
             </button>
           </div>

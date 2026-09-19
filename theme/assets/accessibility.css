@@ -14,7 +14,7 @@
 .skip-to-content-link:focus {
   position: fixed !important;
   top: 1rem;
-  left: 1rem;
+  inset-inline-start: 1rem;
   z-index: 9999;
   width: auto !important;
   height: auto !important;
