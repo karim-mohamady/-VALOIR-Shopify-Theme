@@ -1,0 +1,65 @@
+{% comment %}
+  Renders gift card recipient form for gift card products
+  Usage: {% render 'gift-card-recipient-form', product: product, section_id: section_id %}
+{% endcomment %}
+{%- if product.gift_card? -%}
+  <div class="recipient-form-wrapper" style="margin-top: 1.25rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface);">
+    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+      <input
+        type="checkbox"
+        id="Recipient-checkbox-{{ section_id }}"
+        name="properties[__shopify_send_gift_card_to_recipient]"
+        value="true"
+        onchange="const f=document.getElementById('Recipient-fields-{{ section_id }}'); if(f) f.style.display=this.checked?'flex':'none';"
+      >
+      <label for="Recipient-checkbox-{{ section_id }}" style="font-size: 0.875rem; font-weight: 500; cursor: pointer; color: var(--color-text);">
+        {{ 'recipient.form.checkbox' | t | default: 'I want to send this as a gift' }}
+      </label>
+    </div>
+
+    <div id="Recipient-fields-{{ section_id }}" style="display: none; flex-direction: column; gap: 0.75rem;">
+      <div>
+        <label for="Recipient-email-{{ section_id }}" style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; color: var(--color-text-muted);">
+          {{ 'recipient.form.email_label' | t | default: "Recipient email" }} *
+        </label>
+        <input
+          type="email"
+          id="Recipient-email-{{ section_id }}"
+          name="properties[Recipient email]"
+          placeholder="{{ 'recipient.form.email' | t | default: 'recipient@example.com' }}"
+          class="valoir-input"
+          style="width: 100%; padding: 0.6rem 0.75rem; font-size: 0.875rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg);"
+        >
+      </div>
+
+      <div>
+        <label for="Recipient-name-{{ section_id }}" style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; color: var(--color-text-muted);">
+          {{ 'recipient.form.name_label' | t | default: "Recipient name" }}
+        </label>
+        <input
+          type="text"
+          id="Recipient-name-{{ section_id }}"
+          name="properties[Recipient name]"
+          placeholder="{{ 'recipient.form.name' | t | default: 'Name' }}"
+          class="valoir-input"
+          style="width: 100%; padding: 0.6rem 0.75rem; font-size: 0.875rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg);"
+        >
+      </div>
+
+      <div>
+        <label for="Recipient-message-{{ section_id }}" style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; color: var(--color-text-muted);">
+          {{ 'recipient.form.message_label' | t | default: "Message (optional)" }}
+        </label>
+        <textarea
+          id="Recipient-message-{{ section_id }}"
+          name="properties[Recipient message]"
+          rows="3"
+          maxlength="200"
+          placeholder="{{ 'recipient.form.message' | t | default: 'Add a personal note...' }}"
+          class="valoir-input"
+          style="width: 100%; padding: 0.6rem 0.75rem; font-size: 0.875rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); resize: vertical;"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

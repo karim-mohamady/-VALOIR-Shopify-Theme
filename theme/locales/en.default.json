@@ -109,6 +109,13 @@
       "sold_out": "Sold Out",
       "unavailable": "Unavailable",
       "quantity": "Quantity",
+      "purchase_options": "Purchase Options",
+      "one_time_purchase": "One-time purchase",
+      "subscribe_and_save": "Subscribe & Save",
+      "delivery_frequency": "Delivery frequency",
+      "subscription_discount": "Save {{ discount }} with subscription",
+      "from": "from",
+      "with_subscription": "with subscription",
       "regular_price": "Regular price",
       "sale_price": "Sale price",
       "unit_price": "Unit price",
@@ -254,6 +261,17 @@
       "shop_link": "Visit Valoir Atelier",
       "add_to_apple_wallet": "Add to Apple Wallet",
       "instructions": "Use this allocation code at checkout to acquire bespoke titanium frames, polarized mineral lenses, or optical consultation services."
+    }
+  },
+  "recipient": {
+    "form": {
+      "checkbox": "I want to send this as a gift",
+      "email_label": "Recipient email",
+      "email": "recipient@example.com",
+      "name_label": "Recipient name",
+      "name": "Name",
+      "message_label": "Message (optional)",
+      "message": "Add a personal note..."
     }
   }
 }

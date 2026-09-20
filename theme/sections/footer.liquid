@@ -143,7 +143,10 @@
           {%- endfor -%}
         </div>
       {%- endif -%}
-      <div>{{ 'sections.footer.powered_by' | t }}</div>
+      <div>
+        <small>&copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url }}</small>
+        <small style="margin-inline-start: 0.5rem;">{{ powered_by_link }}</small>
+      </div>
     </div>
   </div>
 </footer>

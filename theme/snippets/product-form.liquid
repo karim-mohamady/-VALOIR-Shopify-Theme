@@ -6,6 +6,87 @@
   {%- form 'product', product, id: 'product-form-component', class: 'valoir-form', novalidate: 'novalidate' -%}
     <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
+    {%- if product.gift_card? -%}
+      {% render 'gift-card-recipient-form', product: product, section_id: section_id %}
+    {%- endif -%}
+
+    {%- if product.selling_plan_groups.size > 0 -%}
+      <div class="product-form__selling-plans" style="margin-top: 1.25rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.125rem; background: var(--color-surface);">
+        <fieldset style="border: none; padding: 0; margin: 0;">
+          <legend style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 0.75rem; color: var(--color-text);">
+            {{ 'products.product.purchase_options' | t }}
+          </legend>
+
+          {%- unless product.requires_selling_plan -%}
+            <div class="selling-plan-option" style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--color-border);">
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.875rem; color: var(--color-text);">
+                <input
+                  type="radio"
+                  name="purchase_option_{{ section_id }}"
+                  value="one_time"
+                  checked
+                  onchange="const input=document.getElementById('selling-plan-input-{{ section_id }}'); if(input) input.value=''; const details=document.getElementById('selling-plan-details-{{ section_id }}'); if(details) details.style.display='none';"
+                >
+                <span>{{ 'products.product.one_time_purchase' | t }}</span>
+              </label>
+              <span style="font-size: 0.875rem; font-weight: 500; color: var(--color-text);">
+                {{ product.selected_or_first_available_variant.price | money }}
+              </span>
+            </div>
+          {%- endunless -%}
+
+          {%- for group in product.selling_plan_groups -%}
+            <div class="selling-plan-group" style="padding: 0.5rem 0;">
+              <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 0.875rem; color: var(--color-text);">
+                <span style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input
+                    type="radio"
+                    name="purchase_option_{{ section_id }}"
+                    value="subscription"
+                    {% if product.requires_selling_plan and forloop.first %}checked{% endif %}
+                    onchange="const details=document.getElementById('selling-plan-details-{{ section_id }}'); if(details) details.style.display='block'; const sel=document.getElementById('selling-plan-select-{{ section_id }}'); const input=document.getElementById('selling-plan-input-{{ section_id }}'); if(input && sel) input.value=sel.value;"
+                  >
+                  <span>{{ 'products.product.subscribe_and_save' | t }} ({{ group.name }})</span>
+                </span>
+                {%- assign first_plan = group.selling_plans | first -%}
+                {%- assign first_alloc = product.selected_or_first_available_variant.selling_plan_allocations | where: "selling_plan_id", first_plan.id | first -%}
+                {%- if first_alloc -%}
+                  <span style="font-size: 0.875rem; font-weight: 500; color: var(--color-accent);">
+                    {{ first_alloc.price | money }}
+                  </span>
+                {%- endif -%}
+              </label>
+
+              <div id="selling-plan-details-{{ section_id }}" style="margin-top: 0.75rem; margin-inline-start: 1.5rem; {% unless product.requires_selling_plan %}display: none;{% endunless %}">
+                <label for="selling-plan-select-{{ section_id }}" style="display: block; font-size: 0.75rem; color: var(--color-text-muted); margin-bottom: 0.35rem;">
+                  {{ 'products.product.delivery_frequency' | t }}
+                </label>
+                <select
+                  id="selling-plan-select-{{ section_id }}"
+                  class="valoir-select"
+                  style="width: 100%; padding: 0.5rem; font-size: 0.8125rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-text);"
+                  onchange="const input=document.getElementById('selling-plan-input-{{ section_id }}'); if(input) input.value=this.value;"
+                >
+                  {%- for plan in group.selling_plans -%}
+                    {%- assign alloc = product.selected_or_first_available_variant.selling_plan_allocations | where: "selling_plan_id", plan.id | first -%}
+                    <option value="{{ plan.id }}">
+                      {{ plan.name }}{% if alloc %} - {{ alloc.price | money }}{% endif %}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            </div>
+          {%- endfor -%}
+        </fieldset>
+
+        {%- assign initial_selling_plan_id = '' -%}
+        {%- if product.requires_selling_plan -%}
+          {%- assign initial_selling_plan_id = product.selected_or_first_available_variant.selling_plan_allocations.first.selling_plan_id -%}
+        {%- endif -%}
+        <input type="hidden" name="selling_plan" id="selling-plan-input-{{ section_id }}" value="{{ initial_selling_plan_id }}">
+      </div>
+    {%- endif -%}
+
     <div class="product-form-quantity" style="margin-top: 1.25rem;">
       <label for="Quantity-{{ section_id }}" style="display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; margin-bottom: 0.5rem; color: var(--color-text);">
         {{ 'products.product.quantity' | t }}

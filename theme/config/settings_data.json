@@ -21,5 +21,30 @@
     "enable_cart_notes": true,
     "free_shipping_threshold": 250,
     "force_rtl": false
+  },
+  "presets": {
+    "Valoir Atelier": {
+      "color_bg": "#FAF9F6",
+      "color_surface": "#FFFFFF",
+      "color_text": "#1A1A1A",
+      "color_text_muted": "#6B6864",
+      "color_accent": "#8C6D1F",
+      "color_border": "#E5E2DC",
+      "color_sale": "#8B261E",
+      "font_heading": "cormorant_garamond_n4",
+      "heading_scale": 100,
+      "font_body": "assistant_n4",
+      "body_scale": 100,
+      "favicon": "",
+      "page_width": 1440,
+      "card_aspect_ratio": "4/5",
+      "show_secondary_image": true,
+      "show_3d_badge": true,
+      "show_color_swatches": true,
+      "show_frame_shape_tag": true,
+      "enable_cart_notes": true,
+      "free_shipping_threshold": 250,
+      "force_rtl": false
+    }
   }
 }

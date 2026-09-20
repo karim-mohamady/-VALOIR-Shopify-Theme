@@ -36,6 +36,11 @@
                 {%- if item.variant.title != 'Default Title' -%}
                   <p style="font-size: 0.8125rem; color: var(--color-text-muted);">{{ item.variant.title }}</p>
                 {%- endif -%}
+                {%- if item.selling_plan_allocation != nil -%}
+                  <p class="cart-item-selling-plan" style="font-size: 0.8125rem; color: var(--color-accent); margin-top: 0.25rem;">
+                    🔄 {{ item.selling_plan_allocation.selling_plan.name }}
+                  </p>
+                {%- endif -%}
                 {%- if item.original_price != item.final_price -%}
                   <div style="font-size: 0.9375rem; font-weight: 500; margin-top: 0.25rem;">
                     <span style="color: var(--color-sale);">{{ item.final_price | money }}</span>

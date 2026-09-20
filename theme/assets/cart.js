@@ -287,6 +287,7 @@ class ValoirCart {
               <h3 class="cart-item-title">${item.product_title}</h3>
             </a>
             ${item.variant_title && item.variant_title !== 'Default Title' ? `<p style="font-size: 0.75rem; color: var(--color-text-muted);">${item.variant_title}</p>` : ''}
+            ${item.selling_plan_allocation && item.selling_plan_allocation.selling_plan ? `<p class="cart-item-selling-plan" style="font-size: 0.75rem; color: var(--color-accent); margin-top: 0.15rem;">🔄 ${item.selling_plan_allocation.selling_plan.name}</p>` : ''}
             <div class="cart-item-price" style="margin-top: 0.25rem;">
               <span style="font-weight: 500; ${hasDiscount ? 'color: var(--color-sale);' : ''}">${formatCartMoney(item.final_price)}</span>
               ${hasDiscount ? `<s style="color: var(--color-text-muted); font-size: 0.75rem; margin-inline-start: 0.35rem;">${formatCartMoney(item.original_price)}</s>` : ''}

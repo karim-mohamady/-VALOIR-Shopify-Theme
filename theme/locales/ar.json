@@ -109,6 +109,13 @@
       "sold_out": "نفد المخزون",
       "unavailable": "غير متوفر",
       "quantity": "الكمية",
+      "purchase_options": "خيارات الشراء",
+      "one_time_purchase": "شراء لمرة واحدة",
+      "subscribe_and_save": "اشتراك وتوفير",
+      "delivery_frequency": "تكرار التوصيل",
+      "subscription_discount": "وفّر {{ discount }} مع الاشتراك",
+      "from": "من",
+      "with_subscription": "مع الاشتراك",
       "regular_price": "السعر الأصلي",
       "sale_price": "سعر التخفيض",
       "unit_price": "سعر الوحدة",
@@ -254,6 +261,17 @@
       "shop_link": "زيارة أتيليه فالوار",
       "add_to_apple_wallet": "إضافة إلى محفظة Apple",
       "instructions": "استخدم هذا الرمز المخصص عند إتمام الطلب لاقتناء إطارات التيتانيوم الفاخرة أو العدسات المعدنية أو حجز استشارات بصرية خاصة."
+    }
+  },
+  "recipient": {
+    "form": {
+      "checkbox": "أرغب في إرسال هذا كهدية",
+      "email_label": "البريد الإلكتروني للمستلم",
+      "email": "recipient@example.com",
+      "name_label": "اسم المستلم",
+      "name": "الاسم",
+      "message_label": "رسالة (اختياري)",
+      "message": "أضف رسالة شخصية..."
     }
   }
 }
