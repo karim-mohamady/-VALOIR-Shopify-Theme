@@ -15,7 +15,7 @@
       "settings": {
         "badge": "INTERACTIVE 3D OPTICAL LAB",
         "title": "Micro-Precision Architecture in 360°",
-        "text": "Inspect our patented 5-barrel custom barrel hinges, bevel-cut Mazzucchelli acetate temples, and hand-finished mineral crystal optics directly in your browser or physical space."
+        "text": "Inspect our custom-engineered 5-barrel barrel hinges, bevel-cut Mazzucchelli acetate temples, and hand-finished mineral crystal optics directly in your browser or physical space."
       }
     },
     "featured-collection": {
@@ -62,9 +62,9 @@
     "testimonials": {
       "type": "testimonials",
       "blocks": {
-        "test_1": { "type": "testimonial", "settings": { "quote": "The titanium hinge damping is extraordinary. It feels like closing the door of a bespoke Swiss timepiece.", "author": "Hélène de Montfort", "publication": "Parisian Optical Gazette" } },
-        "test_2": { "type": "testimonial", "settings": { "quote": "Valoir achieves an optical instrument of surgical precision that feels weightless on the nose bridge.", "author": "Marco Santoro", "publication": "Milan Design Review" } },
-        "test_3": { "type": "testimonial", "settings": { "quote": "Their mineral polarized lenses provide crystal clarity without chromatic aberration or peripheral distortion.", "author": "Dr. Kenji Takahashi", "publication": "Tokyo Optometry Quarterly" } }
+        "test_1": { "type": "testimonial", "settings": { "quote": "The titanium hinge damping is extraordinary. It feels like closing the door of a bespoke Swiss timepiece.", "author": "Hélène M.", "publication": "" } },
+        "test_2": { "type": "testimonial", "settings": { "quote": "Valoir achieves an optical instrument of surgical precision that feels weightless on the nose bridge.", "author": "Marco S.", "publication": "" } },
+        "test_3": { "type": "testimonial", "settings": { "quote": "Their mineral polarized lenses provide crystal clarity without chromatic aberration or peripheral distortion.", "author": "Kenji T.", "publication": "" } }
       },
       "block_order": ["test_1", "test_2", "test_3"],
       "settings": {}
