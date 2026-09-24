@@ -2,7 +2,7 @@
   Renders breadcrumbs navigation
   Usage: {% render 'breadcrumb' %}
 {% endcomment %}
-<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="font-size: 0.75rem; color: var(--color-text-muted); padding: 1.25rem 0;">
+<nav class="breadcrumb-nav" aria-label="{{ 'accessibility.breadcrumb' | t | default: 'Breadcrumb' }}" style="font-size: 0.75rem; color: var(--color-text-muted); padding: 1.25rem 0;">
   <ol style="list-style: none; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
     <li><a href="{{ routes.root_url }}" style="color: var(--color-text-muted);">{{ 'general.home' | t | default: 'Home' }}</a></li>
     <li aria-hidden="true">/</li>

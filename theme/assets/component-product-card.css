@@ -6,12 +6,13 @@
   background-color: var(--color-surface);
   border-radius: var(--radius-sm);
   overflow: hidden;
-  transition: transform 300ms ease, box-shadow 300ms ease;
+  transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+  transform: translateY(-6px) scale(1.018);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
 }
 
 .product-card-media {
@@ -25,6 +26,8 @@
   justify-content: center;
 }
 
+.product-card-primary-image,
+.product-card-secondary-image,
 .product-card-image {
   width: 100%;
   height: 100%;
@@ -33,7 +36,7 @@
   transition: opacity 400ms ease, transform 600ms ease;
 }
 
-.product-card-image-secondary {
+.product-card-secondary-image {
   position: absolute;
   top: 0;
   left: 0;
@@ -41,11 +44,11 @@
   pointer-events: none;
 }
 
-.product-card:hover .product-card-image-secondary {
+.product-card:hover .product-card-secondary-image {
   opacity: 1;
 }
 
-.product-card:hover .product-card-image-primary {
+.product-card:hover .product-card-primary-image {
   opacity: 0;
 }
 
@@ -62,6 +65,65 @@
 [dir="rtl"] .product-card-badges {
   left: auto;
   right: 1rem;
+}
+
+/* Wishlist Heart Button */
+.product-card-wishlist-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 3;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: transform 200ms ease, color 200ms ease, background-color 200ms ease;
+}
+
+[dir="rtl"] .product-card-wishlist-btn {
+  right: auto;
+  left: 1rem;
+}
+
+.product-card-wishlist-btn:hover {
+  color: #DC2626;
+  background: #FFFFFF;
+  transform: scale(1.1);
+}
+
+.product-card-wishlist-btn.is-active {
+  color: #DC2626;
+  border-color: #FECACA;
+  background-color: #FEF2F2;
+}
+
+.product-card-wishlist-btn.is-active svg {
+  fill: #DC2626;
+}
+
+/* Quick Actions Overlay */
+.product-card-quick-actions {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.product-card:hover .product-card-quick-actions {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .product-card-info {

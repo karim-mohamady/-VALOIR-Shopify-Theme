@@ -2,6 +2,13 @@
   "general": {
     "home": "Home",
     "continue_shopping": "Continue Shopping",
+    "404": {
+      "title": "404",
+      "subtext": "Optical Blueprint Not Found",
+      "paragraph": "The optical silhouette or atelier page you are seeking cannot be located. It may have been retired or allocated to an archive.",
+      "return_home": "Return to Atelier Home",
+      "explore_collection": "Explore Eyewear Collection"
+    },
     "pagination": {
       "page": "Page {{ page }}"
     },
@@ -26,6 +33,7 @@
   },
   "accessibility": {
     "skip_to_text": "Skip to content",
+    "breadcrumb": "Breadcrumbs",
     "close": "Close",
     "open_menu": "Open navigation menu",
     "close_menu": "Close navigation menu",

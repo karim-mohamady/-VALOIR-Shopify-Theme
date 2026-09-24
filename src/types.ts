@@ -9,7 +9,7 @@ export interface EyewearProduct {
   price: number;
   compareAtPrice?: number;
   available: boolean;
-  has3D: boolean;
+  image?: string;
   colors: {
     name: string;
     hex: string;
@@ -44,14 +44,23 @@ export interface ThemeSettingsState {
   announcementText: string;
   showAnnouncement: boolean;
   colorScheme: 'alabaster' | 'obsidian' | 'champagne';
-  enable3DViewer: boolean;
-  autoRotate3D: boolean;
-  showCalipers: boolean;
-  lensCoatingEffect: 'high' | 'medium' | 'clear';
   cardAspectRatio: '4/5' | '1/1' | '16/9';
   showColorSwatches: boolean;
   freeShippingThreshold: number;
   language: 'en' | 'ar';
+  mirrorComponents?: boolean;
 }
 
-export type ViewMode = 'storefront' | 'product_detail' | 'theme_editor' | 'code_explorer' | 'compliance_audit';
+export interface RTLPerformanceMetric {
+  id: string;
+  timestamp: number;
+  fromLang: 'en' | 'ar';
+  toLang: 'en' | 'ar';
+  mirrored: boolean;
+  latencyMs: number;
+  clsDelta: number;
+  domNodeCount: number;
+  overflowDetected: boolean;
+}
+
+export type ViewMode = 'storefront' | 'product_detail' | 'blog_article' | 'theme_editor' | 'code_explorer' | 'compliance_audit';

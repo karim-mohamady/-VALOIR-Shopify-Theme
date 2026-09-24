@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{% if request.locale.iso_code == 'ar' or request.locale.iso_code contains 'ar-' or settings.force_rtl %}rtl{% else %}ltr{% endif %}">
+<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{% if request.locale.iso_code == 'ar' or request.locale.iso_code contains 'ar-' or settings.force_rtl or settings.mirror_components %}rtl{% else %}ltr{% endif %}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -90,7 +90,6 @@
     {%- if template contains 'product' -%}
       {{ 'component-product.css' | asset_url | stylesheet_tag }}
       {{ 'component-media-gallery.css' | asset_url | stylesheet_tag }}
-      {{ 'component-3d-viewer.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
 
     {%- if template contains 'cart' -%}
@@ -173,9 +172,6 @@
         <script defer="defer" src="https://cdn.shopify.com/shopifycloud/shopify-xr-js/assets/v1.0/shopify-xr.en.js"></script>
       {%- endif -%}
     {%- endif -%}
-    {%- if template contains 'product' or template == 'index' -%}
-      <script src="{{ '3d-viewer.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
   </head>
 
   <body class="template-{{ template.name | handle }} valoir-body" data-money-format="{{ shop.money_format }}">
@@ -204,17 +200,6 @@
         <div id="cart-drawer-body" class="drawer-body">
           <!-- Populated dynamically by cart.js -->
         </div>
-      </div>
-    </div>
-
-    <!-- Quick 3D AR Viewer Modal -->
-    <div id="valoir-3d-modal" class="valoir-modal" aria-hidden="true" role="dialog" aria-modal="true">
-      <div class="modal-overlay" data-action="close-modal"></div>
-      <div class="modal-content modal-3d-content">
-        <button type="button" class="modal-close" data-action="close-modal" aria-label="{{ 'accessibility.close' | t }}">
-          {% render 'icon', name: 'close' %}
-        </button>
-        <div id="valoir-3d-modal-viewport" class="modal-3d-viewport"></div>
       </div>
     </div>
 

@@ -35,12 +35,6 @@ class ValoirMediaGallery extends HTMLElement {
         thumb.classList.remove('is-active');
       }
     });
-
-    // If active item has a 3D viewer, notify it
-    const activeItem = this.querySelector(`.media-item.is-active valoir-3d-viewer`);
-    if (activeItem && typeof activeItem.onActivated === 'function') {
-      activeItem.onActivated();
-    }
   }
 }
 

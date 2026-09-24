@@ -134,3 +134,9 @@
   align-items: center;
   justify-content: center;
 }
+
+[dir="rtl"] .cart-count-badge {
+  right: auto;
+  left: -4px;
+}
+

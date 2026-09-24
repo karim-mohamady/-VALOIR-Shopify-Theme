@@ -20,6 +20,51 @@
 
 [dir="rtl"] {
   font-family: var(--font-arabic), var(--font-sans);
+  direction: rtl;
+  text-align: right;
+  letter-spacing: 0em;
+  line-height: 1.65;
+}
+
+[dir="ltr"] {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Mobile & High-DPI Legibility calibration for Noto Sans Arabic */
+@media (max-width: 768px) {
+  [dir="rtl"] body {
+    font-weight: 500;
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+
+  [dir="rtl"] p,
+  [dir="rtl"] span:not([class*="font-"]),
+  [dir="rtl"] a:not([class*="font-"]),
+  [dir="rtl"] button:not([class*="font-"]),
+  [dir="rtl"] input,
+  [dir="rtl"] select,
+  [dir="rtl"] label {
+    font-weight: 500;
+  }
+
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] .font-serif {
+    font-weight: 700;
+    line-height: 1.35;
+  }
+}
+
+/* RTL Logical Margin/Padding and Grid Alignment */
+[dir="rtl"] .grid {
+  direction: rtl;
+}
+
+[dir="rtl"] .valoir-grid {
+  direction: rtl;
 }
 
 body {

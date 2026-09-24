@@ -1,21 +1,21 @@
 <section class="valoir-404-section" style="padding: 6rem 1rem 8rem; text-align: center;">
   <div class="valoir-container" style="max-width: 680px;">
     <span style="font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-accent); font-weight: 600; display: block; margin-bottom: 1rem;">
-      OPTICAL BLUEPRINT NOT FOUND
+      {{ 'general.404.subtext' | t | default: 'OPTICAL BLUEPRINT NOT FOUND' }}
     </span>
     <h1 style="font-size: 3.5rem; font-weight: 300; margin-bottom: 1rem; line-height: 1.1;">
-      404
+      {{ 'general.404.title' | t | default: '404' }}
     </h1>
     <p style="font-size: 1.125rem; color: var(--color-text-muted); margin-bottom: 2.5rem; line-height: 1.6;">
-      The optical silhouette or atelier page you are seeking cannot be located. It may have been retired or allocated to an archive.
+      {{ 'general.404.paragraph' | t | default: 'The optical silhouette or atelier page you are seeking cannot be located. It may have been retired or allocated to an archive.' }}
     </p>
 
     <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem;">
       <a href="{{ routes.all_products_collection_url }}" class="btn-primary">
-        {{ 'general.continue_shopping' | t | default: 'Explore Eyewear Collection' }}
+        {{ 'general.404.explore_collection' | t | default: 'Explore Eyewear Collection' }}
       </a>
       <a href="{{ routes.root_url }}" class="btn-secondary">
-        Return to Atelier Home
+        {{ 'general.404.return_home' | t | default: 'Return to Atelier Home' }}
       </a>
     </div>
 

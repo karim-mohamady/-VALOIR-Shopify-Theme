@@ -39,8 +39,10 @@ async function packageTheme() {
   });
 
   fs.writeFileSync(outputPath, content);
+  const rootOutputPath = path.resolve(process.cwd(), 'valoir-eyewear-theme.zip');
+  fs.writeFileSync(rootOutputPath, content);
   const sizeKb = (content.length / 1024).toFixed(1);
-  console.log(`Successfully created ${outputPath} (${sizeKb} KB)`);
+  console.log(`Successfully created ${outputPath} and ${rootOutputPath} (${sizeKb} KB)`);
 }
 
 packageTheme().catch((err) => {

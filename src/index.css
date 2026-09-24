@@ -1,23 +1,221 @@
 @import "tailwindcss";
 
+@theme {
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-arabic: 'Noto Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 @layer base {
   :root {
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --font-arabic: 'Noto Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+    --arabic-weight-normal: 450;
+    --arabic-weight-medium: 550;
+    --arabic-weight-semibold: 650;
+    --arabic-weight-bold: 750;
+  }
+
+  /* Global logical box-model and layout normalization */
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
 
   body {
     font-family: var(--font-sans);
     background-color: #FAF9F6;
     color: #1A1A1A;
+    margin: 0;
+    padding: 0;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Global RTL Architecture & Typography switch */
   [dir="rtl"] {
     font-family: var(--font-arabic), var(--font-sans);
+    direction: rtl;
+    text-align: right;
+    letter-spacing: 0em; /* Disables Latin letter tracking which breaks Arabic cursive ligatures */
+    line-height: 1.65;
   }
 
+  /*
+   * Specialized font-weight and legibility calibration for 'Noto Sans Arabic'
+   * Arabic typography requires enhanced stroke weight (+50 to +100 optical boost)
+   * on high-DPI and mobile screens (< 768px) to prevent thin disconnected glyph stems,
+   * especially under bright ambient outdoor lighting on phone displays.
+   */
+  [dir="rtl"] {
+    font-weight: var(--arabic-weight-normal);
+  }
+
+  @media (max-width: 768px) {
+    [dir="rtl"] {
+      font-weight: 500; /* Elevated base weight on mobile viewports for optimal legibility */
+      -webkit-font-smoothing: subpixel-antialiased;
+    }
+
+    [dir="rtl"] .font-normal,
+    [dir="rtl"] p,
+    [dir="rtl"] span:not([class*="font-"]),
+    [dir="rtl"] a:not([class*="font-"]),
+    [dir="rtl"] button:not([class*="font-"]),
+    [dir="rtl"] input,
+    [dir="rtl"] select,
+    [dir="rtl"] label {
+      font-weight: 500;
+    }
+
+    [dir="rtl"] .font-medium {
+      font-weight: 600;
+    }
+
+    [dir="rtl"] .font-semibold {
+      font-weight: 700;
+    }
+
+    [dir="rtl"] .font-bold {
+      font-weight: 800;
+    }
+
+    /* Headings in Arabic need optical density adjustments on mobile */
+    [dir="rtl"] h1,
+    [dir="rtl"] h2,
+    [dir="rtl"] h3,
+    [dir="rtl"] h4,
+    [dir="rtl"] .font-serif {
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    /* Small captions & metadata badges in Arabic */
+    [dir="rtl"] .text-xs,
+    [dir="rtl"] .text-\[11px\],
+    [dir="rtl"] .text-\[10px\] {
+      font-weight: 550;
+      line-height: 1.5;
+    }
+  }
+
+  /* On tablet & desktop viewports, maintain refined optical balance */
+  @media (min-width: 769px) {
+    [dir="rtl"] .font-normal {
+      font-weight: 450;
+    }
+
+    [dir="rtl"] .font-medium {
+      font-weight: 550;
+    }
+
+    [dir="rtl"] .font-semibold {
+      font-weight: 650;
+    }
+
+    [dir="rtl"] .font-bold {
+      font-weight: 750;
+    }
+  }
+
+  [dir="ltr"] {
+    direction: ltr;
+    text-align: left;
+  }
+
+  /*
+   * Global CSS Reset for RTL:
+   * Maps physical margin/padding directional properties to logical inline-start/end
+   * when rendering inside [dir="rtl"] contexts, preventing layout breakages across all viewports.
+   */
+  [dir="rtl"] [class*="mr-"] {
+    margin-inline-end: revert;
+  }
+  [dir="rtl"] [class*="ml-"] {
+    margin-inline-start: revert;
+  }
+  [dir="rtl"] [class*="pr-"] {
+    padding-inline-end: revert;
+  }
+  [dir="rtl"] [class*="pl-"] {
+    padding-inline-start: revert;
+  }
+
+  /* Ensure grid containers and column flows strictly observe directional orientation */
+  [dir="rtl"] .grid,
+  [dir="rtl"] [class*="grid-cols-"] {
+    direction: rtl;
+  }
+
+  [dir="ltr"] .grid,
+  [dir="ltr"] [class*="grid-cols-"] {
+    direction: ltr;
+  }
+
+  /* Logical flex alignments for storefront UI elements */
+  [dir="rtl"] .flex-row-reverse-rtl {
+    flex-direction: row-reverse;
+  }
+
+  /* Standardize display typography */
   h1, h2, h3, .font-serif {
     font-family: var(--font-serif);
   }
+
+  /* Smooth scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /*
+   * Luxury Skeleton Shimmer & Perceived Performance Animation:
+   * Smooth, high-fidelity light reflection sweep across loading surfaces
+   */
+  @keyframes luxury-shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes subtle-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.72;
+    }
+  }
+
+  .animate-subtle-pulse {
+    animation: subtle-pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .shimmer-surface {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer-surface::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.45) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    animation: luxury-shimmer 1.9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    pointer-events: none;
+  }
+
+  [dir="rtl"] .shimmer-surface::after {
+    animation-direction: reverse;
+  }
 }
+

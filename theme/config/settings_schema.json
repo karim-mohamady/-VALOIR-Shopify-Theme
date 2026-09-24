@@ -151,8 +151,8 @@
       },
       {
         "type": "checkbox",
-        "id": "show_3d_badge",
-        "label": "Display 3D Interactive Badge",
+        "id": "show_wishlist_button",
+        "label": "Display Wishlist Heart Button on Cards",
         "default": true
       },
       {
@@ -195,6 +195,13 @@
         "id": "force_rtl",
         "label": "Force RTL Layout Mode (Preview / Testing)",
         "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "mirror_components",
+        "label": "Mirror All Components (Real-Time RTL Alignment Test)",
+        "default": false,
+        "info": "Applies RTL layout direction, spacing, and flex reversal to test components in real-time without switching language strings."
       }
     ]
   }

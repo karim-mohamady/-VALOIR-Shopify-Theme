@@ -98,7 +98,6 @@ class ValoirVariantPicker extends HTMLElement {
 
     if (this.currentVariant) {
       this.updateMedia();
-      this.update3DViewerFinish();
       this.publishVariantChange();
     }
   }
@@ -209,15 +208,6 @@ class ValoirVariantPicker extends HTMLElement {
     const gallery = document.querySelector('media-gallery');
     if (gallery && typeof gallery.setActiveMediaById === 'function') {
       gallery.setActiveMediaById(this.currentVariant.featured_media.id);
-    }
-  }
-
-  update3DViewerFinish() {
-    // Notify 3D viewer if frame color/acetate option changed
-    const viewer = document.querySelector('valoir-3d-viewer');
-    if (viewer && typeof viewer.updateMaterialColor === 'function') {
-      const colorOption = this.selectedOptions[0]; // Usually first option is Color / Finish
-      viewer.updateMaterialColor(colorOption);
     }
   }
 

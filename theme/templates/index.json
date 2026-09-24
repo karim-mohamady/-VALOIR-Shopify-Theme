@@ -7,15 +7,15 @@
         "heading": "Sculpted in Titanium. Defined by Vision.",
         "paragraph": "Experience eyewear engineered as sculptural form. Handcrafted in Sabae, Japan with multi-axis titanium mills and custom-tinted mineral glass.",
         "button_label": "Explore 2026 Collection",
-        "secondary_label": "3D Virtual Showroom"
+        "secondary_label": "Atelier Silhouettes"
       }
     },
     "eyewear-explorer": {
       "type": "eyewear-explorer",
       "settings": {
-        "badge": "INTERACTIVE 3D OPTICAL LAB",
-        "title": "Micro-Precision Architecture in 360°",
-        "text": "Inspect our custom-engineered 5-barrel barrel hinges, bevel-cut Mazzucchelli acetate temples, and hand-finished mineral crystal optics directly in your browser or physical space."
+        "badge": "HAUTE OPTICAL ATELIER",
+        "title": "Micro-Precision Architecture & Finishes",
+        "text": "Inspect our custom-engineered 5-barrel barrel hinges, bevel-cut Mazzucchelli acetate temples, and hand-finished mineral crystal optics directly in your browser."
       }
     },
     "featured-collection": {
@@ -73,7 +73,7 @@
       "type": "newsletter",
       "settings": {
         "heading": "Receive Invitations to Limited Bespoke Releases",
-        "subtext": "Members receive priority allocations for numbered 3D-milled titanium silhouettes and private salon trunk shows."
+        "subtext": "Members receive priority allocations for numbered precision-milled titanium silhouettes and private salon trunk shows."
       }
     }
   },

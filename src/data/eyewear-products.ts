@@ -12,7 +12,6 @@ export const EYEWEAR_PRODUCTS: EyewearProduct[] = [
     price: 420,
     compareAtPrice: 480,
     available: true,
-    has3D: true,
     colors: [
       { name: 'Onyx Black', hex: '#1A1A1A', frameHex: '#1A1A1A', lensHex: '#1C2E3D', lensOpacity: 0.8 },
       { name: 'Champagne Titanium', hex: '#C29B38', frameHex: '#C29B38', lensHex: '#2E3524', lensOpacity: 0.75 },
@@ -40,7 +39,6 @@ export const EYEWEAR_PRODUCTS: EyewearProduct[] = [
     lensMaterial: 'Polarized CR-39 Optical Polymer with Hydrophobic Coating',
     price: 460,
     available: true,
-    has3D: true,
     colors: [
       { name: 'Tortoise Amber', hex: '#5C3A21', frameHex: '#5C3A21', lensHex: '#35281E', lensOpacity: 0.82 },
       { name: 'Onyx Black', hex: '#1A1A1A', frameHex: '#1A1A1A', lensHex: '#202228', lensOpacity: 0.88 },
@@ -69,7 +67,6 @@ export const EYEWEAR_PRODUCTS: EyewearProduct[] = [
     price: 390,
     compareAtPrice: 440,
     available: true,
-    has3D: true,
     colors: [
       { name: 'Champagne Titanium', hex: '#C29B38', frameHex: '#C29B38', lensHex: '#7C8A96', lensOpacity: 0.4 },
       { name: 'Polished Silver', hex: '#B8B8B8', frameHex: '#B8B8B8', lensHex: '#8E99A2', lensOpacity: 0.35 },
@@ -97,7 +94,6 @@ export const EYEWEAR_PRODUCTS: EyewearProduct[] = [
     lensMaterial: 'Gradient Rose-Gold Mirror Optical Mineral Glass',
     price: 495,
     available: true,
-    has3D: true,
     colors: [
       { name: 'Onyx Black', hex: '#1A1A1A', frameHex: '#1A1A1A', lensHex: '#301824', lensOpacity: 0.82 },
       { name: 'Tortoise Amber', hex: '#5C3A21', frameHex: '#5C3A21', lensHex: '#38251B', lensOpacity: 0.78 }
@@ -124,7 +120,6 @@ export const EYEWEAR_PRODUCTS: EyewearProduct[] = [
     lensMaterial: 'Impact-Resistant Trivex Optical Glass with Dual Hardcoat',
     price: 440,
     available: true,
-    has3D: true,
     colors: [
       { name: 'Polished Silver', hex: '#B8B8B8', frameHex: '#B8B8B8', lensHex: '#9BA3AA', lensOpacity: 0.25 },
       { name: 'Champagne Titanium', hex: '#C29B38', frameHex: '#C29B38', lensHex: '#A29E90', lensOpacity: 0.3 }
@@ -140,5 +135,87 @@ export const EYEWEAR_PRODUCTS: EyewearProduct[] = [
     },
     description: 'Weighing less than three standard sheets of paper, the Fukui Minimalist is an exercise in optical distillation. Zero screws, zero welded seams—laser cut from a single sheet of Grade-4 titanium.',
     editorialStory: 'The purest expression of functional Japanese minimalism, worn effortlessly through endless workdays.'
+  },
+  {
+    id: 'prod-06',
+    title: 'Kyoto Zen Octagon 06',
+    handle: 'kyoto-zen-octagon-06',
+    subtitle: 'Octagonal Architectural Titanium',
+    shape: 'Geometric Square',
+    material: 'Forged Japanese Alpha-Titanium & Hand-Etched Filigree',
+    lensMaterial: 'Anti-Fatigue Clarity Glass with Diamond Hydrophobic Hardcoat',
+    price: 475,
+    compareAtPrice: 520,
+    available: true,
+    colors: [
+      { name: 'Matte Obsidian', hex: '#1C1C1E', frameHex: '#1C1C1E', lensHex: '#2C3539', lensOpacity: 0.8 },
+      { name: 'Champagne Gold', hex: '#C29B38', frameHex: '#C29B38', lensHex: '#3D382B', lensOpacity: 0.75 },
+      { name: 'Koto Silver', hex: '#A8A9AD', frameHex: '#A8A9AD', lensHex: '#4E5359', lensOpacity: 0.7 }
+    ],
+    specs: {
+      frameWidth: '140 mm',
+      bridgeWidth: '20 mm',
+      lensHeight: '43 mm',
+      templeLength: '145 mm',
+      weight: '19.8 grams',
+      origin: 'Sabae & Kyoto, Japan',
+      uvRating: '100% UVA/UVB Category 3 + AR'
+    },
+    description: 'An octagonal silhouette inspired by the geometric tea houses of Kyoto. Sculpted with faceted beveled outer profiles and bespoke filigree engravings along the inner titanium temples.',
+    editorialStory: 'Balances rigid geometric discipline with weightless facial ergonomics, crafted under master opticians in Fukui prefecture.'
+  },
+  {
+    id: 'prod-07',
+    title: 'Monaco GP Chrono 07',
+    handle: 'monaco-gp-chrono-07',
+    subtitle: 'Aerodynamic Racing Aviator',
+    shape: 'Aviator',
+    material: 'Forged Grade-5 Titanium with Knurled Bridge',
+    lensMaterial: 'Polarized Cobalt Marine Optical Glass',
+    price: 510,
+    compareAtPrice: 560,
+    available: true,
+    colors: [
+      { name: 'Racing Obsidian', hex: '#141416', frameHex: '#141416', lensHex: '#1A2F45', lensOpacity: 0.85 },
+      { name: 'Monaco Gold', hex: '#D4AF37', frameHex: '#D4AF37', lensHex: '#253545', lensOpacity: 0.8 }
+    ],
+    specs: {
+      frameWidth: '144 mm',
+      bridgeWidth: '17 mm',
+      lensHeight: '49 mm',
+      templeLength: '146 mm',
+      weight: '24.8 grams',
+      origin: 'Monte Carlo & Sabae, Japan',
+      uvRating: '100% Polarized UVA/UVB Category 3'
+    },
+    description: 'Born from high-speed Riviera grand tourers. Milled from a monolithic billet of Grade-5 aerospace titanium with dual knurled bridge vents that channel wind turbulence away from the brow.',
+    editorialStory: 'Tested along Mediterranean coastal ridges for total glare suppression and unyielding stability.'
+  },
+  {
+    id: 'prod-08',
+    title: 'Tokyo Ginza Atelier 08',
+    handle: 'tokyo-ginza-atelier-08',
+    subtitle: 'Classic Round Tortoiseshell Optical',
+    shape: 'Panto Round',
+    material: 'Cured Cellulose Acetate & Beta-Titanium Inlay',
+    lensMaterial: 'Anti-Reflective 1.74 High-Index Precision Glass',
+    price: 430,
+    available: true,
+    colors: [
+      { name: 'Havana Tortoise', hex: '#633B1E', frameHex: '#633B1E', lensHex: '#3D352E', lensOpacity: 0.5 },
+      { name: 'Onyx Black', hex: '#1A1A1A', frameHex: '#1A1A1A', lensHex: '#2A2A2E', lensOpacity: 0.6 }
+    ],
+    specs: {
+      frameWidth: '137 mm',
+      bridgeWidth: '21 mm',
+      lensHeight: '45 mm',
+      templeLength: '143 mm',
+      weight: '26.4 grams',
+      origin: 'Ginza, Tokyo & Fukui, Japan',
+      uvRating: '100% Blue-Light Block + UV400'
+    },
+    description: 'An homage to early Showa-era Tokyo literary salons. Hand-carved from cured tortoise cotton acetate with an internal hand-burnished beta-titanium wire skeleton.',
+    editorialStory: 'Crafted over 220 manual steps by generational artisans in Sabae, offering unmatched tactile warmth.'
   }
 ];
+

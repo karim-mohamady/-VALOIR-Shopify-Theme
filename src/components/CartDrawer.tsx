@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { X, Trash2, Plus, Minus, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { X, Trash2, Plus, Minus, ArrowRight, ArrowLeft, ShieldCheck, Sparkles } from 'lucide-react';
 import { CartLineItem } from '../types';
+import { TRANSLATIONS } from '../data/translations';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface CartDrawerProps {
   onUpdateQuantity: (key: string, delta: number) => void;
   onRemoveItem: (key: string) => void;
   threshold?: number;
+  language?: 'en' | 'ar';
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -17,8 +19,10 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   items,
   onUpdateQuantity,
   onRemoveItem,
-  threshold = 250
+  threshold = 250,
+  language = 'en'
 }) => {
+  const t = TRANSLATIONS[language];
   const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const remainingForFreeShipping = Math.max(0, threshold - subtotal);
   const shippingProgress = Math.min(100, (subtotal / threshold) * 100);
@@ -34,8 +38,10 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   if (!isOpen) return null;
 
+  const CheckoutArrow = language === 'ar' ? ArrowLeft : ArrowRight;
+
   return (
-    <div className="fixed inset-0 z-50 flex justify-end">
+    <div className={`fixed inset-0 z-50 flex ${language === 'ar' ? 'justify-start' : 'justify-end'}`}>
       {/* Backdrop */}
       <div
         onClick={onClose}
@@ -47,13 +53,17 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Shopping Bag"
-        className="relative w-full max-w-md bg-[#FAF9F6] h-full shadow-2xl flex flex-col z-10 border-l border-[#E5E2DC] animate-in slide-in-from-right duration-300"
+        aria-label={t.cart.title}
+        className={`relative w-full max-w-md bg-[#FAF9F6] h-full shadow-2xl flex flex-col z-10 duration-300 ${
+          language === 'ar'
+            ? 'border-e border-[#E5E2DC] animate-in slide-in-from-left'
+            : 'border-s border-[#E5E2DC] animate-in slide-in-from-right'
+        }`}
       >
         {/* Header */}
         <div className="p-5 border-b border-[#E5E2DC] flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <h2 className="font-serif text-xl text-[#1A1A1A]">Your Atelier Bag</h2>
+            <h2 className="font-serif text-xl text-[#1A1A1A]">{t.cart.title}</h2>
             <span className="text-xs bg-[#F2EFE9] text-[#6B6864] px-2 py-0.5 rounded-full font-mono">
               {items.reduce((sum, item) => sum + item.quantity, 0)}
             </span>
@@ -74,9 +84,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             <span className="flex items-center gap-1 text-[#1A1A1A]">
               <Sparkles className="w-3.5 h-3.5 text-[#C29B38]" />
               {remainingForFreeShipping === 0 ? (
-                <span className="text-[#C29B38] font-semibold">Complimentary Worldwide Courier Unlocked</span>
+                <span className="text-[#C29B38] font-semibold">{t.cart.freeShippingUnlocked}</span>
               ) : (
-                <>Add <strong className="text-[#1A1A1A]">${remainingForFreeShipping}.00</strong> for Free Express Shipping</>
+                <>
+                  {t.cart.freeShippingAdd} <strong className="text-[#1A1A1A] px-1">${remainingForFreeShipping}.00</strong> {language === 'ar' ? 'للحصول على شحن مجاني' : 'for Free Express Shipping'}
+                </>
               )}
             </span>
             <span className="text-[#6B6864] font-mono text-[11px]">{Math.round(shippingProgress)}%</span>
@@ -96,16 +108,16 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               <div className="w-16 h-16 rounded-full bg-[#F2EFE9] flex items-center justify-center text-[#6B6864] mb-3">
                 <ShieldCheck className="w-8 h-8 text-[#C29B38]" />
               </div>
-              <h3 className="font-serif text-lg text-[#1A1A1A] mb-1">Your bag is currently empty</h3>
+              <h3 className="font-serif text-lg text-[#1A1A1A] mb-1">{t.cart.emptyTitle}</h3>
               <p className="text-xs text-[#6B6864] max-w-xs mb-4">
-                Explore our Sabae titanium silhouettes, custom optical sunglasses, and 3D showroom models.
+                {t.cart.emptyDesc}
               </p>
               <button
                 type="button"
                 onClick={onClose}
                 className="px-6 py-2.5 bg-[#1A1A1A] text-[#FAF9F6] text-xs font-semibold uppercase tracking-wider rounded-sm hover:bg-black transition-colors"
               >
-                Browse Eyewear
+                {t.cart.browseButton}
               </button>
             </div>
           ) : (
@@ -160,7 +172,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     <button
                       type="button"
                       onClick={() => onRemoveItem(item.key)}
-                      className="p-1 text-[#6B6864] hover:text-red-600 transition-colors ml-auto"
+                      className="p-1 text-[#6B6864] hover:text-red-600 transition-colors ms-auto"
                       aria-label="Remove item"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -176,25 +188,25 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         {items.length > 0 && (
           <div className="p-5 bg-white border-t border-[#E5E2DC] flex flex-col gap-3">
             <div className="flex justify-between items-baseline">
-              <span className="text-xs uppercase tracking-wider text-[#6B6864] font-medium">Subtotal</span>
+              <span className="text-xs uppercase tracking-wider text-[#6B6864] font-medium">{t.cart.subtotal}</span>
               <span className="font-serif text-xl font-light text-[#1A1A1A]">
                 ${subtotal}.00
               </span>
             </div>
 
             <p className="text-[11px] text-[#6B6864]">
-              Taxes calculated at checkout. Includes complimentary bespoke microfiber cleaning cloth and rigid leather case.
+              {t.cart.taxNote}
             </p>
 
             <button
               type="button"
               onClick={() => {
-                alert(`Proceeding to Shopify Secure Checkout with ${items.length} optical items. Subtotal: $${subtotal}.00`);
+                alert(`${t.cart.checkoutAlert} (${items.length} ${language === 'ar' ? 'قطع' : 'items'}). ${t.cart.subtotal}: $${subtotal}.00`);
               }}
               className="w-full py-4 bg-[#1A1A1A] text-[#FAF9F6] text-xs font-bold uppercase tracking-[0.18em] rounded-sm hover:bg-black transition-colors flex items-center justify-center gap-2 shadow-sm"
             >
-              <span>Proceed to Checkout</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>{t.cart.checkoutButton}</span>
+              <CheckoutArrow className="w-4 h-4" />
             </button>
           </div>
         )}

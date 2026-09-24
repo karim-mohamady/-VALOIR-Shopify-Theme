@@ -22,7 +22,7 @@ const THEME_FILES: FileEntry[] = [
     {% render 'seo-meta' %}
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'theme.css' | asset_url | stylesheet_tag }}
-    <script src="{{ '3d-viewer.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
     {{ content_for_header }}
   </head>
@@ -51,7 +51,7 @@ const THEME_FILES: FileEntry[] = [
             {%- for media in product.media -%}
               {% render 'product-media', media: media, forloop: forloop %}
             {%- else -%}
-              <valoir-3d-viewer data-model-src="{{ product.metafields.eyewear.model_3d_url }}"></valoir-3d-viewer>
+              {{ 'product-1' | placeholder_svg_tag }}
             {%- endfor -%}
           </div>
         </media-gallery>
@@ -72,27 +72,39 @@ const THEME_FILES: FileEntry[] = [
 </section>`
   },
   {
-    path: 'theme/assets/3d-viewer.js',
-    name: '3d-viewer.js',
+    path: 'theme/assets/wishlist.js',
+    name: 'wishlist.js',
     type: 'js',
-    content: `class Valoir3DViewer extends HTMLElement {
-  connectedCallback() {
-    this.modelSrc = this.getAttribute('data-model-src') || 'valoir_frame_01.glb';
-    this.render();
-    this.initCanvasSimulation();
+    content: `// Valoir Native Client Wishlist Storage
+class ValoirWishlist {
+  constructor() {
+    this.storageKey = 'valoir_saved_eyewear';
+    this.init();
   }
 
-  render() {
-    this.innerHTML = \`
-      <div class="valoir-3d-container" style="position:relative; width:100%; height:100%; min-height:400px; background:#F8F6F2; border-radius:4px; overflow:hidden;">
-        <canvas class="valoir-3d-canvas" style="width:100%; height:100%; display:block; cursor:grab;"></canvas>
-        <div class="valoir-3d-badge" style="position:absolute; top:1rem; left:1rem; background:#1A1A1A; color:#FAF9F6; font-size:0.75rem; padding:0.25rem 0.5rem; text-transform:uppercase;">
-          3D Precision Studio
-        </div>
-      </div>\`;
+  init() {
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.product-card-wishlist-btn');
+      if (!btn) return;
+      e.preventDefault();
+      const id = btn.getAttribute('data-product-id');
+      this.toggle(id, btn);
+    });
+  }
+
+  toggle(id, btn) {
+    let saved = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
+    if (saved.includes(id)) {
+      saved = saved.filter(x => x !== id);
+      btn.classList.remove('is-active');
+    } else {
+      saved.push(id);
+      btn.classList.add('is-active');
+    }
+    localStorage.setItem(this.storageKey, JSON.stringify(saved));
   }
 }
-customElements.define('valoir-3d-viewer', Valoir3DViewer);`
+new ValoirWishlist();`
   },
   {
     path: 'theme/snippets/eyewear-specifications.liquid',
