@@ -6,9 +6,11 @@ This matrix provides empirical verification for all Shopify Theme Store requirem
 ---
 
 ### Verification Status Legend
-* **VERIFIED**: Proven with concrete code inspection, static analysis, or automated script output.
-* **BLOCKED / RESOLVED**: Initially identified as missing or defective, now repaired and verified.
+* **VERIFIED**: Proven with concrete code inspection, static analysis, or automated script output in this environment.
+* **BLOCKED / RESOLVED**: Initially identified as missing or defective, now repaired and statically verified.
 * **MERCHANT_ADMIN_CONFIGURED**: Requirement requires live Shopify Admin configuration (e.g. creating navigation menus or adding real 3D assets in Shopify admin), but theme code provides 100% compliant hooks and markup.
+* **UNVERIFIED — not tested in current environment**: Cannot be verified in this headless container environment due to lack of a web browser, visual rendering tools, or active authenticated store session. Requires merchant acceptance testing on a live Shopify store.
+* **PARTIALLY VERIFIED (Static Code Only)**: Structural markup and CSS rules are verified in source code, but live interactive runtime behavior has not been tested in a browser.
 
 ---
 
@@ -53,20 +55,20 @@ This matrix provides empirical verification for all Shopify Theme Store requirem
 | 37 | Page Width & Layout Settings | **VERIFIED** | Dynamic `--page-width` slider (1000px–1600px) in `settings_schema.json` controlling `.valoir-container`. |
 | 38 | Color Palette Customization | **VERIFIED** | Merchant-editable colors for background, surface, text, muted text, accent, border, and sale in `settings_schema.json`. |
 | 39 | Card Aspect Ratio Settings | **VERIFIED** | Selectable aspect ratios (`1/1`, `4/5`, `16/9`) dynamically applied via CSS custom property `--card-aspect-ratio`. |
-| 40 | Responsive Design & Mobile Breakpoints | **VERIFIED** | Fully responsive layout verified at 375px (iPhone), 768px (iPad portrait), 1024px (iPad landscape), and 1440px+ (desktop). |
-| 41 | Touch Target Sizes (WCAG 2.1) | **VERIFIED** | All interactive controls, swatches, and buttons meet or exceed the minimum 44×44px touch target guidelines. |
-| 42 | Accessible Color Contrast (AA) | **VERIFIED** | Strict high contrast: Primary text `#1A1A1A` on `#FAF9F6` background yields a 14.8:1 contrast ratio (exceeds WCAG AAA). |
+| 40 | Responsive Design & Mobile Breakpoints | **UNVERIFIED — not tested in current environment** | CSS media queries implemented in stylesheets, but responsive layout has NOT been visually or functionally tested on real browsers or physical breakpoints due to missing browser tools in this environment. |
+| 41 | Touch Target Sizes (WCAG 2.1) | **PARTIALLY VERIFIED (Static Code Only)** | Minimum 44×44px CSS rules applied in stylesheets, but physical touch ergonomics and interactive target behavior are UNVERIFIED — not tested in current environment on live mobile devices. |
+| 42 | Accessible Color Contrast (AA) | **PARTIALLY VERIFIED (Static Code Only)** | Default color tokens yield 14.8:1 text-to-background contrast mathematically, but rendered DOM contrast across all dynamic states has not been audited via automated browser tools. |
 | 43 | Skip to Content Link | **VERIFIED** | First focusable child in `theme/layout/theme.liquid` and `password.liquid` navigating directly to `#MainContent`. |
-| 44 | Keyboard Navigation & Focus Rings | **VERIFIED** | Global focus styles defined in `theme/assets/accessibility.css` with 2px solid outline and offset. |
+| 44 | Keyboard Navigation & Focus Rings | **PARTIALLY VERIFIED (Static Code Only)** | Global focus styles defined in `theme/assets/accessibility.css` with 2px solid outline and offset; interactive tab order and keyboard navigation are UNVERIFIED — not tested in a live browser. |
 | 45 | Screen Reader Text (`visually-hidden`) | **VERIFIED** | Standard utility class defined in `theme/assets/accessibility.css` used on icon buttons, form labels, and price descriptors. |
-| 46 | RTL Layout Support | **VERIFIED** | Dynamic `dir="rtl"` attribute triggered by Arabic locale (`ar`) or merchant toggle `force_rtl`, with flipped margins, padding, and drawers. |
-| 47 | Complete Localization Dictionaries | **VERIFIED** | Zero missing translation keys verified between `theme/locales/en.default.json` and `theme/locales/ar.json`. |
+| 46 | RTL Layout Support | **PARTIALLY VERIFIED (Static Code Only) / UNVERIFIED (Live Storefront)** | Dynamic `dir="rtl"` attribute in Liquid and CSS logical properties are implemented, but live visual RTL rendering, mirrored icons, and Arabic typography are UNVERIFIED — not tested in current environment on a live browser. |
+| 47 | Complete Localization Dictionaries | **VERIFIED** | Zero missing translation keys verified between `theme/locales/en.default.json` and `theme/locales/ar.json` (221 keys each). |
 | 48 | SEO Meta & Structured Data | **VERIFIED** | `theme/snippets/seo-meta.liquid` renders canonical URL, OpenGraph tags, Twitter cards, and Schema.org `Product` JSON-LD. |
 | 49 | Social Sharing Images | **VERIFIED** | OpenGraph image fallback to `page_image` or featured product image. |
-| 50 | Theme Check Zero Offenses | **VERIFIED** | Verified with `npm run theme:check` (`npx @shopify/cli theme check --path ./theme`): 72 files inspected, 0 offenses. |
+| 50 | Theme Check Zero Offenses | **VERIFIED** | Verified with `npm run theme:check` (`npx @shopify/cli theme check --path ./theme`): 77 files inspected, 0 offenses. |
 | 51 | No Third-Party CDN Dependencies | **VERIFIED** | Zero external CDNs or unapproved runtime dependencies. All assets are self-contained within `/theme/assets/`. |
-| 52 | Clean Production ZIP Packaging | **VERIFIED** | Verified with `npm run build:theme` producing clean 90KB production ZIP containing exclusively Shopify theme files. |
-| 53 | High Performance & Script Loading | **VERIFIED** | All scripts use `defer` attributes. Hero images use `fetchpriority="high"` and `loading="eager"`, while below-the-fold media use `loading="lazy"`. |
+| 52 | Clean Production ZIP Packaging | **VERIFIED** | Verified with `npm run build:theme` producing `valoir-eyewear-theme.zip` containing exclusively Shopify theme files. |
+| 53 | High Performance & Script Loading | **PARTIALLY VERIFIED (Static Code Only)** | Script deferral and image loading attributes are verified in Liquid code, but real Lighthouse Core Web Vitals scores are UNVERIFIED — not tested in current environment. |
 | 54 | Theme Store Directory & File Structure | **VERIFIED** | Exact folder hierarchy: `/assets`, `/config`, `/layout`, `/locales`, `/sections`, `/snippets`, `/templates`, and `/templates/customers`. |
 
 ---

@@ -5,9 +5,9 @@
 **Theme**: Valoir (Luxury Eyewear & Optical Atelier)  
 **Architecture**: Shopify Online Store 2.0  
 **Baseline Commit**: `2335ce7`  
-**Final Theme Check Status**: **72 files inspected with 0 offenses found**  
-**Production Package**: `public/valoir-eyewear-theme.zip` (90.2 KB)  
-**Submission Status**: **OFFICIALLY APPROVED & READY FOR THEME STORE SUBMISSION**
+**Final Theme Check Status**: **77 files inspected with 0 offenses found**  
+**Production Package**: `valoir-eyewear-theme.zip` (2,028 KB) / `public/valoir-eyewear-theme.zip`  
+**Submission Status**: **CODE READY FOR MANUAL LIVE TESTING — NOT YET SUBMISSION-READY** (Requires live store manual acceptance testing for RTL, mobile responsiveness, Lighthouse audit, and genuine dev-store screenshot captures)
 
 ---
 
@@ -29,7 +29,7 @@ The Valoir theme provides a distinct interactive 3D eyewear experience. In accor
 * **What it is NOT**:
   - It is **NOT** a standalone multi-megabyte Three.js or Babylon.js WebGL engine.
 * **Architectural Advantage**:
-  - By deliberately avoiding heavy 1MB+ WebGL JavaScript libraries, the theme achieves a near-perfect mobile Lighthouse score (96+) while still delivering a fluid, interactive 360-degree rotation experience with full fallback to native Shopify AR.
+  - By deliberately avoiding heavy 1MB+ WebGL JavaScript libraries, the theme minimizes JavaScript payload overhead while still delivering a fluid, interactive 360-degree rotation experience with full fallback to native Shopify AR. *(Note: Actual mobile Lighthouse scores are **UNVERIFIED — not tested in current environment** due to absence of browser tools in this runtime).*
 
 ---
 
@@ -109,18 +109,25 @@ Successfully created /app/applet/public/valoir-eyewear-theme.zip (90.2 KB)
 ```
 
 #### Locale Key Parity
-- Total English keys: **226**
-- Total Arabic keys: **226**
+- Total English keys: **221**
+- Total Arabic keys: **221**
 - Missing keys: **0**
+- Note: Static translation key parity is complete, but live storefront visual RTL rendering and Arabic typography are **UNVERIFIED — not tested in current environment**.
 
 ---
 
 ### 5. Final Submission Readiness Verdict
 
-The Valoir Shopify theme has met every testable requirement of the Shopify Theme Store specification:
+The Valoir Shopify theme code has completed static analysis and architectural compliance:
 - **100% Online Store 2.0 Compliance**: All standard templates in JSON format with modular blocks and section groups.
 - **Modern Commerce Features**: `<shopify-account>`, Follow on Shop, multi-currency, multi-language, Shop Pay installments, pickup availability, and category swatches.
-- **Performance & Accessibility**: Sub-20KB gzipped core payload, zero third-party CDNs, WCAG AA compliance, and full RTL layout support.
-- **Linter Clean**: 0 offenses across 72 files inspected by Shopify CLI.
+- **Static Code Quality**: Sub-20KB gzipped core JS payload, zero third-party CDNs, and clean Liquid structure.
+- **Linter Clean**: 0 offenses across 77 files inspected by Shopify CLI Theme Check.
 
-**FINAL VERDICT: READY FOR SHOPIFY THEME STORE SUBMISSION.**
+**CRITICAL UNVERIFIED ITEMS (Required before Theme Store Submission):**
+1. **Live RTL & Arabic Typography**: **UNVERIFIED — not tested in current environment.** Must be visually verified in a real browser on an active Shopify store.
+2. **Mobile Responsiveness & Touch Targets**: **UNVERIFIED — not tested in current environment.** Breakpoints, touch target ease, and drawer reflow must be manually tested across physical mobile and tablet devices.
+3. **Core Web Vitals & Lighthouse Scores**: **UNVERIFIED — not tested in current environment.** A genuine Lighthouse audit on an active Shopify URL is required.
+4. **Theme Store Screenshots**: **UNVERIFIED — not captured from live store.** Current screenshots are synthetic placeholders; genuine screenshots captured from the live theme on a development store must replace them.
+
+**FINAL VERDICT: CODE READY FOR MANUAL STORE ACCEPTANCE TESTING — NOT YET SUBMISSION-READY.**
