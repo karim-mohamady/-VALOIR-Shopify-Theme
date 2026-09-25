@@ -6,7 +6,14 @@
         {%- if featured_product.featured_media != blank -%}
           {{ featured_product.featured_media | image_url: width: 900 | image_tag: loading: 'lazy', alt: featured_product.title, style: 'width: 100%; height: 100%; object-fit: cover;' }}
         {%- else -%}
-          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          <img
+            src="{{ 'solarium_haute.jpg' | asset_url }}"
+            alt="Solarium Haute Couture Eyewear"
+            loading="lazy"
+            width="900"
+            height="900"
+            style="width: 100%; height: 100%; object-fit: cover;"
+          >
         {%- endif -%}
       </div>
       <div>

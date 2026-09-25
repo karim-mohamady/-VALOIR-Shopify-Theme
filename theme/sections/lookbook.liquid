@@ -17,9 +17,24 @@
           {%- if block.settings.image != blank -%}
             {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', alt: block.settings.title, style: 'position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;' }}
           {%- else -%}
-            <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0.25;">
-              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            </div>
+            {%- liquid
+              case forloop.index
+                when 1
+                  assign lookbook_fallback = 'sora_panto.jpg'
+                when 2
+                  assign lookbook_fallback = 'grand_palais.jpg'
+                else
+                  assign lookbook_fallback = 'kyoto_zen.jpg'
+              endcase
+            -%}
+            <img
+              src="{{ lookbook_fallback | asset_url }}"
+              alt="{{ block.settings.title | escape }}"
+              loading="lazy"
+              width="900"
+              height="1200"
+              style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;"
+            >
           {%- endif -%}
           <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, transparent 100%); pointer-events: none;"></div>
           <div style="position: relative; z-index: 2;">

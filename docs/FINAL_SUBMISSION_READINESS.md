@@ -6,7 +6,7 @@
 **Architecture**: Shopify Online Store 2.0  
 **Baseline Commit**: `2335ce7`  
 **Final Theme Check Status**: **77 files inspected with 0 offenses found**  
-**Production Package**: `valoir-eyewear-theme.zip` (2,028 KB) / `public/valoir-eyewear-theme.zip`  
+**Production Package**: `valoir-eyewear-theme.zip` (11.59 MB) / `public/valoir-eyewear-theme.zip`  
 **Submission Status**: **CODE READY FOR MANUAL LIVE TESTING — NOT YET SUBMISSION-READY** (Requires live store manual acceptance testing for RTL, mobile responsiveness, Lighthouse audit, and genuine dev-store screenshot captures)
 
 ---
@@ -109,8 +109,8 @@ Successfully created /app/applet/public/valoir-eyewear-theme.zip (90.2 KB)
 ```
 
 #### Locale Key Parity
-- Total English keys: **221**
-- Total Arabic keys: **221**
+- Total English keys: **222**
+- Total Arabic keys: **222**
 - Missing keys: **0**
 - Note: Static translation key parity is complete, but live storefront visual RTL rendering and Arabic typography are **UNVERIFIED — not tested in current environment**.
 

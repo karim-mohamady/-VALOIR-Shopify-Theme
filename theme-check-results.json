@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-25T15:03:08Z",
+  "timestamp": "2026-09-25T15:42:08Z",
   "tool": "@shopify/cli/4.8.2",
   "command": "npx @shopify/cli theme check --path ./theme",
   "environment": "linux-x64, node-v22.23.2",

@@ -44,7 +44,15 @@
           class="product-card-primary-image"
         >
       {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg product-card-primary-image' }}
+        <img
+          src="{{ 'aero_titanium.jpg' | asset_url }}"
+          alt="{{ product.title | default: 'Valoir Eyewear' | escape }}"
+          loading="lazy"
+          decoding="async"
+          width="600"
+          height="750"
+          class="product-card-primary-image"
+        >
       {%- endif -%}
 
       {%- if product.media[1] != blank and settings.card_hover_reveal_secondary -%}

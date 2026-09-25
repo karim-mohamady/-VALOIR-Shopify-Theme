@@ -62,7 +62,7 @@ This matrix provides empirical verification for all Shopify Theme Store requirem
 | 44 | Keyboard Navigation & Focus Rings | **PARTIALLY VERIFIED (Static Code Only)** | Global focus styles defined in `theme/assets/accessibility.css` with 2px solid outline and offset; interactive tab order and keyboard navigation are UNVERIFIED — not tested in a live browser. |
 | 45 | Screen Reader Text (`visually-hidden`) | **VERIFIED** | Standard utility class defined in `theme/assets/accessibility.css` used on icon buttons, form labels, and price descriptors. |
 | 46 | RTL Layout Support | **PARTIALLY VERIFIED (Static Code Only) / UNVERIFIED (Live Storefront)** | Dynamic `dir="rtl"` attribute in Liquid and CSS logical properties are implemented, but live visual RTL rendering, mirrored icons, and Arabic typography are UNVERIFIED — not tested in current environment on a live browser. |
-| 47 | Complete Localization Dictionaries | **VERIFIED** | Zero missing translation keys verified between `theme/locales/en.default.json` and `theme/locales/ar.json` (221 keys each). |
+| 47 | Complete Localization Dictionaries | **VERIFIED** | Zero missing translation keys verified between `theme/locales/en.default.json` and `theme/locales/ar.json` (222 keys each). |
 | 48 | SEO Meta & Structured Data | **VERIFIED** | `theme/snippets/seo-meta.liquid` renders canonical URL, OpenGraph tags, Twitter cards, and Schema.org `Product` JSON-LD. |
 | 49 | Social Sharing Images | **VERIFIED** | OpenGraph image fallback to `page_image` or featured product image. |
 | 50 | Theme Check Zero Offenses | **VERIFIED** | Verified with `npm run theme:check` (`npx @shopify/cli theme check --path ./theme`): 77 files inspected, 0 offenses. |

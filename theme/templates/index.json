@@ -7,7 +7,7 @@
         "heading": "Sculpted in Titanium. Defined by Vision.",
         "paragraph": "Experience eyewear engineered as sculptural form. Handcrafted in Sabae, Japan with multi-axis titanium mills and custom-tinted mineral glass.",
         "button_label": "Explore 2026 Collection",
-        "secondary_label": "Atelier Silhouettes"
+        "secondary_label": "Curated Silhouettes"
       }
     },
     "eyewear-explorer": {
@@ -29,14 +29,59 @@
     "frame-shapes": {
       "type": "frame-shapes",
       "blocks": {
-        "shape_1": { "type": "shape", "settings": { "title": "Aviator", "subtitle": "Double Bridge" } },
-        "shape_2": { "type": "shape", "settings": { "title": "Geometric Square", "subtitle": "Block Acetate" } },
-        "shape_3": { "type": "shape", "settings": { "title": "Panto Round", "subtitle": "Vintage Optical" } },
-        "shape_4": { "type": "shape", "settings": { "title": "Cat-Eye Sculpt", "subtitle": "Haute Couture" } },
-        "shape_5": { "type": "shape", "settings": { "title": "Ultra-Thin Titanium", "subtitle": "Featherlight" } }
+        "shape_1": {
+          "type": "shape",
+          "settings": {
+            "title": "Aviator",
+            "subtitle": "Double Bridge",
+            "tag": "Calibrated",
+            "fallback_asset": "aviator_silhouette.jpg"
+          }
+        },
+        "shape_2": {
+          "type": "shape",
+          "settings": {
+            "title": "Geometric Square",
+            "subtitle": "Block Acetate",
+            "tag": "Mazzucchelli",
+            "fallback_asset": "square_silhouette.jpg"
+          }
+        },
+        "shape_3": {
+          "type": "shape",
+          "settings": {
+            "title": "Panto Round",
+            "subtitle": "Vintage Optical",
+            "tag": "Beta Titanium",
+            "fallback_asset": "panto_silhouette.jpg"
+          }
+        },
+        "shape_4": {
+          "type": "shape",
+          "settings": {
+            "title": "Cat-Eye Sculpt",
+            "subtitle": "Haute Couture",
+            "tag": "Beveled",
+            "fallback_asset": "cateye_silhouette.jpg"
+          }
+        },
+        "shape_5": {
+          "type": "shape",
+          "settings": {
+            "title": "Ultra-Thin Titanium",
+            "subtitle": "Featherlight 14g",
+            "tag": "Grade-4 Pure",
+            "fallback_asset": "titan_silhouette.jpg"
+          }
+        }
       },
       "block_order": ["shape_1", "shape_2", "shape_3", "shape_4", "shape_5"],
-      "settings": {}
+      "settings": {
+        "badge": "CURATED SILHOUETTES",
+        "title": "Architectural Geometries",
+        "description": "Discover silhouettes calibrated to facial geometry and optical focal points.",
+        "counter_badge": "5 Iconic Optical Silhouettes"
+      }
     },
     "editorial": {
       "type": "editorial",

@@ -21,7 +21,7 @@
 
 ## 3. Bilingual Parity (EN & AR RTL)
 - **Locales:** `locales/en.default.json` and `locales/ar.json`
-- **Total Keys:** 221 keys in English, 221 keys in Arabic
+- **Total Keys:** 222 keys in English, 222 keys in Arabic
 - **Missing Keys in Arabic:** 0
 - **Missing Keys in English:** 0
 - **Corrupted Characters:** 0
@@ -48,5 +48,5 @@
   - `product.jpg`: 1200x896
   - `collection.jpg`: 1200x896
   - **Capture Status:** **UNVERIFIED — not captured from live store.** These are synthetic placeholder images, NOT real captures taken from a published Shopify theme in a live browser.
-- **Production Package:** `valoir-eyewear-theme.zip` (2,028 KB) verified code-complete and packaged for Shopify Admin upload.
+- **Production Package:** `valoir-eyewear-theme.zip` (11.59 MB) includes high-resolution photography assets, verified code-complete and packaged for Shopify Admin upload.
 - **Theme Store Submission Status:** **NOT YET SUBMISSION-READY.** The theme code passes static Theme Check with 0 offenses, but manual acceptance testing (visual layout, mobile responsive behavior, RTL rendering, real Lighthouse audit, and live store screenshot capture) must be completed before submission.

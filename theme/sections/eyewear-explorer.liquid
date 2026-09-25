@@ -87,13 +87,13 @@
         finishBtns.forEach(b => {
           b.classList.remove('is-active');
           b.setAttribute('aria-checked', 'false');
-          b.style.background = 'transparent';
-          b.style.color = '#FAF9F6';
+          b.style.background = 'var(--color-surface, #FFFFFF)';
+          b.style.color = 'var(--color-text, #1A1A1A)';
         });
         btn.classList.add('is-active');
         btn.setAttribute('aria-checked', 'true');
-        btn.style.background = '#FAF9F6';
-        btn.style.color = '#121214';
+        btn.style.background = '#1A1A1A';
+        btn.style.color = '#FAF9F6';
 
         if (viewer && typeof viewer.updateMaterialColor === 'function') {
           viewer.updateMaterialColor(finish);

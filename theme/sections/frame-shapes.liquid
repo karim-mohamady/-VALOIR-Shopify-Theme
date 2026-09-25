@@ -1,67 +1,379 @@
-<section class="valoir-frame-shapes-section" style="padding: 5rem 0; background-color: #F6F3ED; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+<section id="curated-silhouettes" class="valoir-frame-shapes-section" style="padding: clamp(3.5rem, 6vw, 6rem) 0; background-color: #F8F7F4; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);" data-section-id="{{ section.id }}">
   <div class="valoir-container">
-    <div style="text-align: center; max-width: 600px; margin: 0 auto 3rem auto;">
-      <span style="font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-accent); font-weight: 600; display: block; margin-bottom: 0.5rem;">
-        OPTICAL CURATION
-      </span>
-      <h2 style="font-size: 2.25rem; font-weight: 300;">Shop by Frame Architecture</h2>
-      <p style="font-size: 0.875rem; color: var(--color-text-muted); margin-top: 0.75rem;">
-        Discover silhouettes calibrated to facial geometry and optical focal points.
-      </p>
+    <!-- Header Block: Eyebrow badge, Title, Description, and Counter Badge -->
+    <div class="valoir-silhouettes-header" style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: clamp(2rem, 4vw, 3rem);">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1rem;">
+        <div style="max-width: 680px;">
+          <span style="font-size: 0.6875rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--color-accent, #C29B38); font-weight: 600; display: block; margin-bottom: 0.5rem; font-family: var(--font-mono, monospace);">
+            {{ section.settings.badge | default: "CURATED SILHOUETTES" | escape }}
+          </span>
+          <h2 style="font-family: var(--font-serif); font-size: clamp(2rem, 3.8vw, 3rem); font-weight: 300; line-height: 1.15; color: var(--color-text, #1A1A1A); margin: 0; letter-spacing: -0.02em;">
+            {{ section.settings.title | default: "Architectural Geometries" | escape }}
+          </h2>
+          <p style="font-size: 0.875rem; color: var(--color-text-muted, #6B6864); margin-top: 0.75rem; margin-bottom: 0; line-height: 1.6; max-width: 540px;">
+            {{ section.settings.description | default: "Discover silhouettes calibrated to facial geometry and optical focal points." | escape }}
+          </p>
+        </div>
+
+        {%- if section.settings.counter_badge != blank -%}
+          <div class="valoir-silhouettes-counter" style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-weight: 500; color: #8C8882;">
+            <span>{{ section.settings.counter_badge | escape }}</span>
+          </div>
+        {%- endif -%}
+      </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem;">
+    <!-- 5 Distinct Silhouette Cards Grid -->
+    <div class="valoir-silhouettes-grid">
       {%- for block in section.blocks -%}
-        <a href="{{ block.settings.link | default: routes.all_products_collection_url }}" class="frame-shape-card" style="background: var(--color-surface); padding: 1.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.85rem; transition: transform 250ms ease, border-color 250ms ease;">
-          <div style="width: 64px; height: 32px; border: 1.5px solid var(--color-text); border-radius: {% if block.settings.title contains 'Round' %}50%{% elsif block.settings.title contains 'Cat' %}20px 4px{% else %}2px{% endif %}; display: flex; align-items: center; justify-content: center;">
-            <div style="width: 8px; height: 1.5px; background: var(--color-text);"></div>
+        {%- liquid
+          assign card_image = block.settings.image
+          assign fallback_file = block.settings.fallback_asset
+          if fallback_file == blank
+            case forloop.index
+              when 1
+                assign fallback_file = 'aviator_silhouette.jpg'
+              when 2
+                assign fallback_file = 'square_silhouette.jpg'
+              when 3
+                assign fallback_file = 'panto_silhouette.jpg'
+              when 4
+                assign fallback_file = 'cateye_silhouette.jpg'
+              when 5
+                assign fallback_file = 'titan_silhouette.jpg'
+            endcase
+          endif
+        -%}
+        <a
+          href="{{ block.settings.link | default: routes.all_products_collection_url }}"
+          class="valoir-silhouette-card group"
+          {{ block.shopify_attributes }}
+        >
+          <!-- Card Image Container -->
+          <div class="valoir-silhouette-media">
+            {%- if card_image != blank -%}
+              {{ card_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: block.settings.title, class: 'valoir-silhouette-img' }}
+            {%- else -%}
+              <img
+                src="{{ fallback_file | asset_url }}"
+                alt="{{ block.settings.title | escape }}"
+                loading="lazy"
+                width="600"
+                height="450"
+                class="valoir-silhouette-img"
+              >
+            {%- endif -%}
+
+            <!-- Micro-tag Badge (e.g. Calibrated, Mazzucchelli) -->
+            {%- if block.settings.tag != blank -%}
+              <span class="valoir-silhouette-tag">
+                {{ block.settings.tag | escape }}
+              </span>
+            {%- endif -%}
+
+            <div class="valoir-silhouette-overlay"></div>
           </div>
-          <span style="font-family: var(--font-serif); font-size: 1.125rem; color: var(--color-text);">{{ block.settings.title }}</span>
-          <span style="font-size: 0.6875rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.08em;">{{ block.settings.subtitle }}</span>
+
+          <!-- Card Content Body -->
+          <div class="valoir-silhouette-body">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+                <h3 class="valoir-silhouette-title">
+                  {{ block.settings.title | escape }}
+                </h3>
+                <svg class="valoir-silhouette-arrow icon icon-arrow-right" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </div>
+              <p class="valoir-silhouette-subtitle">
+                {{ block.settings.subtitle | escape }}
+              </p>
+            </div>
+
+            <!-- Footer: Explore & Atelier Wordmark -->
+            <div class="valoir-silhouette-footer">
+              <span class="valoir-silhouette-action">
+                {{ 'general.explore' | t | default: 'Explore' }}
+              </span>
+              <span class="valoir-silhouette-brand">Valoir</span>
+            </div>
+          </div>
         </a>
       {%- endfor -%}
     </div>
   </div>
 </section>
 
+<style>
+  .valoir-silhouettes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  @media (min-width: 640px) {
+    .valoir-silhouettes-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .valoir-silhouettes-grid {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.25rem;
+    }
+  }
+  .valoir-silhouette-card {
+    position: relative;
+    background: #FFFFFF;
+    border: 1px solid #E6E3DC;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+  }
+  .valoir-silhouette-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px -6px rgba(26, 26, 26, 0.08);
+    border-color: #1A1A1A;
+  }
+  .valoir-silhouette-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: #F2EFE9;
+    overflow: hidden;
+  }
+  .valoir-silhouette-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .valoir-silhouette-card:hover .valoir-silhouette-img {
+    transform: scale(1.08);
+  }
+  .valoir-silhouette-tag {
+    position: absolute;
+    top: 0.625rem;
+    left: 0.625rem;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    color: #1A1A1A;
+    font-size: 0.5625rem;
+    text-transform: uppercase;
+    font-family: var(--font-mono, monospace);
+    font-weight: 600;
+    padding: 0.15rem 0.55rem;
+    border-radius: 9999px;
+    border: 1px solid #E5E2DC;
+    letter-spacing: 0.05em;
+  }
+  [dir="rtl"] .valoir-silhouette-tag {
+    left: auto;
+    right: 0.625rem;
+  }
+  .valoir-silhouette-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .valoir-silhouette-card:hover .valoir-silhouette-overlay {
+    opacity: 1;
+  }
+  .valoir-silhouette-body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    background: #FFFFFF;
+  }
+  .valoir-silhouette-title {
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
+    color: #1A1A1A;
+    font-weight: 500;
+    line-height: 1.25;
+    margin: 0;
+    transition: color 0.2s ease;
+  }
+  .valoir-silhouette-card:hover .valoir-silhouette-title {
+    color: var(--color-accent, #C29B38);
+  }
+  .valoir-silhouette-arrow {
+    color: #A6A29A;
+    transition: transform 0.2s ease, color 0.2s ease;
+    flex-shrink: 0;
+  }
+  .valoir-silhouette-card:hover .valoir-silhouette-arrow {
+    color: #1A1A1A;
+    transform: translateX(3px);
+  }
+  [dir="rtl"] .valoir-silhouette-arrow {
+    transform: rotate(180deg);
+  }
+  [dir="rtl"] .valoir-silhouette-card:hover .valoir-silhouette-arrow {
+    transform: rotate(180deg) translateX(3px);
+  }
+  .valoir-silhouette-subtitle {
+    font-size: 0.6875rem;
+    font-family: var(--font-mono, monospace);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #73706A;
+    margin-top: 0.35rem;
+    margin-bottom: 0;
+  }
+  .valoir-silhouette-footer {
+    margin-top: 0.85rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid #F0ECE4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.625rem;
+  }
+  .valoir-silhouette-action {
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #8C8882;
+  }
+  .valoir-silhouette-brand {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.8125rem;
+    color: var(--color-accent, #C29B38);
+  }
+</style>
+
 {% schema %}
 {
-  "name": "Shop by Frame Shape",
-  "settings": [],
+  "name": "Curated Silhouettes",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge",
+      "default": "CURATED SILHOUETTES"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Architectural Geometries"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Discover silhouettes calibrated to facial geometry and optical focal points."
+    },
+    {
+      "type": "text",
+      "id": "counter_badge",
+      "label": "Counter Badge",
+      "default": "5 Iconic Optical Silhouettes"
+    }
+  ],
   "blocks": [
     {
       "type": "shape",
-      "name": "Frame Shape",
+      "name": "Silhouette Card",
       "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Image"
+        },
+        {
+          "type": "text",
+          "id": "fallback_asset",
+          "label": "Fallback Asset Name",
+          "default": "aviator_silhouette.jpg"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Material / Engineering Tag",
+          "default": "Calibrated"
+        },
         {
           "type": "text",
           "id": "title",
-          "label": "Shape Name",
+          "label": "Silhouette Name",
           "default": "Aviator"
         },
         {
           "type": "text",
           "id": "subtitle",
-          "label": "Subtext",
-          "default": "Sculpted Titanium"
+          "label": "Optical Subtitle",
+          "default": "Double Bridge"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Collection Link"
+          "label": "Collection / Filter Link"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Shop by Frame Shape",
+      "name": "Curated Silhouettes",
       "blocks": [
-        { "type": "shape", "settings": { "title": "Aviator", "subtitle": "Double Bridge" } },
-        { "type": "shape", "settings": { "title": "Geometric Square", "subtitle": "Block Acetate" } },
-        { "type": "shape", "settings": { "title": "Panto Round", "subtitle": "Vintage Optical" } },
-        { "type": "shape", "settings": { "title": "Cat-Eye Sculpt", "subtitle": "Haute Couture" } },
-        { "type": "shape", "settings": { "title": "Ultra-Thin Titanium", "subtitle": "Featherlight" } }
+        {
+          "type": "shape",
+          "settings": {
+            "title": "Aviator",
+            "subtitle": "Double Bridge",
+            "tag": "Calibrated",
+            "fallback_asset": "aviator_silhouette.jpg"
+          }
+        },
+        {
+          "type": "shape",
+          "settings": {
+            "title": "Geometric Square",
+            "subtitle": "Block Acetate",
+            "tag": "Mazzucchelli",
+            "fallback_asset": "square_silhouette.jpg"
+          }
+        },
+        {
+          "type": "shape",
+          "settings": {
+            "title": "Panto Round",
+            "subtitle": "Vintage Optical",
+            "tag": "Beta Titanium",
+            "fallback_asset": "panto_silhouette.jpg"
+          }
+        },
+        {
+          "type": "shape",
+          "settings": {
+            "title": "Cat-Eye Sculpt",
+            "subtitle": "Haute Couture",
+            "tag": "Beveled",
+            "fallback_asset": "cateye_silhouette.jpg"
+          }
+        },
+        {
+          "type": "shape",
+          "settings": {
+            "title": "Ultra-Thin Titanium",
+            "subtitle": "Featherlight 14g",
+            "tag": "Grade-4 Pure",
+            "fallback_asset": "titan_silhouette.jpg"
+          }
+        }
       ]
     }
   ]

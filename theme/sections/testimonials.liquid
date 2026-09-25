@@ -57,9 +57,24 @@
                   style="width: 100%; height: 100%; object-fit: cover;"
                 />
               {%- else -%}
-                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 1.125rem; color: #6B6864; font-weight: 500;">
-                  {{ block.settings.author | slice: 0, 1 | upcase }}
-                </div>
+                {%- liquid
+                  case forloop.index
+                    when 1
+                      assign reviewer_avatar = 'reviewer_elena.jpg'
+                    when 2
+                      assign reviewer_avatar = 'reviewer_kenji.jpg'
+                    else
+                      assign reviewer_avatar = 'reviewer_marcus.jpg'
+                  endcase
+                -%}
+                <img
+                  src="{{ reviewer_avatar | asset_url }}"
+                  alt="{{ block.settings.author | escape }}"
+                  loading="lazy"
+                  width="120"
+                  height="120"
+                  style="width: 100%; height: 100%; object-fit: cover;"
+                />
               {%- endif -%}
             </div>
 
