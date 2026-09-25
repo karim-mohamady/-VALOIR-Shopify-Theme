@@ -18,13 +18,49 @@
       {%- else -%}
         <!-- Fallback preview cards if collection not set -->
         {%- for i in (1..4) -%}
-          <div class="product-card">
-            <div class="product-card-media" style="position: relative; aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; background: #F4F1EC;">
-              {{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+          <div class="product-card" style="border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface);">
+            <div class="product-card-media" style="position: relative; aspect-ratio: 4 / 5; display: flex; align-items: center; justify-content: center; background: #F8F7F4;">
+              <span class="badge-shape" style="position: absolute; top: 1rem; left: 1rem; z-index: 2;">
+                {%- case i -%}
+                  {%- when 1 -%}Aviator
+                  {%- when 2 -%}Geometric Square
+                  {%- when 3 -%}Panto Round
+                  {%- when 4 -%}Ultra-Thin Titanium
+                {%- endcase -%}
+              </span>
+              <svg width="120" height="60" viewBox="0 0 120 60" fill="none" stroke="#1A1A1A" stroke-width="1.75" style="opacity: 0.85;">
+                <circle cx="35" cy="30" r="22" />
+                <circle cx="85" cy="30" r="22" />
+                <path d="M57 26 Q60 22 63 26" />
+                <line x1="13" y1="28" x2="3" y2="28" />
+                <line x1="107" y1="28" x2="117" y2="28" />
+              </svg>
             </div>
-            <div class="product-card-info">
-              <span class="product-card-shape">{{ 'products.product.vendor' | t | default: 'Atelier Specimen' }}</span>
-              <h3 class="product-card-title">{{ 'onboarding.product_title' | t | default: 'Maison Eyewear Silhouette' }}</h3>
+            <div class="product-card-info" style="padding: 1.25rem 1rem;">
+              <span class="product-card-shape" style="font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent); font-weight: 600; display: block; margin-bottom: 0.25rem;">
+                {%- case i -%}
+                  {%- when 1 -%}Sabae Beta-Titanium
+                  {%- when 2 -%}Block Acetate 10mm
+                  {%- when 3 -%}Vintage Optical
+                  {%- when 4 -%}Featherlight 14g
+                {%- endcase -%}
+              </span>
+              <h3 class="product-card-title" style="font-family: var(--font-serif); font-size: 1.125rem; font-weight: 400; color: var(--color-text); margin-bottom: 0.5rem;">
+                {%- case i -%}
+                  {%- when 1 -%}Aero-Titanium 01
+                  {%- when 2 -%}Grand Palais 04
+                  {%- when 3 -%}Sora Minimalist 02
+                  {%- when 4 -%}Fukui Pure Titanium 05
+                {%- endcase -%}
+              </h3>
+              <div style="font-size: 0.875rem; font-weight: 500; color: var(--color-text);">
+                {%- case i -%}
+                  {%- when 1 -%}$420.00
+                  {%- when 2 -%}$460.00
+                  {%- when 3 -%}$390.00
+                  {%- when 4 -%}$480.00
+                {%- endcase -%}
+              </div>
             </div>
           </div>
         {%- endfor -%}

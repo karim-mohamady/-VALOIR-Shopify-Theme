@@ -79,9 +79,9 @@
   },
   "order": [
     "hero",
-    "eyewear-explorer",
-    "featured-collection",
     "frame-shapes",
+    "featured-collection",
+    "eyewear-explorer",
     "editorial",
     "product-showcase",
     "lookbook",
