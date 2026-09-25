@@ -1,0 +1,66 @@
+{% comment %}
+  Renders complementary products using Shopify Search & Discovery Recommendations API
+  Usage: {% render 'complementary-products', product: product, section_id: section.id %}
+{% endcomment %}
+
+<div
+  class="complementary-products-container"
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section_id | default: section.id }}&product_id={{ product.id }}&limit=3&intent=complementary"
+  data-product-id="{{ product.id }}"
+  data-section-id="{{ section_id | default: section.id }}"
+>
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <div class="complementary-products-section" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border);">
+      <h3 style="font-family: var(--font-serif); font-size: 1.125rem; font-weight: 400; margin-bottom: 1rem; color: var(--color-text);">
+        {{ 'products.product.complementary' | t }}
+      </h3>
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        {%- for comp_product in recommendations.products -%}
+          <div style="display: flex; gap: 1rem; align-items: center; background: var(--color-surface); border: 1px solid var(--color-border); padding: 0.75rem 1rem; border-radius: var(--radius-sm);">
+            <div style="width: 54px; height: 54px; border-radius: var(--radius-sm); overflow: hidden; background: var(--color-bg); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+              {%- if comp_product.featured_image != blank -%}
+                {{ comp_product.featured_image | image_url: width: 120, height: 120 | image_tag: loading: 'lazy', alt: comp_product.title, style: 'width: 100%; height: 100%; object-fit: cover;' }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div style="flex: 1; min-width: 0;">
+              <a href="{{ comp_product.url }}" style="font-size: 0.8125rem; font-weight: 500; color: var(--color-text); text-decoration: none; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                {{ comp_product.title }}
+              </a>
+              <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.25rem;">
+                {{ comp_product.price | money }}
+              </div>
+            </div>
+            <div>
+              <a href="{{ comp_product.url }}" class="btn-secondary" style="font-size: 0.6875rem; padding: 0.375rem 0.75rem; white-space: nowrap;">
+                {{ 'products.product.view' | t | default: 'View' }}
+              </a>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+  (function() {
+    const container = document.querySelector('.complementary-products-container[data-url]');
+    if (!container) return;
+    const url = container.dataset.url;
+    if (!url || container.querySelector('.complementary-products-section')) return;
+
+    fetch(url)
+      .then(response => response.text())
+      .then(text => {
+        const html = document.createElement('div');
+        html.innerHTML = text;
+        const recommendations = html.querySelector('.complementary-products-section');
+        if (recommendations) {
+          container.innerHTML = recommendations.outerHTML;
+        }
+      })
+      .catch(() => {});
+  })();
+</script>

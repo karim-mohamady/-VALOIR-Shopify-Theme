@@ -1,0 +1,213 @@
+<section class="valoir-product-section" data-section-id="{{ section.id }}">
+  <div class="valoir-container">
+    {% render 'breadcrumb' %}
+
+    <div class="product-page-grid">
+      <!-- Media Gallery Column with 2D & 3D WebGL Viewer -->
+      <div class="product-media-column">
+        <media-gallery class="media-gallery" aria-label="Product Media Gallery">
+          <div class="media-gallery-viewer">
+            {%- for media in product.media -%}
+              {% render 'product-media', media: media, is_first: forloop.first %}
+            {%- else -%}
+              <div class="media-item is-active" data-media-id="placeholder">
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {%- endfor -%}
+          </div>
+
+          <!-- Thumbnails -->
+          {%- if product.media.size > 1 -%}
+            <div class="media-thumbnails">
+              {%- for media in product.media -%}
+                <button
+                  type="button"
+                  class="media-thumbnail-btn {% if forloop.first %}is-active{% endif %}"
+                  data-thumbnail-id="{{ media.id }}"
+                  aria-label="Load media {{ forloop.index }}"
+                >
+                  <img
+                    src="{{ media | image_url: width: 120, height: 120 }}"
+                    alt="{{ media.alt | default: product.title | escape }}"
+                    width="120"
+                    height="120"
+                    loading="lazy"
+                  >
+                  {%- if media.media_type == 'model' -%}
+                    <span class="media-thumbnail-3d-badge">3D</span>
+                  {%- endif -%}
+                </button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          {%- assign first_3d_model = product.media | where: "media_type", "model" | first -%}
+          {%- if first_3d_model -%}
+            <button
+              type="button"
+              class="btn-secondary valoir-xr-button"
+              data-shopify-xr
+              data-shopify-model3d-id="{{ first_3d_model.id }}"
+              data-shopify-title="{{ product.title | escape }}"
+              data-shopify-xr-hidden
+              style="width: 100%; margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+              <span>{{ 'products.product.view_in_ar' | t | default: 'View in your space (AR)' }}</span>
+            </button>
+            <script id="ModelJson-{{ section.id }}" type="application/json">
+              {{ product.media | where: 'media_type', 'model' | json }}
+            </script>
+          {%- endif -%}
+        </media-gallery>
+      </div>
+
+      <!-- Product Information Column (Block-based OS 2.0) -->
+      <div class="product-info-column">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              {% render block %}
+
+            {%- when 'vendor' -%}
+              <div class="product-vendor-badge" {{ block.shopify_attributes }}>
+                {{ product.vendor | default: "Maison Valoir • Sabae Atelier" }}
+              </div>
+
+            {%- when 'title' -%}
+              <h1 class="product-title" {{ block.shopify_attributes }}>
+                {{ product.title }}
+              </h1>
+
+            {%- when 'price' -%}
+              <div id="price-{{ section.id }}" {{ block.shopify_attributes }}>
+                {% render 'price', product: product, use_variant: true %}
+                {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
+                  <div class="product__tax-caption" style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.35rem;">
+                    {%- if cart.taxes_included -%}
+                      {{ 'products.product.include_taxes' | t }}
+                    {%- endif -%}
+                    {%- if shop.shipping_policy.body != blank -%}
+                      {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+
+            {%- when 'variant_picker' -%}
+              <div {{ block.shopify_attributes }}>
+                {% render 'variant-picker', product: product, section_id: section.id %}
+              </div>
+
+            {%- when 'buy_buttons' -%}
+              <div {{ block.shopify_attributes }}>
+                {% render 'product-form', product: product, section_id: section.id, block: block %}
+                {% render 'pickup-availability', product: product %}
+              </div>
+
+            {%- when 'description' -%}
+              <div class="product-description" style="font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-muted);" {{ block.shopify_attributes }}>
+                {{ product.description }}
+              </div>
+
+            {%- when 'eyewear_specs' -%}
+              <div {{ block.shopify_attributes }}>
+                {% render 'eyewear-specifications', product: product %}
+              </div>
+
+            {%- when 'complementary' -%}
+              <div {{ block.shopify_attributes }}>
+                {% render 'complementary-products', product: product, section_id: section.id %}
+              </div>
+
+            {%- when 'custom_liquid' -%}
+              <div {{ block.shopify_attributes }}>
+                {{ block.settings.custom_liquid }}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Information",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "vendor",
+      "name": "Vendor / Atelier",
+      "limit": 1
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant Picker",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "label": "Show accelerated dynamic checkout buttons",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "eyewear_specs",
+      "name": "Eyewear Specifications & Calipers",
+      "limit": 1
+    },
+    {
+      "type": "complementary",
+      "name": "Complementary Products",
+      "limit": 1
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "vendor" },
+      { "type": "title" },
+      { "type": "price" },
+      { "type": "variant_picker" },
+      { "type": "buy_buttons" },
+      { "type": "description" },
+      { "type": "eyewear_specs" }
+    ]
+  }
+}
+{% endschema %}

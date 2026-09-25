@@ -1,0 +1,208 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Valoir",
+    "theme_version": "1.0.0",
+    "theme_author": "Valoir Design Studio",
+    "theme_documentation_url": "https://valoir-eyewear.com/docs",
+    "theme_support_url": "https://valoir-eyewear.com/support"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Palette"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background Color",
+        "default": "#FAF9F6"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Surface / Card Background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text Primary",
+        "default": "#1A1A1A"
+      },
+      {
+        "type": "color",
+        "id": "color_text_muted",
+        "label": "Text Muted / Subtitles",
+        "default": "#6B6864"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent / Highlight",
+        "default": "#8C6D1F"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Borders & Dividers",
+        "default": "#E5E2DC"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Sale / Special Tag",
+        "default": "#8B261E"
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1000,
+        "max": 1600,
+        "step": 40,
+        "unit": "px",
+        "label": "Maximum Page Width",
+        "default": 1440
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Headings"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading Font",
+        "default": "cormorant_garamond_n4"
+      },
+      {
+        "type": "range",
+        "id": "heading_scale",
+        "min": 90,
+        "max": 130,
+        "step": 5,
+        "unit": "%",
+        "label": "Heading Scale",
+        "default": 100
+      },
+      {
+        "type": "header",
+        "content": "Body"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body Font",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "range",
+        "id": "body_scale",
+        "min": 90,
+        "max": 115,
+        "step": 5,
+        "unit": "%",
+        "label": "Body Scale",
+        "default": 100
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "Will be scaled down to 32 x 32px"
+      }
+    ]
+  },
+  {
+    "name": "Product Cards",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_aspect_ratio",
+        "label": "Card Image Aspect Ratio",
+        "options": [
+          { "value": "1/1", "label": "Square (1:1)" },
+          { "value": "4/5", "label": "Editorial Portrait (4:5)" },
+          { "value": "16/9", "label": "Widescreen Eyewear (16:9)" }
+        ],
+        "default": "4/5"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_secondary_image",
+        "label": "Show Secondary Image / On-Model View on Hover",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_wishlist_button",
+        "label": "Display Wishlist Heart Button on Cards",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_color_swatches",
+        "label": "Show Acetate / Metal Color Swatches",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_frame_shape_tag",
+        "label": "Show Frame Shape Classification Tag",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_cart_notes",
+        "label": "Enable Optical Prescription / Order Notes",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping threshold",
+        "default": 250,
+        "info": "Threshold in store currency units for free shipping indicator (e.g. 250 for $250). Set to 0 to disable."
+      }
+    ]
+  },
+  {
+    "name": "Internationalization & RTL",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "force_rtl",
+        "label": "Force RTL Layout Mode (Preview / Testing)",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "mirror_components",
+        "label": "Mirror All Components (Real-Time RTL Alignment Test)",
+        "default": false,
+        "info": "Applies RTL layout direction, spacing, and flex reversal to test components in real-time without switching language strings."
+      }
+    ]
+  }
+]

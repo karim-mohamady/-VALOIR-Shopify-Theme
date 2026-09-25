@@ -1,0 +1,49 @@
+<section class="valoir-collection-section" style="padding: 3rem 0 6rem 0;">
+  <div class="valoir-container">
+    {% render 'breadcrumb' %}
+
+    <div style="margin-bottom: 3.5rem; text-align: center; max-width: 720px; margin-inline: auto;">
+      <h1 style="font-size: clamp(2.25rem, 4vw, 3.25rem); font-weight: 300; margin-bottom: 1rem;">
+        {{ collection.title }}
+      </h1>
+      {%- if collection.description != blank -%}
+        <div style="font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-muted);">
+          {{ collection.description }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Collection Dynamic Faceted Filtering and Sorting -->
+    {% render 'facets', results: collection, enable_filtering: true, enable_sorting: true %}
+
+    <!-- Product Grid -->
+    {%- paginate collection.products by 12 -%}
+      {%- if collection.products.size == 0 -%}
+        <div style="text-align: center; padding: 5rem 1rem;">
+          <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">No Eyewear Found</h2>
+          <p style="color: var(--color-text-muted); margin-bottom: 1.5rem;">Try adjusting your filters or search terms.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn-primary">Browse All Eyewear</a>
+        </div>
+      {%- else -%}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2.25rem;">
+          {%- for product in collection.products -%}
+            {% render 'product-card', product: product %}
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          <div style="margin-top: 4rem; display: flex; justify-content: center; gap: 0.5rem;">
+            {{ paginate | default_pagination }}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Grid",
+  "settings": []
+}
+{% endschema %}

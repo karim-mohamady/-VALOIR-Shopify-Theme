@@ -1,0 +1,11 @@
+{% comment %}
+  Renders Shopify native 3D Model Media (model-viewer) or Eyewear Explorer component
+  Usage: {% render '3d-media', media: media %}
+{% endcomment %}
+<div class="valoir-3d-wrapper" style="width: 100%; height: 100%;">
+  {%- if media -%}
+    {{ media | model_viewer_tag: image_size: '800x', reveal: 'interaction', toggleable: true, data-model-id: media.id }}
+  {%- elsif product.metafields.eyewear.model_3d_url != blank -%}
+    <valoir-3d-viewer data-model-src="{{ product.metafields.eyewear.model_3d_url | escape }}"></valoir-3d-viewer>
+  {%- endif -%}
+</div>

@@ -1,0 +1,91 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "subheading": "HAUTE LUNETTERIE & OPTICAL ARCHITECTURE",
+        "heading": "Sculpted in Titanium. Defined by Vision.",
+        "paragraph": "Experience eyewear engineered as sculptural form. Handcrafted in Sabae, Japan with multi-axis titanium mills and custom-tinted mineral glass.",
+        "button_label": "Explore 2026 Collection",
+        "secondary_label": "Atelier Silhouettes"
+      }
+    },
+    "eyewear-explorer": {
+      "type": "eyewear-explorer",
+      "settings": {
+        "badge": "HAUTE OPTICAL ATELIER",
+        "title": "Micro-Precision Architecture & Finishes",
+        "text": "Inspect our custom-engineered 5-barrel barrel hinges, bevel-cut Mazzucchelli acetate temples, and hand-finished mineral crystal optics directly in your browser."
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "subheading": "ICONIC SILHOUETTES",
+        "title": "Featured Eyewear",
+        "products_to_show": 4
+      }
+    },
+    "frame-shapes": {
+      "type": "frame-shapes",
+      "blocks": {
+        "shape_1": { "type": "shape", "settings": { "title": "Aviator", "subtitle": "Double Bridge" } },
+        "shape_2": { "type": "shape", "settings": { "title": "Geometric Square", "subtitle": "Block Acetate" } },
+        "shape_3": { "type": "shape", "settings": { "title": "Panto Round", "subtitle": "Vintage Optical" } },
+        "shape_4": { "type": "shape", "settings": { "title": "Cat-Eye Sculpt", "subtitle": "Haute Couture" } },
+        "shape_5": { "type": "shape", "settings": { "title": "Ultra-Thin Titanium", "subtitle": "Featherlight" } }
+      },
+      "block_order": ["shape_1", "shape_2", "shape_3", "shape_4", "shape_5"],
+      "settings": {}
+    },
+    "editorial": {
+      "type": "editorial",
+      "settings": {
+        "subheading": "THE SABAÈ ATELIER",
+        "heading": "One Hundred & Sixty Steps of Optical Mastery"
+      }
+    },
+    "product-showcase": {
+      "type": "product-showcase",
+      "settings": {}
+    },
+    "lookbook": {
+      "type": "lookbook",
+      "blocks": {
+        "look_1": { "type": "look", "settings": { "title": "Sora Minimalist", "subtitle": "Ultra-thin Titanium 01" } },
+        "look_2": { "type": "look", "settings": { "title": "Palais Solarium", "subtitle": "Block Acetate 04" } },
+        "look_3": { "type": "look", "settings": { "title": "Kyoto Geometry", "subtitle": "Panto Double Bridge" } }
+      },
+      "block_order": ["look_1", "look_2", "look_3"],
+      "settings": {}
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "test_1": { "type": "testimonial", "settings": { "quote": "The titanium hinge damping is extraordinary. It feels like closing the door of a bespoke Swiss timepiece.", "author": "Hélène M.", "publication": "" } },
+        "test_2": { "type": "testimonial", "settings": { "quote": "Valoir achieves an optical instrument of surgical precision that feels weightless on the nose bridge.", "author": "Marco S.", "publication": "" } },
+        "test_3": { "type": "testimonial", "settings": { "quote": "Their mineral polarized lenses provide crystal clarity without chromatic aberration or peripheral distortion.", "author": "Kenji T.", "publication": "" } }
+      },
+      "block_order": ["test_1", "test_2", "test_3"],
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Receive Invitations to Limited Bespoke Releases",
+        "subtext": "Members receive priority allocations for numbered precision-milled titanium silhouettes and private salon trunk shows."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "eyewear-explorer",
+    "featured-collection",
+    "frame-shapes",
+    "editorial",
+    "product-showcase",
+    "lookbook",
+    "testimonials",
+    "newsletter"
+  ]
+}

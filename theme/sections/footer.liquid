@@ -1,0 +1,184 @@
+{%- assign root_url_prefix = routes.root_url -%}
+{%- unless root_url_prefix == '/' -%}
+  {%- assign root_url_prefix = root_url_prefix | append: '/' -%}
+{%- endunless -%}
+{%- assign root_url_prefix = root_url_prefix | replace: '//', '/' -%}
+
+<footer class="site-footer" role="contentinfo">
+  <div class="valoir-container">
+    <div class="footer-grid">
+      <!-- Column 1: Brand & Philosophy -->
+      <div>
+        <h3 class="header-logo" style="color: #FAF9F6; margin-bottom: 1rem; font-size: 1.5rem;">VALOIR</h3>
+        <p style="font-size: 0.8125rem; line-height: 1.7; color: #A3A09A; max-width: 320px;">
+          {{ 'sections.footer.brand_story' | t }}
+        </p>
+      </div>
+
+      <!-- Column 2: Navigation Links -->
+      <div>
+        <h4 class="footer-heading">{{ 'sections.footer.quick_links' | t }}</h4>
+        <ul class="footer-links">
+          <li><a href="{{ routes.all_products_collection_url }}" class="footer-link">{{ 'sections.header.optical' | t }}</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}" class="footer-link">{{ 'sections.header.sunglasses' | t }}</a></li>
+          <li><a href="{{ root_url_prefix }}pages/about" class="footer-link">{{ 'sections.header.atelier' | t }}</a></li>
+          <li><a href="{{ root_url_prefix }}blogs/journal" class="footer-link">{{ 'sections.header.lookbook' | t }}</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Client Concierge -->
+      <div>
+        <h4 class="footer-heading">{{ 'sections.footer.customer_care' | t }}</h4>
+        <ul class="footer-links">
+          <li><a href="{{ root_url_prefix }}pages/caliper-fit-guide" class="footer-link">{{ 'sections.footer.eyewear_care' | t }}</a></li>
+          <li><a href="{{ root_url_prefix }}pages/shipping-returns" class="footer-link">{{ 'sections.footer.bespoke_delivery' | t }}</a></li>
+          <li><a href="{{ root_url_prefix }}pages/contact" class="footer-link">{{ 'sections.footer.private_consultations' | t }}</a></li>
+          <li><a href="{{ root_url_prefix }}pages/faq" class="footer-link">{{ 'sections.footer.faq' | t }}</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Private Register -->
+      <div>
+        <h4 class="footer-heading">{{ 'general.newsletter.heading' | t }}</h4>
+        <p style="font-size: 0.8125rem; color: #A3A09A; margin-bottom: 1rem;">
+          {{ 'general.newsletter.subtext' | t }}
+        </p>
+        {%- form 'customer', class: 'footer-newsletter-form' -%}
+          <div style="display: flex; gap: 0.5rem;">
+            <label for="FooterNewsletterEmail" class="visually-hidden">{{ 'general.newsletter.email_placeholder' | t }}</label>
+            <input
+              id="FooterNewsletterEmail"
+              type="email"
+              name="contact[email]"
+              placeholder="{{ 'general.newsletter.email_placeholder' | t }}"
+              aria-label="{{ 'general.newsletter.email_placeholder' | t }}"
+              required
+              style="padding: 0.75rem 1rem; background: #222222; border: 1px solid #333333; color: #FAF9F6; font-size: 0.8125rem; border-radius: 2px; width: 100%; outline: none;"
+            >
+            <button type="submit" class="btn-primary" aria-label="{{ 'general.newsletter.submit' | t | default: 'Subscribe' }}" style="background: #FAF9F6; color: #141414; padding: 0.75rem 1.25rem;">
+              &rarr;
+            </button>
+          </div>
+        {%- endform -%}
+
+        {%- if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop -%}
+          <div class="footer__follow-on-shop" style="margin-top: 1.5rem;">
+            {{ shop | login_button: action: 'follow' }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- Localization & Payment Icons -->
+    {%- if section.settings.enable_country_selector or section.settings.enable_language_selector or section.settings.show_payment_icons -%}
+      <div class="footer-localization" style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; padding-top: 2rem; margin-top: 2rem; border-top: 1px solid #2A2A2A;">
+        {%- if section.settings.enable_country_selector or section.settings.enable_language_selector -%}
+          {%- form 'localization', id: 'FooterLocalizationForm', class: 'localization-form' -%}
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+              {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+                <div class="localization-selector">
+                  <label for="FooterCountrySelect" class="visually-hidden">Country/region</label>
+                  <select
+                    name="country_code"
+                    id="FooterCountrySelect"
+                    onchange="this.form.submit()"
+                    style="background: #222; color: #FAF9F6; border: 1px solid #333; padding: 0.5rem 0.75rem; border-radius: 2px; font-size: 0.8125rem; font-family: inherit;"
+                  >
+                    {%- for country in localization.available_countries -%}
+                      <option value="{{ country.iso_code }}" {%- if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+                        {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+              {%- endif -%}
+
+              {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+                <div class="localization-selector">
+                  <label for="FooterLanguageSelect" class="visually-hidden">Language</label>
+                  <select
+                    name="language_code"
+                    id="FooterLanguageSelect"
+                    onchange="this.form.submit()"
+                    style="background: #222; color: #FAF9F6; border: 1px solid #333; padding: 0.5rem 0.75rem; border-radius: 2px; font-size: 0.8125rem; font-family: inherit;"
+                  >
+                    {%- for language in localization.available_languages -%}
+                      <option value="{{ language.iso_code }}" {%- if language.iso_code == localization.language.iso_code %} selected{% endif %}>
+                        {{ language.endonym_name | capitalize }}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+              {%- endif -%}
+              <noscript>
+                <button type="submit" class="btn-secondary" style="color: #FAF9F6; border-color: #444; padding: 0.4rem 0.8rem; font-size: 0.75rem;">Apply</button>
+              </noscript>
+            </div>
+          {%- endform -%}
+        {%- endif -%}
+
+        {%- if section.settings.show_payment_icons and shop.enabled_payment_types != empty -%}
+          <div class="footer-payment-icons" style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+            {%- for type in shop.enabled_payment_types -%}
+              <span class="payment-icon" style="display: inline-block; line-height: 1;">
+                {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+              </span>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div>{{ 'sections.footer.copyright' | t }}</div>
+      {%- if shop.policies.size > 0 -%}
+        <div class="footer-policies" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          {%- for policy in shop.policies -%}
+            {%- if policy.url != blank -%}
+              <a href="{{ policy.url }}" style="color: #A3A09A; font-size: 0.75rem; text-decoration: underline;">
+                {{ policy.title }}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      <div>
+        <small>&copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url }}</small>
+        <small style="margin-inline-start: 0.5rem;">{{ powered_by_link }}</small>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "label": "Enable Country/Region Selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "label": "Enable Language Selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_follow_on_shop",
+      "label": "Enable Follow on Shop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show Payment Icons",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

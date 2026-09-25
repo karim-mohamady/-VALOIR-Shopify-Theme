@@ -1,0 +1,209 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{% if request.locale.iso_code == 'ar' or request.locale.iso_code contains 'ar-' or settings.force_rtl or settings.mirror_components %}rtl{% else %}ltr{% endif %}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_accent }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- render 'seo-meta' -%}
+
+    <!-- Typography & Dynamic Theme Variables via Shopify Settings -->
+    {%- style -%}
+      {%- if settings.font_heading != blank -%}
+        {{ settings.font_heading | font_face: font_display: 'swap' }}
+        {%- assign font_heading_bold = settings.font_heading | font_modify: 'weight', 'bolder' -%}
+        {%- if font_heading_bold -%}
+          {{ font_heading_bold | font_face: font_display: 'swap' }}
+        {%- endif -%}
+        {%- assign font_heading_italic = settings.font_heading | font_modify: 'style', 'italic' -%}
+        {%- if font_heading_italic -%}
+          {{ font_heading_italic | font_face: font_display: 'swap' }}
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- if settings.font_body != blank -%}
+        {{ settings.font_body | font_face: font_display: 'swap' }}
+        {%- assign font_body_bold = settings.font_body | font_modify: 'weight', 'bolder' -%}
+        {%- if font_body_bold -%}
+          {{ font_body_bold | font_face: font_display: 'swap' }}
+        {%- endif -%}
+        {%- assign font_body_italic = settings.font_body | font_modify: 'style', 'italic' -%}
+        {%- if font_body_italic -%}
+          {{ font_body_italic | font_face: font_display: 'swap' }}
+        {%- endif -%}
+      {%- endif -%}
+
+      :root {
+        --color-bg: {{ settings.color_bg | default: '#FAF9F6' }};
+        --color-surface: {{ settings.color_surface | default: '#FFFFFF' }};
+        --color-text: {{ settings.color_text | default: '#1A1A1A' }};
+        --color-text-muted: {{ settings.color_text_muted | default: '#6B6864' }};
+        --color-accent: {{ settings.color_accent | default: '#8C6D1F' }};
+        --color-border: {{ settings.color_border | default: '#E5E2DC' }};
+        --color-sale: {{ settings.color_sale | default: '#8B261E' }};
+
+        {%- if settings.font_heading != blank -%}
+          --font-serif: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+          --font-serif-weight: {{ settings.font_heading.weight }};
+          --font-serif-style: {{ settings.font_heading.style }};
+        {%- else -%}
+          --font-serif: 'Cormorant Garamond', Georgia, serif;
+          --font-serif-weight: 400;
+          --font-serif-style: normal;
+        {%- endif -%}
+
+        {%- if settings.font_body != blank -%}
+          --font-sans: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+          --font-sans-weight: {{ settings.font_body.weight }};
+          --font-sans-style: {{ settings.font_body.style }};
+        {%- else -%}
+          --font-sans: 'Assistant', -apple-system, BlinkMacSystemFont, sans-serif;
+          --font-sans-weight: 400;
+          --font-sans-style: normal;
+        {%- endif -%}
+
+        --font-heading-scale: {{ settings.heading_scale | default: 100 | divided_by: 100.0 }};
+        --font-body-scale: {{ settings.body_scale | default: 100 | divided_by: 100.0 }};
+        --font-arabic: 'Noto Naskh Arabic', 'Amiri', 'Segoe UI', Tahoma, sans-serif;
+
+        --page-width: {{ settings.page_width | default: 1440 }}px;
+        --card-aspect-ratio: {{ settings.card_aspect_ratio | default: '4/5' }};
+      }
+    {%- endstyle -%}
+
+    <!-- Theme Core Styles -->
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {{ 'accessibility.css' | asset_url | stylesheet_tag }}
+    {{ 'component-header.css' | asset_url | stylesheet_tag }}
+    {{ 'component-footer.css' | asset_url | stylesheet_tag }}
+    {{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+    {{ 'component-drawer.css' | asset_url | stylesheet_tag }}
+    {{ 'component-modal.css' | asset_url | stylesheet_tag }}
+
+    {%- if template contains 'product' -%}
+      {{ 'component-product.css' | asset_url | stylesheet_tag }}
+      {{ 'component-media-gallery.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+
+    {%- if template contains 'cart' -%}
+      {{ 'component-cart.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+
+    {%- if template contains 'search' -%}
+      {{ 'component-search.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+
+    {{ content_for_header }}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+      window.Valoir = {
+        strings: {
+          addToCart: {{ 'products.product.add_to_cart' | t | json }},
+          adding: {{ 'products.product.adding' | t | json }},
+          soldOut: {{ 'products.product.sold_out' | t | json }},
+          unavailable: {{ 'products.product.unavailable' | t | json }},
+          cartEmpty: {{ 'sections.cart.empty' | t | json }},
+          remove: {{ 'sections.cart.remove' | t | json }},
+          update: {{ 'sections.cart.update' | t | json }},
+          subtotal: {{ 'sections.cart.subtotal' | t | json }},
+          checkout: {{ 'sections.cart.checkout' | t | json }},
+          continueShopping: {{ 'sections.cart.continue_shopping' | t | json }},
+          discounts: {{ 'sections.cart.discounts' | t | json }},
+          itemAdded: {{ 'sections.cart.item_added' | t | json }},
+          cartError: {{ 'sections.cart.cart_error' | t | json }},
+          taxesAndShipping: {{ 'sections.cart.taxes_and_shipping_at_checkout' | t | json }},
+          freeShippingReached: {{ 'sections.cart.free_shipping_reached' | t | json }},
+          freeShippingRemaining: {{ 'sections.cart.free_shipping_remaining' | t | json }},
+          prescriptionNote: {{ 'sections.cart.prescription_note' | t | json }},
+          prescriptionPlaceholder: {{ 'sections.cart.prescription_placeholder' | t | json }},
+          view3D: {{ 'sections.eyewear_explorer.view_3d' | t | json }},
+          rotateInstructions: {{ 'sections.eyewear_explorer.instructions' | t | json }},
+          resetView: {{ 'sections.eyewear_explorer.reset' | t | json }},
+          pauseRotate: {{ 'sections.eyewear_explorer.pause' | t | json }},
+          playRotate: {{ 'sections.eyewear_explorer.play' | t | json }},
+          zoomIn: {{ 'sections.eyewear_explorer.zoom_in' | t | json }},
+          zoomOut: {{ 'sections.eyewear_explorer.zoom_out' | t | json }},
+          rotateModel: {{ 'accessibility.rotate_model' | t | json }},
+          viewInAR: {{ 'products.product.view_in_ar' | t | json }},
+          arDeviceNotice: {{ 'sections.eyewear_explorer.ar_device_notice' | t | json }},
+          arIosNotice: {{ 'sections.eyewear_explorer.ar_ios_notice' | t | json }}
+        },
+        moneyFormat: {{ shop.money_format | json }},
+        freeShippingThreshold: {{ settings.free_shipping_threshold | default: 250 | json }},
+        enableCartNotes: {{ settings.enable_cart_notes | default: true | json }},
+        routes: {
+          root_url: '{{ routes.root_url }}',
+          cart_url: '{{ routes.cart_url }}',
+          cart_add_url: '{{ routes.cart_add_url }}',
+          cart_change_url: '{{ routes.cart_change_url }}',
+          cart_update_url: '{{ routes.cart_update_url }}',
+          predictive_search_url: '{{ routes.predictive_search_url }}',
+          all_products_collection_url: '{{ routes.all_products_collection_url }}',
+          search_url: '{{ routes.search_url }}',
+          account_url: '{{ routes.account_url }}'
+        }
+      };
+    </script>
+    {% render 'checkout-url' %}
+
+    <!-- Theme Scripts -->
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- if template contains 'product' -%}
+      <script src="{{ 'media-gallery.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'variant-picker.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'product.js' | asset_url }}" defer="defer"></script>
+      {%- assign first_3d_model = product.media | where: 'media_type', 'model' | first -%}
+      {%- if first_3d_model -%}
+        <link id="ModelViewerStyle" rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print" onload="this.media='all'">
+        <script>
+          window.ShopifyXR = window.ShopifyXR || function() { (ShopifyXR.q = ShopifyXR.q || []).push(arguments); };
+          ShopifyXR('addModels', {{ product.media | where: 'media_type', 'model' | json }});
+        </script>
+        <script defer="defer" src="https://cdn.shopify.com/shopifycloud/shopify-xr-js/assets/v1.0/shopify-xr.en.js"></script>
+      {%- endif -%}
+    {%- endif -%}
+  </head>
+
+  <body class="template-{{ template.name | handle }} valoir-body" data-money-format="{{ shop.money_format }}">
+    <a class="skip-to-content-link visually-hidden" href="#MainContent">
+      {{ 'accessibility.skip_to_text' | t }}
+    </a>
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    <!-- Global Cart Drawer -->
+    <div id="cart-drawer-container" class="drawer-container" aria-hidden="true" role="dialog" aria-modal="true" aria-label="{{ 'sections.cart.title' | t }}">
+      <div class="drawer-overlay" data-action="close-drawer"></div>
+      <div class="drawer-panel drawer-right">
+        <div class="drawer-header">
+          <h2 class="drawer-title font-serif">{{ 'sections.cart.title' | t }}</h2>
+          <button type="button" class="drawer-close" data-action="close-drawer" aria-label="{{ 'accessibility.close' | t }}">
+            {% render 'icon', name: 'close' %}
+          </button>
+        </div>
+        <div id="cart-drawer-body" class="drawer-body">
+          <!-- Populated dynamically by cart.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Announcer for Screen Readers -->
+    <div id="valoir-a11y-announcer" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>

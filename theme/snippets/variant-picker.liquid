@@ -1,0 +1,83 @@
+{% comment %}
+  Renders variant picker (Swatches for frame color/finish, buttons for lens type/size)
+  Usage: {% render 'variant-picker', product: product, section_id: section.id %}
+{% endcomment %}
+{%- unless product.has_only_default_variant -%}
+  <variant-picker class="variant-picker-component" data-section="{{ section_id }}">
+    {%- for option in product.options_with_values -%}
+      <fieldset class="variant-picker-fieldset" style="border: none; margin-bottom: 1.25rem;">
+        <legend class="variant-picker-legend" style="font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;">
+          {{ option.name }}: <span class="selected-value" style="font-weight: 600; color: var(--color-text);">{{ option.selected_value }}</span>
+        </legend>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          {%- for value in option.values -%}
+            <label style="position: relative; cursor: pointer;">
+              <input
+                type="radio"
+                name="{{ option.name }}-{{ section_id }}"
+                value="{{ value | escape }}"
+                form="product-form-component"
+                aria-label="{{ option.name }}: {{ value | escape }}"
+                {% if option.selected_value == value %}checked{% endif %}
+                class="visually-hidden"
+              >
+              {%- if option.name == 'Color' or option.name == 'Finish' -%}
+                {%- liquid
+                  assign swatch_color = nil
+                  if value.swatch.color
+                    assign swatch_color = value.swatch.color
+                  elsif value contains 'Black'
+                    assign swatch_color = '#1A1A1A'
+                  elsif value contains 'Gold'
+                    assign swatch_color = '#C29B38'
+                  elsif value contains 'Tortoise'
+                    assign swatch_color = '#5C3A21'
+                  elsif value contains 'Silver'
+                    assign swatch_color = '#B8B8B8'
+                  else
+                    assign swatch_color = '#3E424B'
+                  endif
+
+                  assign swatch_image = nil
+                  if value.swatch.image
+                    assign swatch_image = value.swatch.image | image_url: width: 64
+                  endif
+                -%}
+                <span style="
+                  display: block;
+                  width: 32px;
+                  height: 32px;
+                  border-radius: 50%;
+                  border: 2px solid {% if option.selected_value == value %}var(--color-text){% else %}var(--color-border){% endif %};
+                  padding: 2px;
+                ">
+                  <span style="
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                    {% if swatch_image %}
+                      background-image: url({{ swatch_image }});
+                      background-size: cover;
+                    {% else %}
+                      background-color: {{ swatch_color }};
+                    {% endif %}
+                  "></span>
+                </span>
+              {%- else -%}
+                <span class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.75rem; {% if option.selected_value == value %}background-color: var(--color-text); color: var(--color-bg); border-color: var(--color-text);{% endif %}">
+                  {{ value }}
+                </span>
+              {%- endif -%}
+            </label>
+          {%- endfor -%}
+        </div>
+      </fieldset>
+    {%- endfor -%}
+
+    <script type="application/json">
+      {{ product.variants | json }}
+    </script>
+  </variant-picker>
+{%- endunless -%}

@@ -1,0 +1,172 @@
+/* Valoir Luxury Customer Accounts Stylesheet */
+.customer-section {
+  padding: 5rem 0;
+  min-height: 70vh;
+}
+
+.customer-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.customer-container--wide {
+  max-width: 1100px;
+}
+
+.customer-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.customer-header h1 {
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  font-weight: 300;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+}
+
+.customer-header p {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.customer-box {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 2.5rem;
+}
+
+.customer-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.customer-form-group label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+}
+
+.customer-form-group input[type="text"],
+.customer-form-group input[type="email"],
+.customer-form-group input[type="password"],
+.customer-form-group input[type="tel"],
+.customer-form-group select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-family: var(--font-sans);
+  transition: border-color var(--transition-fast);
+}
+
+.customer-form-group input:focus,
+.customer-form-group select:focus {
+  outline: none;
+  border-color: var(--color-text);
+}
+
+.customer-form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.customer-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8125rem;
+  margin-top: 1.5rem;
+  color: var(--color-text-muted);
+}
+
+.customer-links a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.customer-links a:hover {
+  color: var(--color-accent);
+}
+
+.customer-error-list {
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  color: #c53030;
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.5rem;
+  font-size: 0.8125rem;
+}
+
+.customer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+}
+
+@media (max-width: 768px) {
+  .customer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.customer-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.customer-table th {
+  text-align: start;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.customer-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.customer-table tr:hover td {
+  background: rgba(0,0,0,0.01);
+}
+
+.customer-address-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.customer-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: var(--radius-sm);
+  background: var(--color-accent);
+  color: #FAF9F6;
+}

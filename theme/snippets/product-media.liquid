@@ -1,0 +1,22 @@
+{% comment %}
+  Dispatches rendering of appropriate media type (Image, Video, or 3D Model)
+  Usage: {% render 'product-media', media: media, loop: false %}
+{% endcomment %}
+<div class="media-item {% if is_first or forloop.first %}is-active{% endif %}" data-media-id="{{ media.id }}">
+  {%- case media.media_type -%}
+    {%- when 'image' -%}
+      {% render 'image-media', media: media, is_first: is_first %}
+    {%- when 'video' or 'external_video' -%}
+      {% render 'video-media', media: media %}
+    {%- when 'model' -%}
+      {% render '3d-media', media: media %}
+    {%- else -%}
+      <img
+        src="{{ media | image_url: width: 1000 }}"
+        alt="{{ media.alt | default: product.title | escape }}"
+        width="1000"
+        height="1000"
+        loading="lazy"
+      >
+  {%- endcase -%}
+</div>

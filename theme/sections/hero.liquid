@@ -1,0 +1,86 @@
+{%- assign root_url_prefix = routes.root_url -%}
+{%- unless root_url_prefix == '/' -%}
+  {%- assign root_url_prefix = root_url_prefix | append: '/' -%}
+{%- endunless -%}
+{%- assign root_url_prefix = root_url_prefix | replace: '//', '/' -%}
+{%- assign default_showroom_url = root_url_prefix | append: 'pages/3d-showroom' -%}
+
+<section class="valoir-hero-section" style="position: relative; background: #0E0E10; color: #FAF9F6; overflow: hidden; padding: 7rem 0 6rem 0;">
+  <div class="valoir-container" style="position: relative; z-index: 2;">
+    <div style="max-width: 680px;">
+      <span style="font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-accent); font-weight: 600; display: block; margin-bottom: 1.25rem;">
+        {{ section.settings.subheading | default: "HAUTE LUNETTERIE & OPTICAL ARCHITECTURE" }}
+      </span>
+      <h1 style="font-family: var(--font-serif); font-size: clamp(2.5rem, 5vw, 4.25rem); line-height: 1.08; font-weight: 300; margin-bottom: 1.75rem; color: #FAF9F6;">
+        {{ section.settings.heading | default: "Sculpted in Titanium. Defined by Vision." }}
+      </h1>
+      <p style="font-size: 1.0625rem; line-height: 1.65; color: #B3B0AA; margin-bottom: 2.5rem; max-width: 520px;">
+        {{ section.settings.paragraph | default: "Experience eyewear engineered as sculptural form. Handcrafted in Sabae, Japan with multi-axis titanium mills and custom-tinted mineral glass." }}
+      </p>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="{{ section.settings.button_url | default: routes.all_products_collection_url }}" class="btn-primary" style="background: #FAF9F6; color: #141414;">
+          {{ section.settings.button_label | default: "Explore 2026 Collection" }}
+        </a>
+        <a href="{{ section.settings.secondary_url | default: default_showroom_url }}" class="btn-secondary" style="border-color: #444; color: #FAF9F6;">
+          {{ section.settings.secondary_label | default: "3D Virtual Showroom" }}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decorative subtle background aesthetic -->
+  <div style="position: absolute; right: -5%; top: 50%; transform: translateY(-50%); width: 55vw; max-width: 800px; height: 80%; pointer-events: none; opacity: 0.25; background: radial-gradient(circle at center, rgba(194, 155, 56, 0.4) 0%, transparent 70%);"></div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "HAUTE LUNETTERIE & OPTICAL ARCHITECTURE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Sculpted in Titanium. Defined by Vision."
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph",
+      "label": "Description",
+      "default": "Experience eyewear engineered as sculptural form. Handcrafted in Sabae, Japan with multi-axis titanium mills and custom-tinted mineral glass."
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Primary Button URL"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Primary Button Label",
+      "default": "Explore 2026 Collection"
+    },
+    {
+      "type": "url",
+      "id": "secondary_url",
+      "label": "Secondary Button URL"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary Button Label",
+      "default": "3D Virtual Showroom"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}

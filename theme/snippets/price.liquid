@@ -1,0 +1,37 @@
+{% comment %}
+  Renders product price with compare-at price and currency formatting
+  Usage: {% render 'price', product: product, use_variant: true %}
+{% endcomment %}
+{%- liquid
+  if use_variant
+    assign target = product.selected_or_first_available_variant
+  else
+    assign target = product
+  endif
+
+  assign compare_at_price = target.compare_at_price
+  assign price = target.price
+  assign lowest_subscription_price = nil
+  if target.selling_plan_allocations.size > 0
+    assign lowest_subscription_price = target.selling_plan_allocations.first.price
+    for alloc in target.selling_plan_allocations
+      if alloc.price < lowest_subscription_price
+        assign lowest_subscription_price = alloc.price
+      endif
+    endfor
+  endif
+-%}
+
+{%- if price != blank -%}
+  <div class="product-price-box">
+    <span class="product-price-regular">{{ price | money }}</span>
+    {%- if compare_at_price > price -%}
+      <span class="product-card-price-compare">{{ compare_at_price | money }}</span>
+    {%- endif -%}
+    {%- if lowest_subscription_price and lowest_subscription_price < price -%}
+      <span class="product-price-subscription" style="display: block; font-size: 0.75rem; color: var(--color-accent); margin-top: 0.2rem; font-weight: 500;">
+        {{ 'products.product.from' | t }} {{ lowest_subscription_price | money }} {{ 'products.product.with_subscription' | t }}
+      </span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

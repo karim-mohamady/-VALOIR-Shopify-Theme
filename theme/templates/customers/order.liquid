@@ -1,0 +1,116 @@
+{{ 'component-customer.css' | asset_url | stylesheet_tag }}
+
+<div class="customer-section">
+  <div class="customer-container customer-container--wide">
+    <div class="customer-header" style="text-align: start; display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid var(--color-border); padding-bottom: 1.5rem;">
+      <div>
+        <a href="{{ routes.account_url }}" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); font-weight: 600; text-decoration: none;">
+          &larr; {{ 'customer.account.return' | t }}
+        </a>
+        <h1 style="margin: 0.5rem 0 0 0;">{{ 'customer.order.title' | t: name: order.name }}</h1>
+        <p style="margin-top: 0.25rem;">{{ 'customer.order.date' | t: date: order.created_at | time_tag: format: 'date_at_time' }}</p>
+      </div>
+      <div>
+        {%- if order.cancelled -%}
+          <span class="customer-badge" style="background: #e53e3e; color: white;">
+            {{ 'customer.order.cancelled' | t | default: 'Cancelled' }}
+          </span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="customer-grid" style="margin-top: 3rem;">
+      <!-- Order Items -->
+      <div>
+        <div style="overflow-x: auto;">
+          <table class="customer-table">
+            <thead>
+              <tr>
+                <th>{{ 'customer.order.product' | t }}</th>
+                <th>{{ 'customer.order.sku' | t }}</th>
+                <th>{{ 'customer.order.price' | t }}</th>
+                <th>{{ 'customer.order.quantity' | t }}</th>
+                <th style="text-align: end;">{{ 'customer.order.total' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for line_item in order.line_items -%}
+                <tr>
+                  <td>
+                    <div style="font-weight: 600; color: var(--color-text);">
+                      {{ line_item.title }}
+                    </div>
+                    {%- if line_item.line_level_discount_allocations != blank -%}
+                      <ul style="list-style: none; padding: 0; margin: 0.25rem 0 0 0; font-size: 0.75rem; color: #c53030;">
+                        {%- for discount_allocation in line_item.line_level_discount_allocations -%}
+                          <li>{{ discount_allocation.discount_application.title }}: -{{ discount_allocation.amount | money }}</li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- endif -%}
+                  </td>
+                  <td style="color: var(--color-text-muted); font-size: 0.75rem;">
+                    {{ line_item.sku | default: '—' }}
+                  </td>
+                  <td>{{ line_item.final_price | money }}</td>
+                  <td>{{ line_item.quantity }}</td>
+                  <td style="text-align: end; font-weight: 600;">
+                    {{ line_item.final_line_price | money }}
+                  </td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" style="text-align: end; color: var(--color-text-muted); font-size: 0.8125rem;">{{ 'customer.order.subtotal' | t }}</td>
+                <td style="text-align: end; font-weight: 600;">{{ order.line_items_subtotal_price | money }}</td>
+              </tr>
+              {%- for shipping_method in order.shipping_methods -%}
+                <tr>
+                  <td colspan="4" style="text-align: end; color: var(--color-text-muted); font-size: 0.8125rem;">{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})</td>
+                  <td style="text-align: end;">{{ shipping_method.price | money }}</td>
+                </tr>
+              {%- endfor -%}
+              {%- for tax_line in order.tax_lines -%}
+                <tr>
+                  <td colspan="4" style="text-align: end; color: var(--color-text-muted); font-size: 0.8125rem;">{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)</td>
+                  <td style="text-align: end;">{{ tax_line.price | money }}</td>
+                </tr>
+              {%- endfor -%}
+              <tr style="border-top: 2px solid var(--color-border);">
+                <td colspan="4" style="text-align: end; font-size: 1rem; font-weight: 600;">{{ 'customer.order.total' | t }}</td>
+                <td style="text-align: end; font-size: 1.125rem; font-weight: 600; color: var(--color-accent);">{{ order.total_net_amount | money_with_currency }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Order Details & Shipping -->
+      <div>
+        <div class="customer-address-card">
+          <h3 style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 1rem;">
+            {{ 'customer.order.billing_address' | t }}
+          </h3>
+          <div style="font-size: 0.875rem; line-height: 1.6; color: var(--color-text-muted); margin-bottom: 1rem;">
+            {{ order.billing_address | format_address }}
+          </div>
+          <div style="font-size: 0.75rem; color: var(--color-text-muted);">
+            {{ 'customer.orders.payment_status' | t }}: <strong style="color: var(--color-text);">{{ order.financial_status_label }}</strong>
+          </div>
+        </div>
+
+        <div class="customer-address-card">
+          <h3 style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 1rem;">
+            {{ 'customer.order.shipping_address' | t }}
+          </h3>
+          <div style="font-size: 0.875rem; line-height: 1.6; color: var(--color-text-muted); margin-bottom: 1rem;">
+            {{ order.shipping_address | format_address }}
+          </div>
+          <div style="font-size: 0.75rem; color: var(--color-text-muted);">
+            {{ 'customer.orders.fulfillment_status' | t }}: <strong style="color: var(--color-text);">{{ order.fulfillment_status_label }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

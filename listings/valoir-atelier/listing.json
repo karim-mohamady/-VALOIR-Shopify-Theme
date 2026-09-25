@@ -1,0 +1,29 @@
+{
+  "name": "Valoir Atelier",
+  "preset_id": "valoir-atelier",
+  "industry_categories": [
+    "Clothing and accessories"
+  ],
+  "catalog_size": "Small catalog",
+  "demo_store_url": "https://valoir-eyewear.myshopify.com",
+  "tagline": "Architectural luxury eyewear theme tailored for bespoke optical boutiques and artisanal frame makers",
+  "description": "Valoir Atelier is an editorial, high-craft Shopify theme built for boutique optical ateliers, luxury sunglass designers, and independent eyewear brands. Engineered with native 3D WebGL frame inspection, AR virtual try-on models, responsive bilingual English/Arabic RTL typography, and frictionless selling plan subscription capabilities.",
+  "features": [
+    "Interactive 3D / AR eyewear visualization with native WebGL orbital inspection and iOS QuickLook USDZ integration",
+    "Comprehensive Subscriptions and Selling Plans support for lens replenishment and frame care memberships",
+    "Native RTL support with bidirectional CSS logical properties for multi-region luxury commerce",
+    "WCAG AA compliance with accessible modal focus traps and high-contrast color hierarchy",
+    "Sticky add-to-cart bar and slide-out ajax bag with live shipping thresholds and prescription notes"
+  ],
+  "media": {
+    "desktop_screenshot": "screenshots/desktop.jpg",
+    "mobile_screenshot": "screenshots/mobile.jpg",
+    "product_screenshot": "screenshots/product.jpg",
+    "collection_screenshot": "screenshots/collection.jpg"
+  },
+  "setup_requirements": {
+    "recommended_products": "8-16 high-resolution eyewear products with transparent PNG/WEBP cutout images and optional 3D GLB/USDZ models",
+    "recommended_collections": "Optical Frames, Sun Protection, Limited Editions, Accessories & Care",
+    "navigation_menus": "Main menu with nested brand/collection links; footer menu with optical care, shipping, policies"
+  }
+}

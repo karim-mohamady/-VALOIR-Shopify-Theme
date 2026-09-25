@@ -1,0 +1,53 @@
+{{ 'component-customer.css' | asset_url | stylesheet_tag }}
+
+<div class="customer-section">
+  <div class="customer-container">
+    <div class="customer-header">
+      <h1>{{ 'customer.activate_account.title' | t }}</h1>
+      <p>{{ 'customer.activate_account.subtext' | t }}</p>
+    </div>
+
+    <div class="customer-box">
+      {%- form 'activate_customer_password' -%}
+        {%- if form.errors -%}
+          <div class="customer-error-list" role="alert" aria-live="assertive" tabindex="-1" autofocus>
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <div class="customer-form-group">
+          <label for="password">{{ 'customer.activate_account.password' | t | default: 'Create Password' }}</label>
+          <input
+            type="password"
+            name="customer[password]"
+            id="password"
+            autocomplete="new-password"
+            required
+            {% if form.errors contains 'password' %}aria-invalid="true"{% endif %}
+          >
+        </div>
+
+        <div class="customer-form-group">
+          <label for="password_confirmation">{{ 'customer.activate_account.password_confirm' | t | default: 'Confirm Password' }}</label>
+          <input
+            type="password"
+            name="customer[password_confirmation]"
+            id="password_confirmation"
+            autocomplete="new-password"
+            required
+            {% if form.errors contains 'password_confirmation' %}aria-invalid="true"{% endif %}
+          >
+        </div>
+
+        <div class="customer-form-actions">
+          <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem;">
+            {{ 'customer.activate_account.submit' | t }}
+          </button>
+          <button type="submit" name="decline" class="btn-secondary" style="width: 100%; padding: 0.875rem;">
+            {{ 'customer.activate_account.cancel' | t }}
+          </button>
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</div>

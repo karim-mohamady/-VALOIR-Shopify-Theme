@@ -1,0 +1,25 @@
+{
+  "name": "Header Group",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "show_announcement": true,
+        "text": "Complimentary Worldwide Express Courier & Precision Prescription Service on orders over $250",
+        "link_text": "Explore Collection"
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_text": "VALOIR",
+        "menu": "main-menu"
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

@@ -1,0 +1,55 @@
+{% comment %}
+  Renders color swatches for product cards
+  Usage: {% render 'product-color-swatches', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign color_option = null
+
+  for option in product.options_with_values
+    assign downcased_name = option.name | downcase
+    if downcased_name contains 'color' or downcased_name contains 'colour' or downcased_name contains 'finish' or downcased_name contains 'لون' or downcased_name contains 'تشطيب'
+      assign color_option = option
+      break
+    endif
+  endfor
+-%}
+
+{%- if color_option != null and color_option.values.size > 1 -%}
+  <div class="product-card-swatches" role="group" aria-label="{{ 'accessibility.color_swatch' | t: color: color_option.name | escape }}">
+    {%- for value in color_option.values -%}
+      {%- liquid
+        assign swatch_color = '#cccccc'
+        assign downcased_val = value | downcase
+
+        if downcased_val contains 'gold' or downcased_val contains 'ذهبي'
+          assign swatch_color = '#d4af37'
+        elsif downcased_val contains 'rose' or downcased_val contains 'وردي'
+          assign swatch_color = '#b76e79'
+        elsif downcased_val contains 'silver' or downcased_val contains 'فضي'
+          assign swatch_color = '#c0c0c0'
+        elsif downcased_val contains 'black' or downcased_val contains 'noir' or downcased_val contains 'أسود'
+          assign swatch_color = '#1a1a1a'
+        elsif downcased_val contains 'tortoise' or downcased_val contains 'amber' or downcased_val contains 'عسلي'
+          assign swatch_color = '#8b5a2b'
+        elsif downcased_val contains 'crystal' or downcased_val contains 'clear' or downcased_val contains 'شفاف'
+          assign swatch_color = '#f0f4f8'
+        elsif downcased_val contains 'titanium' or downcased_val contains 'grey' or downcased_val contains 'gray' or downcased_val contains 'رمادي'
+          assign swatch_color = '#848789'
+        elsif downcased_val contains 'havana' or downcased_val contains 'brown' or downcased_val contains 'بني'
+          assign swatch_color = '#5c4033'
+        elsif downcased_val contains 'green' or downcased_val contains 'أخضر'
+          assign swatch_color = '#2d5a27'
+        elsif downcased_val contains 'blue' or downcased_val contains 'أزرق'
+          assign swatch_color = '#1b365d'
+        endif
+      -%}
+      <span
+        class="swatch-dot"
+        style="background-color: {{ swatch_color }};"
+        title="{{ value | escape }}"
+        aria-label="{{ value | escape }}"
+      ></span>
+    {%- endfor -%}
+  </div>
+{%- endif -%}

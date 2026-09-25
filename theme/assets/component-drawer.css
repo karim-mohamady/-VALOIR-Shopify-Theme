@@ -1,0 +1,56 @@
+/* Component Drawer Styles (Mobile Menu & Filters) */
+.mobile-nav-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 90;
+  visibility: hidden;
+  transition: visibility 250ms ease;
+}
+
+.mobile-nav-drawer.is-open {
+  visibility: visible;
+}
+
+.mobile-nav-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 82vw;
+  max-width: 360px;
+  height: 100%;
+  background-color: var(--color-surface);
+  transform: translateX(-100%);
+  transition: transform 300ms var(--transition-smooth);
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
+}
+
+[dir="rtl"] .mobile-nav-panel {
+  left: auto;
+  right: 0;
+  transform: translateX(100%);
+}
+
+.mobile-nav-drawer.is-open .mobile-nav-panel {
+  transform: translateX(0);
+}
+
+.mobile-nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.mobile-nav-item a {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+}

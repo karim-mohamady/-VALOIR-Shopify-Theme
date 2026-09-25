@@ -1,0 +1,140 @@
+{%- assign root_url_prefix = routes.root_url -%}
+{%- unless root_url_prefix == '/' -%}
+  {%- assign root_url_prefix = root_url_prefix | append: '/' -%}
+{%- endunless -%}
+{%- assign root_url_prefix = root_url_prefix | replace: '//', '/' -%}
+
+<header class="site-header" role="banner">
+  <div class="valoir-container">
+    <div class="header-inner">
+      <!-- Mobile Menu Trigger -->
+      <button
+        type="button"
+        class="header-icon-btn mobile-only"
+        data-drawer-trigger="mobile-nav-drawer"
+        aria-label="{{ 'accessibility.open_menu' | t }}"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+
+      <!-- Brand Logo -->
+      <a href="{{ routes.root_url }}" class="header-logo">
+        {%- if section.settings.logo != blank -%}
+          <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}" width="160" height="40" loading="eager" fetchpriority="high">
+        {%- else -%}
+          {{ section.settings.logo_text | default: "VALOIR" }}
+        {%- endif -%}
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="nav-desktop-wrapper" role="navigation" aria-label="Main Navigation">
+        <ul class="nav-desktop">
+          {%- for link in linklists[section.settings.menu].links -%}
+            <li class="nav-item">
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            </li>
+          {%- else -%}
+            <li class="nav-item"><a href="{{ routes.all_products_collection_url }}">{{ 'sections.header.optical' | t }}</a></li>
+            <li class="nav-item"><a href="{{ routes.all_products_collection_url }}">{{ 'sections.header.sunglasses' | t }}</a></li>
+            <li class="nav-item"><a href="{{ root_url_prefix }}pages/about">{{ 'sections.header.atelier' | t }}</a></li>
+            <li class="nav-item"><a href="{{ root_url_prefix }}blogs/journal">{{ 'sections.header.lookbook' | t }}</a></li>
+            <li class="nav-item"><a href="{{ root_url_prefix }}pages/3d-optics">{{ 'sections.header.innovation' | t }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+
+      <!-- Action Icons -->
+      <div class="header-icons">
+        <a href="{{ routes.search_url }}" class="header-icon-btn" aria-label="{{ 'sections.header.search_toggle' | t }}">
+          {% render 'icon', name: 'search' %}
+        </a>
+
+        {%- if shop.customer_accounts_enabled -%}
+          <div class="header-account-wrapper" style="display: inline-flex; align-items: center;">
+            <shopify-account></shopify-account>
+            <noscript>
+              <a href="{{ routes.account_url }}" class="header-icon-btn" aria-label="{{ 'sections.header.account' | t }}">
+                {% render 'icon', name: 'account' %}
+              </a>
+            </noscript>
+          </div>
+        {%- endif -%}
+
+        <button
+          type="button"
+          class="header-icon-btn"
+          data-drawer-trigger="cart-drawer-container"
+          aria-label="{{ 'sections.header.cart' | t }}"
+        >
+          {% render 'icon', name: 'cart' %}
+          <span class="cart-count-badge" style="{% if cart.item_count == 0 %}display: none;{% endif %}">
+            {{ cart.item_count }}
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Navigation Drawer -->
+<div id="mobile-nav-drawer" class="mobile-nav-drawer" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="drawer-overlay" data-action="close-drawer"></div>
+  <div class="mobile-nav-panel">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <span class="font-serif" style="font-size: 1.5rem; letter-spacing: 0.1em;">VALOIR</span>
+      <button type="button" data-action="close-drawer" aria-label="{{ 'accessibility.close' | t }}">
+        {% render 'icon', name: 'close' %}
+      </button>
+    </div>
+    <ul class="mobile-nav-list">
+      {%- for link in linklists[section.settings.menu].links -%}
+        <li class="mobile-nav-item">
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        </li>
+      {%- else -%}
+        <li class="mobile-nav-item"><a href="{{ routes.all_products_collection_url }}">{{ 'sections.header.optical' | t }}</a></li>
+        <li class="mobile-nav-item"><a href="{{ routes.all_products_collection_url }}">{{ 'sections.header.sunglasses' | t }}</a></li>
+        <li class="mobile-nav-item"><a href="{{ root_url_prefix }}pages/about">{{ 'sections.header.atelier' | t }}</a></li>
+        <li class="mobile-nav-item"><a href="{{ root_url_prefix }}blogs/journal">{{ 'sections.header.lookbook' | t }}</a></li>
+        <li class="mobile-nav-item"><a href="{{ root_url_prefix }}pages/3d-optics">{{ 'sections.header.innovation' | t }}</a></li>
+      {%- endfor -%}
+    </ul>
+
+    {%- if shop.customer_accounts_enabled -%}
+      <div class="mobile-nav-account" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border);">
+        <shopify-account></shopify-account>
+        <noscript>
+          <a href="{{ routes.account_url }}" class="mobile-nav-item" style="display: flex; align-items: center; gap: 0.5rem;">
+            {% render 'icon', name: 'account' %}
+            <span>{{ 'sections.header.account' | t }}</span>
+          </a>
+        </noscript>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text",
+      "default": "VALOIR"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

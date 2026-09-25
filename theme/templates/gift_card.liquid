@@ -1,0 +1,104 @@
+{% layout none %}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{ 'gift_cards.issued.subtext' | t }} - {{ shop.name }}</title>
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
+  </head>
+  <body style="background: var(--color-bg, #FAF9F6); color: var(--color-text, #121214); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; font-family: var(--font-sans, sans-serif);">
+    <main class="gift-card-wrapper" style="background: var(--color-surface, #FFFFFF); border: 1px solid var(--color-border, #E5E2DC); padding: 3.5rem 2.5rem; border-radius: 4px; max-width: 520px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.04);">
+      <h1 class="header-logo" style="font-size: 2rem; margin-bottom: 0.5rem; font-family: var(--font-serif, serif); letter-spacing: 0.05em;">{{ shop.name }}</h1>
+      <p style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-accent, #C29B38); font-weight: 600; margin-bottom: 1.5rem;">
+        {{ 'gift_cards.issued.subtext' | t }}
+      </p>
+
+      {%- unless gift_card.enabled -%}
+        <div style="background: #fff5f5; color: #c53030; border: 1px solid #fed7d7; padding: 0.75rem 1rem; border-radius: 2px; margin-bottom: 1.5rem; font-size: 0.8125rem;">
+          {{ 'gift_cards.issued.disabled' | t }}
+        </div>
+      {%- endunless -%}
+
+      {%- if gift_card.expired and gift_card.enabled -%}
+        <div style="background: #fffaf0; color: #dd6b20; border: 1px solid #feebc8; padding: 0.75rem 1rem; border-radius: 2px; margin-bottom: 1.5rem; font-size: 0.8125rem;">
+          {{ 'gift_cards.issued.expired' | t }}
+        </div>
+      {%- endif -%}
+
+      <div style="font-size: 2.5rem; font-weight: 400; margin-bottom: 1.5rem; font-family: var(--font-serif, serif);">
+        {{ gift_card.balance | money_with_currency }}
+      </div>
+
+      <div style="background: var(--color-bg, #FAF9F6); border: 1px dashed var(--color-border, #E5E2DC); padding: 1.25rem; border-radius: 2px; font-family: monospace; font-size: 1.25rem; letter-spacing: 0.15em; margin-bottom: 1rem; user-select: all; font-weight: 600;" id="GiftCardCode">
+        {{ gift_card.code | format_code }}
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 2rem;">
+        <button type="button" class="btn-secondary" id="CopyCodeBtn" style="font-size: 0.75rem; padding: 0.5rem 1rem;">
+          {{ 'gift_cards.issued.copy_code' | t }}
+        </button>
+        <button type="button" class="btn-secondary" onclick="window.print();" style="font-size: 0.75rem; padding: 0.5rem 1rem;">
+          {{ 'gift_cards.issued.print_gift_card' | t }}
+        </button>
+      </div>
+
+      <div id="CopyFeedback" style="display: none; font-size: 0.75rem; color: #276749; margin-bottom: 1.5rem; font-weight: 500;">
+        {{ 'gift_cards.issued.copy_code_success' | t }}
+      </div>
+
+      <!-- QR Code Container -->
+      <div style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
+        <div id="QrCode" style="padding: 0.75rem; background: #FFFFFF; border: 1px solid var(--color-border, #E5E2DC); border-radius: 4px; display: inline-block;"></div>
+      </div>
+
+      {%- if gift_card.pass_url -%}
+        <div style="margin-bottom: 2rem;">
+          <a href="{{ gift_card.pass_url }}" style="display: inline-block;">
+            <img src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t }}" loading="lazy">
+          </a>
+        </div>
+      {%- endif -%}
+
+      <p style="font-size: 0.8125rem; color: var(--color-text-muted, #666); margin-bottom: 2rem; line-height: 1.6;">
+        {{ 'gift_cards.issued.instructions' | t }}
+      </p>
+
+      <a href="{{ shop.url }}" class="btn-primary" style="display: block; text-align: center; padding: 1rem;">
+        {{ 'gift_cards.issued.shop_link' | t }}
+      </a>
+    </main>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // QR Code generation
+        const qrContainer = document.getElementById('QrCode');
+        if (qrContainer && typeof QRCode !== 'undefined') {
+          new QRCode(qrContainer, {
+            text: {{ gift_card.qr_identifier | json }},
+            width: 120,
+            height: 120
+          });
+        }
+
+        // Copy code to clipboard
+        const copyBtn = document.getElementById('CopyCodeBtn');
+        const feedback = document.getElementById('CopyFeedback');
+        if (copyBtn) {
+          copyBtn.addEventListener('click', function() {
+            navigator.clipboard.writeText({{ gift_card.code | json }}).then(function() {
+              if (feedback) {
+                feedback.style.display = 'block';
+                setTimeout(function() {
+                  feedback.style.display = 'none';
+                }, 3000);
+              }
+            });
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

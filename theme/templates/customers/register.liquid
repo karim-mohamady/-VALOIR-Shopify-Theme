@@ -1,0 +1,83 @@
+{{ 'component-customer.css' | asset_url | stylesheet_tag }}
+
+<div class="customer-section">
+  <div class="customer-container">
+    <div class="customer-header">
+      <h1>{{ 'customer.register.title' | t }}</h1>
+      <p>{{ 'customer.register.subtext' | t | default: 'Register your optical specifications and bespoke order profile' }}</p>
+    </div>
+
+    <div class="customer-box">
+      {%- form 'create_customer', class: 'customer-form' -%}
+        {%- if form.errors -%}
+          <div class="customer-error-list" role="alert" aria-live="assertive" tabindex="-1" autofocus>
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <div class="customer-form-group">
+          <label for="RegisterFirstName">{{ 'customer.register.first_name' | t }}</label>
+          <input
+            type="text"
+            name="customer[first_name]"
+            id="RegisterFirstName"
+            {% if form.first_name %}value="{{ form.first_name }}"{% endif %}
+            autocomplete="given-name"
+          >
+        </div>
+
+        <div class="customer-form-group">
+          <label for="RegisterLastName">{{ 'customer.register.last_name' | t }}</label>
+          <input
+            type="text"
+            name="customer[last_name]"
+            id="RegisterLastName"
+            {% if form.last_name %}value="{{ form.last_name }}"{% endif %}
+            autocomplete="family-name"
+          >
+        </div>
+
+        <div class="customer-form-group">
+          <label for="RegisterEmail">{{ 'customer.register.email' | t }}</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="RegisterEmail"
+            {% if form.email %}value="{{ form.email }}"{% endif %}
+            spellcheck="false"
+            autocapitalize="off"
+            autocomplete="email"
+            aria-required="true"
+            required
+            {% if form.errors contains 'email' %}aria-invalid="true"{% endif %}
+          >
+        </div>
+
+        <div class="customer-form-group">
+          <label for="RegisterPassword">{{ 'customer.register.password' | t }}</label>
+          <input
+            type="password"
+            name="customer[password]"
+            id="RegisterPassword"
+            aria-required="true"
+            required
+            {% if form.errors contains 'password' %}aria-invalid="true"{% endif %}
+          >
+        </div>
+
+        <div class="customer-form-actions">
+          <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem;">
+            {{ 'customer.register.submit' | t }}
+          </button>
+        </div>
+
+        <div class="customer-links" style="justify-content: center; margin-top: 2rem;">
+          <span>
+            {{ 'customer.register.already_client' | t | default: 'Already registered?' }}
+            <a href="{{ routes.account_login_url }}">{{ 'customer.login_page.sign_in' | t }}</a>
+          </span>
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</div>

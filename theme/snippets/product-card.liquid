@@ -1,0 +1,109 @@
+{% comment %}
+  Renders an eyewear product card
+  Usage: {% render 'product-card', product: product %}
+{% endcomment %}
+{%- liquid
+  assign frame_shape = product.metafields.eyewear.frame_shape | default: product.type
+-%}
+
+<article class="product-card" data-product-id="{{ product.id }}">
+  <div class="product-card-media">
+    <div class="product-card-badges">
+      {%- if product.compare_at_price > product.price -%}
+        {% render 'badge', type: 'sale' %}
+      {%- endif -%}
+      {%- if frame_shape != blank and settings.show_frame_shape_tag -%}
+        {% render 'badge', type: 'shape', shape: frame_shape %}
+      {%- endif -%}
+    </div>
+
+    <!-- Dedicated Wishlist Action Button -->
+    <button
+      type="button"
+      class="product-card-wishlist-btn"
+      data-product-id="{{ product.id }}"
+      aria-label="{{ 'products.product.add_to_wishlist' | t | default: 'Save to Wishlist' }}"
+      title="Save to Wishlist"
+    >
+      <svg class="icon icon-heart" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+      </svg>
+    </button>
+
+    <a href="{{ product.url }}" class="product-card-image-link" aria-label="{{ product.title | escape }}">
+      {%- if product.featured_media != blank -%}
+        {%- assign focal_1 = product.featured_media.presentation.focal_point -%}
+        <img
+          src="{{ product.featured_media | image_url: width: 600 }}"
+          alt="{{ product.featured_media.alt | default: product.title | escape }}"
+          loading="lazy"
+          decoding="async"
+          width="600"
+          height="750"
+          {% if focal_1 %}style="object-position: {{ focal_1 }};"{% endif %}
+          class="product-card-primary-image"
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg product-card-primary-image' }}
+      {%- endif -%}
+
+      {%- if product.media[1] != blank and settings.card_hover_reveal_secondary -%}
+        {%- assign focal_2 = product.media[1].presentation.focal_point -%}
+        <img
+          src="{{ product.media[1] | image_url: width: 600 }}"
+          alt="{{ product.media[1].alt | default: product.title | escape }}"
+          loading="lazy"
+          decoding="async"
+          width="600"
+          height="750"
+          {% if focal_2 %}style="object-position: {{ focal_2 }};"{% endif %}
+          class="product-card-secondary-image"
+        >
+      {%- endif -%}
+    </a>
+
+    <!-- Quick Actions Drawer trigger -->
+    <div class="product-card-quick-actions">
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm product-card-quick-view"
+        data-product-url="{{ product.url }}"
+        data-product-id="{{ product.id }}"
+        aria-haspopup="dialog"
+      >
+        <span>{{ 'products.product.quick_view' | t | default: 'Quick View' }}</span>
+      </button>
+
+      {%- if product.available -%}
+        {%- form 'product', product, class: 'product-card-quick-add-form' -%}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <button type="submit" class="btn btn-primary btn-sm product-card-quick-add-btn">
+            <span>{{ 'products.product.add_to_cart' | t }}</span>
+          </button>
+        {%- endform -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="product-card-info">
+    {%- if product.vendor != blank and settings.show_vendor -%}
+      <p class="product-card-vendor">{{ product.vendor }}</p>
+    {%- endif -%}
+
+    <h3 class="product-card-title">
+      <a href="{{ product.url }}" class="product-card-title-link">
+        {{ product.title | escape }}
+      </a>
+    </h3>
+
+    {%- if product.metafields.eyewear.subtitle != blank -%}
+      <p class="product-card-subtitle">{{ product.metafields.eyewear.subtitle }}</p>
+    {%- endif -%}
+
+    {% render 'price', product: product, use_variant: false, show_badges: false %}
+
+    {%- if settings.show_color_swatches -%}
+      {% render 'product-color-swatches', product: product %}
+    {%- endif -%}
+  </div>
+</article>
