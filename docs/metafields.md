@@ -16,4 +16,3 @@ Valoir uses the `eyewear` namespace for optical and frame specifications.
 | `eyewear.temple_length` | Single line text | Temple arm length | 145 mm |
 | `eyewear.frame_weight` | Single line text | Weight in grams | 24.8 grams |
 | `eyewear.origin` | Single line text | Manufacturing origin atelier | Sabae, Fukui, Japan |
-| `eyewear.has_3d` | Boolean | Force 3D badge display if using external model | true |

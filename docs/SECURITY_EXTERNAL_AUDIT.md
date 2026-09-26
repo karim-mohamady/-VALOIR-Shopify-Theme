@@ -9,12 +9,11 @@ This report examines the security posture, external dependencies, and attack sur
 
 - **Third-Party CDN Assessment**:
   - The Valoir theme includes **zero external script references** to unapproved CDNs (e.g., cdnjs, unpkg, jsdelivr, or rawgit).
-  - All JavaScript assets (`cart.js`, `variant-picker.js`, `3d-viewer.js`, `global.js`) reside strictly within `/theme/assets/` and are served directly by the official Shopify CDN via the `asset_url` filter.
+  - All JavaScript assets (`cart.js`, `variant-picker.js`, `media-gallery.js`) reside strictly within `/theme/assets/` and are served directly by the official Shopify CDN via the `asset_url` filter.
 - **Font Assets**:
   - Fonts are loaded using Shopify's native `font_face` filter (`{{ settings.font_heading | font_face }}`). No external calls to Google Fonts or Typekit are made, eliminating third-party tracking, DNS latency, and privacy compliance concerns.
-- **3D & AR Runtime**:
-  - Utilizes native Shopify Model Viewer tags (`{{ media | model_viewer_tag }}`) and native Shopify XR scripts injected through official Shopify headers (`content_for_header`).
-  - No external Three.js or Babylon.js bundles are loaded from third-party servers.
+- **Zero Third-Party Bundles**:
+  - All interactive elements are built with native Web Components and clean DOM manipulation without monolithic third-party libraries.
 
 ---
 
@@ -23,10 +22,9 @@ This report examines the security posture, external dependencies, and attack sur
 - **Output Encoding**:
   - All user-controllable or merchant-controllable parameters (such as `search.terms`, `product.title`, `link.title`, `media.alt`) are sanitized using `| escape`, `| escape_once`, or `| json`.
   - In `theme/snippets/facets.liquid`, `results.terms` and input values are strictly escaped: `name="q" value="{{ results.terms | escape }}"`.
-  - In `theme/sections/main-product.liquid`, 3D model metadata is serialized using the native `| json` filter inside safe `<script type="application/json">` blocks.
 - **DOM Injection & innerHTML**:
-  - Custom Web Components (`Valoir3DViewer`, `VariantPicker`, `CartDrawer`) do NOT evaluate unvalidated HTML strings or execute dynamic `eval()` routines.
-  - Interactive element titles and AR labels use strictly escaped text properties.
+  - Custom Web Components (`ValoirVariantPicker`, `ValoirMediaGallery`, `CartDrawer`) do NOT evaluate unvalidated HTML strings or execute dynamic `eval()` routines.
+  - Interactive element titles and labels use strictly escaped text properties.
 
 ---
 

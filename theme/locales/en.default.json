@@ -42,8 +42,6 @@
     "view_cart": "View shopping cart, {{ count }} item(s)",
     "previous_slide": "Previous slide",
     "next_slide": "Next slide",
-    "rotate_model": "Drag to inspect 3D eyewear model in 360 degrees",
-    "enter_ar": "View this eyewear frame in Augmented Reality in your space",
     "color_swatch": "Select frame finish {{ color }}"
   },
   "onboarding": {
@@ -62,7 +60,7 @@
       "sunglasses": "Luxury Sunglasses",
       "atelier": "Bespoke Atelier",
       "lookbook": "Editorial Lookbook",
-      "innovation": "3D & Lens Science",
+      "innovation": "Atelier Craftsmanship",
       "account": "Client Account",
       "cart": "Bag",
       "search_toggle": "Search"
@@ -86,18 +84,6 @@
       "discounts": "Discounts",
       "item_added": "Item successfully added to shopping bag",
       "cart_error": "An error occurred while updating your bag. Please try again."
-    },
-    "eyewear_explorer": {
-      "view_3d": "360° View",
-      "instructions": "Interactive 360° View • Drag to rotate • Scroll or buttons to zoom",
-      "reset": "Reset",
-      "pause": "Pause",
-      "play": "Rotate",
-      "zoom_in": "Zoom In",
-      "zoom_out": "Zoom Out",
-      "finish_label": "Atelier Frame Finish",
-      "ar_device_notice": "Augmented reality requires a compatible mobile device (iOS Safari or Android Chrome).",
-      "ar_ios_notice": "Augmented reality on iOS requires a USDZ model file."
     },
     "footer": {
       "brand_story": "Valoir merges artisanal Japanese titanium forging with handcrafted Italian cellulose acetate to engineer timeless optical architecture.",
@@ -137,8 +123,6 @@
       "check_other_stores": "Check availability at other atelier boutiques",
       "sku": "SKU",
       "vendor": "Maison",
-      "view_in_3d": "Interactive 3D Showroom",
-      "view_in_ar": "View in Your Space (AR)",
       "frame_measurements": "Frame Calipers & Fit",
       "optical_specs": "Technical Specifications",
       "frame_width": "Total Frame Width",

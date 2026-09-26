@@ -9,4 +9,4 @@
 3. **Media**:
    - Image 1: Studio front view on white/light neutral background.
    - Image 2: On-model / 45-degree angle profile.
-   - 3D Model: `.glb` format under 35k polygons.
+   - Image 3: Macro craftsmanship / hinge detail close-up.

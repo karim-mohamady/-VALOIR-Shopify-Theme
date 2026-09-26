@@ -9,10 +9,7 @@ If your freshly uploaded theme displays `OPTICAL BLUEPRINT NOT FOUND (404)` on t
 3. **Verify `index.json` Template in Theme Editor**:
    In **Online Store > Themes > Customize**, ensure the Homepage template has sections added and enabled. If sections in `templates/index.json` reference collections or products that have not yet been created in your Shopify store, click **Add section** (e.g. Hero, Featured Collection, Frame Shapes) and hit **Save**.
 4. **Publish Default Home Layout**:
-   In the theme editor, select **Homepage** from the top dropdown, configure the hero banner and 3D optical lab section, and click **Save**.
-
-### 3D model does not appear in media gallery
-Ensure the model is exported as binary `.glb` and is attached to the product in Shopify Admin > Products > Media. Verify that `enable_3d_viewer` is enabled in Theme Settings.
+   In the theme editor, select **Homepage** from the top dropdown, configure the hero banner and frame shapes section, and click **Save**.
 
 ### Free shipping bar does not update
 Ensure prices are configured in cents if customizing `cart.js`, and check that `free_shipping_threshold` in Theme Settings matches your store's desired currency threshold.

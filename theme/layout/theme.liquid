@@ -123,18 +123,7 @@
           freeShippingReached: {{ 'sections.cart.free_shipping_reached' | t | json }},
           freeShippingRemaining: {{ 'sections.cart.free_shipping_remaining' | t | json }},
           prescriptionNote: {{ 'sections.cart.prescription_note' | t | json }},
-          prescriptionPlaceholder: {{ 'sections.cart.prescription_placeholder' | t | json }},
-          view3D: {{ 'sections.eyewear_explorer.view_3d' | t | json }},
-          rotateInstructions: {{ 'sections.eyewear_explorer.instructions' | t | json }},
-          resetView: {{ 'sections.eyewear_explorer.reset' | t | json }},
-          pauseRotate: {{ 'sections.eyewear_explorer.pause' | t | json }},
-          playRotate: {{ 'sections.eyewear_explorer.play' | t | json }},
-          zoomIn: {{ 'sections.eyewear_explorer.zoom_in' | t | json }},
-          zoomOut: {{ 'sections.eyewear_explorer.zoom_out' | t | json }},
-          rotateModel: {{ 'accessibility.rotate_model' | t | json }},
-          viewInAR: {{ 'products.product.view_in_ar' | t | json }},
-          arDeviceNotice: {{ 'sections.eyewear_explorer.ar_device_notice' | t | json }},
-          arIosNotice: {{ 'sections.eyewear_explorer.ar_ios_notice' | t | json }}
+          prescriptionPlaceholder: {{ 'sections.cart.prescription_placeholder' | t | json }}
         },
         moneyFormat: {{ shop.money_format | json }},
         freeShippingThreshold: {{ settings.free_shipping_threshold | default: 250 | json }},
@@ -162,15 +151,6 @@
       <script src="{{ 'media-gallery.js' | asset_url }}" defer="defer"></script>
       <script src="{{ 'variant-picker.js' | asset_url }}" defer="defer"></script>
       <script src="{{ 'product.js' | asset_url }}" defer="defer"></script>
-      {%- assign first_3d_model = product.media | where: 'media_type', 'model' | first -%}
-      {%- if first_3d_model -%}
-        <link id="ModelViewerStyle" rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print" onload="this.media='all'">
-        <script>
-          window.ShopifyXR = window.ShopifyXR || function() { (ShopifyXR.q = ShopifyXR.q || []).push(arguments); };
-          ShopifyXR('addModels', {{ product.media | where: 'media_type', 'model' | json }});
-        </script>
-        <script defer="defer" src="https://cdn.shopify.com/shopifycloud/shopify-xr-js/assets/v1.0/shopify-xr.en.js"></script>
-      {%- endif -%}
     {%- endif -%}
   </head>
 

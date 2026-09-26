@@ -1,13 +1,8 @@
 {% comment %}
-  Renders product badges (Sale, Sold Out, 3D Interactive Showroom, Frame Shape)
-  Usage: {% render 'badge', type: '3d' %}
+  Renders product badges (Sale, Sold Out, Frame Shape)
+  Usage: {% render 'badge', type: 'sale' %}
 {% endcomment %}
 {%- case type -%}
-  {%- when '3d' -%}
-    <span class="badge-3d" aria-label="3D Interactive Experience Available">
-      {% render 'icon', name: '3d' %}
-      <span>3D Model</span>
-    </span>
   {%- when 'sale' -%}
     <span class="badge-sale">
       {{ 'products.product.sale_price' | t }}

@@ -36,7 +36,6 @@ This audit provides a comprehensive breakdown of every Theme Editor setting decl
 |---|---|---|---|---|---|
 | `card_aspect_ratio` | `select` | `4/5` | `theme/layout/theme.liquid:75` | `--card-aspect-ratio: {{ settings.card_aspect_ratio }}` -> `.product-card-media { aspect-ratio: ... }` | **VERIFIED** |
 | `show_secondary_image` | `checkbox` | `true` | `theme/snippets/product-card.liquid:46` | Shows/hides secondary on-model eyewear image on hover | **VERIFIED** |
-| `show_3d_badge` | `checkbox` | `true` | `theme/snippets/product-card.liquid:28` | Toggles display of the "3D" pill tag on product cards | **VERIFIED** |
 | `show_color_swatches` | `checkbox` | `true` | `theme/snippets/product-card.liquid:68` | Shows/hides color finish swatches on collection product cards | **VERIFIED** |
 | `show_frame_shape_tag` | `checkbox` | `true` | `theme/snippets/product-card.liquid:31` | Toggles frame shape classification tag (e.g. Aviator, Round) | **VERIFIED** |
 

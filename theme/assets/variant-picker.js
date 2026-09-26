@@ -1,6 +1,6 @@
 /**
  * Valoir Variant Picker Component
- * Updates variant selection, pricing, media gallery thumbnail, add-to-bag button state, and 3D color/finishes
+ * Updates variant selection, pricing, media gallery thumbnail, and add-to-bag button state
  */
 
 function formatValoirMoney(cents) {

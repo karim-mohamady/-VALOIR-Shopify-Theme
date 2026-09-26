@@ -37,8 +37,7 @@ This document details the architectural performance and accessibility profile of
 - **Metric**: < 50ms (Target: < 200ms)
 - **Optimizations Applied**:
   - Zero heavy third-party bundles (no monolithic UI libraries or external CDNs).
-  - Web Components (`<variant-picker>`, `<valoir-3d-viewer>`, `<shopify-account>`) run lightweight native event dispatchers.
-  - Animation loop in 3D viewer is paused when not in view or when user pauses rotation.
+  - Web Components (`<variant-picker>`, `<shopify-account>`, `<media-gallery>`) run lightweight native event dispatchers.
   - All script tags utilize `defer` attributes to avoid blocking DOM construction.
 
 ---
@@ -57,7 +56,6 @@ This document details the architectural performance and accessibility profile of
 - **Keyboard Navigation**:
   - Unbroken tab sequence across all interactive controls.
   - High-visibility focus rings defined globally in `accessibility.css` with outline offset.
-  - Interactive 3D canvas includes `tabindex="0"` and keyboard accessibility instructions.
 
 ---
 
@@ -79,6 +77,6 @@ This document details the architectural performance and accessibility profile of
 | Resource Type | Count | Transfer Size (Gzipped) | Blocking Execution |
 |---|---|---|---|
 | Critical CSS | 1 (`base.css` + `theme.css`) | ~8.4 KB | Non-blocking |
-| Modular JS | 4 (`cart.js`, `variant-picker.js`, `3d-viewer.js`, `global.js`) | ~9.2 KB | `defer` (0ms blocking) |
+| Modular JS | 3 (`cart.js`, `variant-picker.js`, `media-gallery.js`) | ~7.2 KB | `defer` (0ms blocking) |
 | Fonts | System / Native WOFF2 | Sub-resource loaded | Asynchronous |
 | Total Base Payload | | **< 20 KB** | Fully Optimized |

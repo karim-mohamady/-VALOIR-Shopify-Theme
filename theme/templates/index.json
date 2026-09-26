@@ -10,14 +10,6 @@
         "secondary_label": "Curated Silhouettes"
       }
     },
-    "eyewear-explorer": {
-      "type": "eyewear-explorer",
-      "settings": {
-        "badge": "HAUTE OPTICAL ATELIER",
-        "title": "Micro-Precision Architecture & Finishes",
-        "text": "Inspect our custom-engineered 5-barrel barrel hinges, bevel-cut Mazzucchelli acetate temples, and hand-finished mineral crystal optics directly in your browser."
-      }
-    },
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
@@ -126,7 +118,6 @@
     "hero",
     "frame-shapes",
     "featured-collection",
-    "eyewear-explorer",
     "editorial",
     "product-showcase",
     "lookbook",

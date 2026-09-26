@@ -188,19 +188,6 @@ export interface TranslationDictionary {
     inStock: string;
     inspect: string;
   };
-  viewer3D: {
-    pause: string;
-    rotate: string;
-    calipers: string;
-    exploded: string;
-    reset: string;
-    arSpace: string;
-    frameWidth: string;
-    height: string;
-    bridge: string;
-    temple: string;
-    calibration: string;
-  };
 }
 
 export const TRANSLATIONS: Record<'en' | 'ar', TranslationDictionary> = {
@@ -393,19 +380,6 @@ export const TRANSLATIONS: Record<'en' | 'ar', TranslationDictionary> = {
       noResults: 'No eyewear matching your search query was found.',
       inStock: 'In Stock',
       inspect: 'View Frame'
-    },
-    viewer3D: {
-      pause: 'Pause',
-      rotate: 'Rotate',
-      calipers: 'Calipers',
-      exploded: 'Exploded',
-      reset: 'Reset',
-      arSpace: 'AR Space',
-      frameWidth: 'Width',
-      height: 'Height',
-      bridge: 'Bridge',
-      temple: 'Temple',
-      calibration: 'Optical Calibration: 0.05mm CNC Precision Tolerances (Sabae, Japan)'
     }
   },
   ar: {
@@ -597,19 +571,6 @@ export const TRANSLATIONS: Record<'en' | 'ar', TranslationDictionary> = {
       noResults: 'لم يتم العثور على أي نظارة تطابق عبارة البحث.',
       inStock: 'متوفر حالياً',
       inspect: 'عرض الإطار'
-    },
-    viewer3D: {
-      pause: 'إيقاف',
-      rotate: 'تدوير',
-      calipers: 'المقاييس',
-      exploded: 'فك الأجزاء',
-      reset: 'إعادة ضبط',
-      arSpace: 'الواقع المعزز',
-      frameWidth: 'العرض',
-      height: 'الارتفاع',
-      bridge: 'الجسر',
-      temple: 'الذراع',
-      calibration: 'معايرة بصرية دقيقة بتفاوت 0.05 مم (ساباي، اليابان)'
     }
   }
 };

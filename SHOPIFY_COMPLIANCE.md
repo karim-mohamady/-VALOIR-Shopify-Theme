@@ -9,7 +9,7 @@
 
 ## 1. Shopify Theme Check Results
 - **Tool:** `@shopify/cli theme check --path ./theme`
-- **Files Inspected:** 77 theme files
+- **Files Inspected:** 75 theme files
 - **Offenses:** **0 errors, 0 warnings** (100% Clean)
 - **Status:** **PASS**
 
@@ -38,7 +38,7 @@
 ## 5. Security & Liquid Best Practices
 - **Checkout Route:** Uses `window.Valoir.routes.checkout_url` from `checkout-url.liquid`. No hardcoded `/checkout`.
 - **Script Safety:** Zero `document.write()`. Safe escaping with `| escape` and JSON filter `| json`.
-- **Media Validation:** Proper `<model-viewer>` integration without unverified asset rewriting.
+- **Media Validation:** Proper native media integration for photography and videos without unverified asset rewriting.
 
 ## 6. Theme Store Listing & Assets
 - **Preset Listing:** `listings/valoir-atelier/listing.json` and `theme/listings/valoir-atelier/listing.json`

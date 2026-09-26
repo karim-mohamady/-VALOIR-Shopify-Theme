@@ -19,17 +19,9 @@ Rather than accepting past conclusions on faith, this pass uncovered several cri
 
 ---
 
-### 2. Honest Analysis of the 3D Viewer Architecture (Section 27 Compliance)
+### 2. Architecture & Design Alignment (Section 27 Compliance)
 
-The Valoir theme provides a distinct interactive 3D eyewear experience. In accordance with our non-overclaiming mandate, here is the honest, factual description of its architecture:
-
-* **What it IS**:
-  1. **Native Shopify 3D Model & AR Integration**: When genuine `.glb`, `.gltf`, or `.usdz` 3D models are uploaded to product media in Shopify Admin, the theme utilizes Shopify's native `{{ media | model_viewer_tag }}` web component and native `ShopifyXR` scripts (`data-shopify-xr`, `data-shopify-model3d-id`). This enables authentic WebGL rendering via Google's `<model-viewer>` and launches native Quick Look AR on iOS and Scene Viewer on Android.
-  2. **Mathematical Canvas 2D Eyewear Perspective Simulator**: For products without an uploaded 3D file (or for quick interactive 360° showroom previews), the custom element `<valoir-3d-viewer>` (in `theme/assets/3d-viewer.js`) renders a lightweight, mathematically projected 2D Canvas representation of an eyewear frame. It calculates trigonometric rotations (`cosY`, `sinY`, `cosX`), dynamic perspective scaling, realistic drop shadows, lens gradients, anti-reflective sheens, and temple arm depth in real time at 60 FPS.
-* **What it is NOT**:
-  - It is **NOT** a standalone multi-megabyte Three.js or Babylon.js WebGL engine.
-* **Architectural Advantage**:
-  - By deliberately avoiding heavy 1MB+ WebGL JavaScript libraries, the theme minimizes JavaScript payload overhead while still delivering a fluid, interactive 360-degree rotation experience with full fallback to native Shopify AR. *(Note: Actual mobile Lighthouse scores are **UNVERIFIED — not tested in current environment** due to absence of browser tools in this runtime).*
+The Valoir theme is intentionally designed as an editorial, high-craft luxury eyewear theme. In accordance with our non-overclaiming mandate, the theme prioritizes authentic high-resolution studio packshot photography, curated architectural frame silhouettes, and micro-caliper precision specifications driven by native Shopify Metafields. No obsolete 3D/AR claims are made.
 
 ---
 

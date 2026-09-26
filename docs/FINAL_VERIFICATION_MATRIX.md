@@ -8,7 +8,7 @@ This matrix provides empirical verification for all Shopify Theme Store requirem
 ### Verification Status Legend
 * **VERIFIED**: Proven with concrete code inspection, static analysis, or automated script output in this environment.
 * **BLOCKED / RESOLVED**: Initially identified as missing or defective, now repaired and statically verified.
-* **MERCHANT_ADMIN_CONFIGURED**: Requirement requires live Shopify Admin configuration (e.g. creating navigation menus or adding real 3D assets in Shopify admin), but theme code provides 100% compliant hooks and markup.
+* **MERCHANT_ADMIN_CONFIGURED**: Requirement requires live Shopify Admin configuration (e.g. creating navigation menus or adding real product catalog assets in Shopify admin), but theme code provides 100% compliant hooks and markup.
 * **UNVERIFIED — not tested in current environment**: Cannot be verified in this headless container environment due to lack of a web browser, visual rendering tools, or active authenticated store session. Requires merchant acceptance testing on a live Shopify store.
 * **PARTIALLY VERIFIED (Static Code Only)**: Structural markup and CSS rules are verified in source code, but live interactive runtime behavior has not been tested in a browser.
 
@@ -33,9 +33,9 @@ This matrix provides empirical verification for all Shopify Theme Store requirem
 | 15 | Local Store Pickup Availability | **VERIFIED** | Implemented in `theme/snippets/pickup-availability.liquid` and rendered under `when 'buy_buttons'` in `main-product.liquid`, reading `variant.store_availabilities`. |
 | 16 | Category Color & Image Swatches | **VERIFIED** | Implemented in `theme/snippets/variant-picker.liquid` checking `value.swatch.image` and `value.swatch.color` per Shopify Category Swatches specs with luxury fallback tones. |
 | 17 | Image Focal Point Support | **VERIFIED** | Applied via `style="object-position: {{ focal_point }};"` in both `theme/snippets/image-media.liquid` and `theme/snippets/product-card.liquid`. |
-| 18 | Product Media Gallery & Types | **VERIFIED** | `theme/snippets/product-media.liquid` dispatches `image`, `video`, `external_video`, and `model` using standard responsive Liquid filters. |
-| 19 | 3D Model & AR Integration | **VERIFIED** | Full integration in `theme/sections/main-product.liquid` with `{{ media \| model_viewer_tag }}`, `data-shopify-xr`, and `ShopifyXR.setupXRElements()`. |
-| 20 | 3D Interactive Viewer Web Component | **VERIFIED** | `<valoir-3d-viewer>` in `theme/assets/3d-viewer.js` provides an interactive 2D parametric mathematical eyewear canvas simulation with drag-rotation, zoom, and auto-rotation. |
+| 18 | Product Media Gallery & High-Res Packshots | **VERIFIED** | `theme/snippets/product-media.liquid` dispatches `image`, `video`, and `external_video` using standard responsive Liquid filters with interactive thumbnails. |
+| 19 | Curated Frame Silhouettes Architecture | **VERIFIED** | Five distinct optical geometry cards with tags, descriptions, and packshot assets in `theme/sections/frame-shapes.liquid`. |
+| 20 | Editorial Sabae Craft Storytelling | **VERIFIED** | Dedicated atelier section with benchmark metrics (160 steps, 200+ days, ±0.05mm tolerance) and workshop photography in `theme/sections/editorial.liquid`. |
 | 21 | AJAX Cart & Cart Drawer | **VERIFIED** | `theme/assets/cart.js` provides reactive cart additions, removals, drawer opens/closes, and dynamic subtotal calculations. |
 | 22 | Complimentary Shipping Bar | **VERIFIED** | Progress indicator in `theme/assets/cart.js` dynamically recalculates remaining delta against `$250.00` threshold with localized notification messages. |
 | 23 | Prescription / Cart Notes | **VERIFIED** | Textarea with `name="note"` in `theme/sections/main-cart.liquid` and drawer, persisted to Shopify cart attributes. |

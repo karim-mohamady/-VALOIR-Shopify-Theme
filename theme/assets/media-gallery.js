@@ -1,6 +1,6 @@
 /**
  * Valoir Media Gallery Web Component
- * Seamless switching between 2D high-res photography, lifestyle video, and 3D WebGL model
+ * Seamless switching between high-res photography and lifestyle video
  */
 class ValoirMediaGallery extends HTMLElement {
   constructor() {
